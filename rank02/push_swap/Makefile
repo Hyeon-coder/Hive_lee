@@ -6,35 +6,36 @@
 #    By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/07 20:04:17 by juhyeonl          #+#    #+#              #
-#    Updated: 2025/02/20 21:47:53 by JuHyeon          ###   ########.fr        #
+#    Updated: 2025/02/28 03:12:10 by JuHyeon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = push_swap
 
 SRCS = \
-		algorithm.c \
-		check_digit_utils.c \
-		command_utils.c \
-		input_parse.c \
-		main.c \
-		ft_push.c \
-		ft_reverse.c \
-		ft_rotate.c \
-		ft_split_utils.c \
-		ft_split.c \
-		ft_swap.c \
-		stack_utils.c \
-		utils.c
+		srcs/cmd/ft_push.c \
+		srcs/cmd/ft_reverse.c \
+		srcs/cmd/ft_rotate.c \
+		srcs/cmd/ft_swap.c \
+		srcs/sort/sort_branch.c \
+		srcs/sort/radix_sort.c \
+		srcs/sort/mini_sort.c \
+		srcs/check_digit_utils.c \
+		srcs/input_parse.c \
+		srcs/main.c \
+		srcs/stack_utils.c \
+		srcs/utils.c
 OBJ = $(SRCS:.c=.o)
 
+LIBFT = libft/others/libft.a
+
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -I libft/libft.h
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -44,6 +45,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
+	rm -rf push_swap.dSYM
 
 re: fclean all
 
