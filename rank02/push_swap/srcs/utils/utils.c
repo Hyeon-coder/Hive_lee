@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 07:42:45 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:07:04 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:41:37 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../push_swap.h"
 
+/*
+	Checks if the stack is sorted. (스택이 정렬되었는지 확인)
+*/
 int	is_sorted(t_stack *stack)
 {
 	t_stack	*current;
@@ -28,6 +31,10 @@ int	is_sorted(t_stack *stack)
 	return (1);
 }
 
+/*
+	Calculates the distance of an element from the top.
+	(요소가 스택의 맨 위에서 얼마나 떨어져 있는지 계산)
+*/
 int	get_distance(t_stack **stack, int index)
 {
 	t_stack	*head;
@@ -45,6 +52,10 @@ int	get_distance(t_stack **stack, int index)
 	return (distance);
 }
 
+/*
+	Moves a specific element to the top of the stack.
+	(특정 요소를 스택 맨 위로 이동)
+*/
 void	make_top(t_stack **stack, int distance)
 {
 	t_stack	*head;
@@ -66,6 +77,9 @@ void	make_top(t_stack **stack, int distance)
 	}
 }
 
+/*
+	Prints the stack list. (스택 리스트를 출력)
+*/
 void	print_list(t_stack *head)
 {
 	t_stack	*tmp;

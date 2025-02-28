@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 11:03:53 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/02/27 17:08:51 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:52:18 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Searches for a character in a memory block. (메모리 블록에서 특정 문자를 검색)
+*/
 void	*ft_memchr(const void *s, int c, size_t n)
 {
 	const unsigned char	*tmp;

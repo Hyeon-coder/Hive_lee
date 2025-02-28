@@ -6,12 +6,16 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 18:33:22 by shovsepy          #+#    #+#             */
-/*   Updated: 2025/02/28 07:50:46 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:43:09 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../push_swap.h"
 
+/*
+	Checks if a string contains a specific character.
+	(문자열이 특정 문자를 포함하는지 확인)
+*/
 static int	ft_contains(int num, char **argv, int i)
 {
 	i++;
@@ -24,6 +28,9 @@ static int	ft_contains(int num, char **argv, int i)
 	return (0);
 }
 
+/*
+	Checks if a string represents a number. (문자열이 숫자인지 확인)
+*/
 static int	ft_isnum(char *num)
 {
 	int	i;
@@ -40,6 +47,10 @@ static int	ft_isnum(char *num)
 	return (1);
 }
 
+/*
+	Validates the arguments provided to push_swap.
+	(push_swap에 제공된 인자들을 검증)
+*/
 void	ft_check_args(int argc, char **argv)
 {
 	int		i;

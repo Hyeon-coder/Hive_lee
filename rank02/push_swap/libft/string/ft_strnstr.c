@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:13:28 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/02/27 17:09:43 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:32:38 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Performs a substring search. (부분 문자열 검색 수행)
+*/
 char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
 	size_t	i;

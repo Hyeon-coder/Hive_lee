@@ -6,12 +6,17 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 07:36:30 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 08:28:05 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:43:49 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../push_swap.h"
 
+/*
+	push: Moves an element from one stack to another. (한 스택에서 다른 스택으로 요소 이동)
+	pa: Moves an element to stack A. (스택 A로 요소 이동)
+	pb: Moves an element to stack B. (스택 B로 요소 이동)
+*/
 int	push(t_stack **stack_to, t_stack **stack_from)
 {
 	t_stack	*tmp;

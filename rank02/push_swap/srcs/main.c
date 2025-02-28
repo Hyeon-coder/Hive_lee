@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 07:42:38 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:01:41 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:36:54 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
+/*
+	Initializes the stack with input values. (입력값으로 스택 초기화)
+*/
 static void	init_stack(t_stack **stack, int argc, char **argv)
 {
 	t_stack	*new;
@@ -40,6 +43,9 @@ static void	init_stack(t_stack **stack, int argc, char **argv)
 	}
 }
 
+/*
+	Sorts the stack using push_swap algorithm. (push_swap 알고리즘으로 스택 정렬)
+*/
 static void	sort_stack(t_stack **stack_a, t_stack **stack_b)
 {
 	if (ps_lstsize(*stack_a) <= 5)
@@ -48,6 +54,9 @@ static void	sort_stack(t_stack **stack_a, t_stack **stack_b)
 		radix_sort(stack_a, stack_b);
 }
 
+/*
+	Entry point of the push_swap program. (push_swap 프로그램의 시작점)
+*/
 int	main(int argc, char **argv)
 {
 	t_stack	*stack_a;

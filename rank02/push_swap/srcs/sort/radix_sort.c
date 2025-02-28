@@ -6,12 +6,16 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 07:49:46 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 08:30:34 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:38:06 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../push_swap.h"
 
+/*
+	Determines the maximum bit length of numbers in the stack.
+	(스택 내 숫자의 최대 비트 길이 계산)
+*/
 int	get_max_bits(t_stack **stack)
 {
 	t_stack	*head;
@@ -32,6 +36,9 @@ int	get_max_bits(t_stack **stack)
 	return (max_bits);
 }
 
+/*
+	Implements the radix sort algorithm. (기수 정렬 알고리즘 수행)
+*/
 void	radix_sort(t_stack **stack_a, t_stack **stack_b)
 {
 	t_stack	*head_a;

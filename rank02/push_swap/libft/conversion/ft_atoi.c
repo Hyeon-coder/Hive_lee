@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 15:33:55 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/02/28 14:58:13 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:28:21 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Converts a string to an integer. (문자열을 정수로 변환)
+*/
 int	ft_atoi(const char *nptr)
 {
 	long long	result;

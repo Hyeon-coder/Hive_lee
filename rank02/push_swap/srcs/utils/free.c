@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 07:45:25 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 13:54:06 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:49:50 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../push_swap.h"
 
+/*
+	Frees the memory allocated for a stack. (스택을 위한 할당된 메모리 해제)
+*/
 void	free_stack(t_stack **stack)
 {
 	t_stack	*current;
@@ -30,6 +33,9 @@ void	free_stack(t_stack **stack)
 	}
 }
 
+/*
+	Frees allocated memory. (할당된 메모리 해제)
+*/
 void	ft_free(char **str)
 {
 	int	i;
@@ -41,6 +47,9 @@ void	ft_free(char **str)
 		free(str[i--]);
 }
 
+/*
+	Frees all dynamically allocated memory. (할당된 모든 메모리 해제)
+*/
 void	free_all_memory(t_stack **stack_a, t_stack **stack_b, char **args)
 {
 	if (stack_a && *stack_a)
@@ -52,6 +61,9 @@ void	free_all_memory(t_stack **stack_a, t_stack **stack_b, char **args)
 	write(1, "here", 4);
 }
 
+/*
+	Frees the memory allocated by ft_split. (ft_split이 할당한 메모리 해제)
+*/
 void	ft_split_free(char **args)
 {
 	int	i;

@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 15:59:45 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/27 17:09:53 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:51:43 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Extracts a substring from a given string. (주어진 문자열에서 부분 문자열 추출)
+*/
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*rst;

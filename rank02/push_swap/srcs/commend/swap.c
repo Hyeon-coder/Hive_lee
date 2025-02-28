@@ -6,12 +6,18 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 07:38:49 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 08:30:16 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:44:18 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../push_swap.h"
 
+/*
+	swap: Swaps the top two elements of a stack. (스택의 맨 위 두 요소 교환)
+	sa: Swaps the top two elements of stack A. (스택 A의 맨 위 두 요소 교환)
+	sb: Swaps the top two elements of stack B. (스택 B의 맨 위 두 요소 교환)
+	ss: Swaps the top two elements of both stacks. (두 스택의 맨 위 두 요소 교환)
+*/
 int	swap(t_stack **stack)
 {
 	t_stack	*head;

@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 07:49:53 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:03:22 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:37:32 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../push_swap.h"
 
+/*
+	Finds the minimum value in the stack. (스택에서 최소값 찾기)
+*/
 int	get_min(t_stack **stack, int val)
 {
 	t_stack	*head;
@@ -28,6 +31,9 @@ int	get_min(t_stack **stack, int val)
 	return (min);
 }
 
+/*
+	Implements a simple sorting algorithm. (기본 정렬 알고리즘 수행)
+*/
 void	simple_sort(t_stack **stack_a, t_stack **stack_b)
 {
 	int	size;

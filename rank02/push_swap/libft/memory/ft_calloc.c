@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 10:38:51 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/27 17:08:47 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:52:23 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Allocates memory and initializes it to zero. (메모리를 할당하고 0으로 초기화)
+*/
 void	*ft_calloc(size_t count, size_t size)
 {
 	void	*ptr;

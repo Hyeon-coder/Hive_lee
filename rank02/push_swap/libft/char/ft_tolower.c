@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 20:06:14 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/02/27 17:07:51 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:25:27 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Converts a character to lowercase. (문자를 소문자로 변환)
+*/
 int	ft_tolower(int c)
 {
 	if ('A' <= c && c <= 'Z')

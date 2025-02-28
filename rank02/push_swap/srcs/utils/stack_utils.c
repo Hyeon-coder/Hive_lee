@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 07:43:55 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 11:37:24 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:56:32 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../push_swap.h"
 
+/*
+	Creates a new node for the push_swap stack. (push_swap 스택의 새로운 노드 생성)
+*/
 t_stack	*ps_lstnew(int value)
 {
 	t_stack	*new;
@@ -25,12 +28,19 @@ t_stack	*ps_lstnew(int value)
 	return (new);
 }
 
+/*
+	Adds an element to the front of the push_swap list.
+	(push_swap 리스트 앞에 요소 추가)
+*/
 void	ps_lstadd_front(t_stack **stack, t_stack *new)
 {
 	new->next = *stack;
 	*stack = new;
 }
 
+/*
+	Returns the last node of the push_swap stack. (push_swap 스택의 마지막 노드를 반환)
+*/
 t_stack	*ps_lstlast(t_stack *head)
 {
 	t_stack	*tmp;
@@ -45,6 +55,10 @@ t_stack	*ps_lstlast(t_stack *head)
 	return (tmp);
 }
 
+/*
+	Adds an element to the back of the push_swap list.
+	(push_swap 리스트 뒤에 요소 추가)
+*/
 void	ps_lstadd_back(t_stack **stack, t_stack *new)
 {
 	t_stack	*n;
@@ -62,6 +76,9 @@ void	ps_lstadd_back(t_stack **stack, t_stack *new)
 	}
 }
 
+/*
+	Returns the size of the push_swap list. (push_swap 리스트 크기 반환)
+*/
 int	ps_lstsize(t_stack *head)
 {
 	size_t	i;

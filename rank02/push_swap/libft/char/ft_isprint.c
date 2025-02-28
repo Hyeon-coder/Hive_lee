@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:31:10 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/02/27 17:07:48 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:24:33 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Checks if a character is printable. (출력 가능한 문자 여부 확인)
+*/
 int	ft_isprint(int c)
 {
 	if (32 <= c && c <= 126)

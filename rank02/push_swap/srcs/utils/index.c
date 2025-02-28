@@ -6,12 +6,16 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 18:33:22 by shovsepy          #+#    #+#             */
-/*   Updated: 2025/02/28 07:50:50 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:57:29 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../push_swap.h"
 
+/*
+	Finds the next minimum value in a partially sorted stack.
+	(부분적으로 정렬된 스택에서 다음 최소값 찾기)
+*/
 static t_stack	*get_next_min(t_stack **stack)
 {
 	t_stack	*head;
@@ -36,6 +40,9 @@ static t_stack	*get_next_min(t_stack **stack)
 	return (min);
 }
 
+/*
+	Assigns index values to stack elements. (스택 요소에 인덱스 값 할당)
+*/
 void	index_stack(t_stack **stack)
 {
 	t_stack	*head;

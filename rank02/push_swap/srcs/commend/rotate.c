@@ -6,12 +6,17 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 07:38:08 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 08:29:58 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:43:36 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../push_swap.h"
-
+/*
+	rotate: Rotates a stack upwards. (스택을 위로 회전)
+	ra: Rotates stack A upwards. (스택 A를 위로 회전)
+	rb: Rotates stack B upwards. (스택 B를 위로 회전)
+	rr: Rotates both stacks upwards. (두 스택을 동시에 위로 회전)
+*/
 int	rotate(t_stack **stack)
 {
 	t_stack	*head;

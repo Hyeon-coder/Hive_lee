@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 11:58:14 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/02/27 17:07:46 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:23:42 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Checks if a character is a digit. (숫자인지 확인하는 함수)
+*/
 int	ft_isdigit(int c)
 {
 	if ('0' <= c && c <= '9')

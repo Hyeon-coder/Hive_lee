@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:05:23 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:05:36 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:27:49 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Prints an error message. (에러 메시지 출력)
+*/
 void	ft_error(char *msg)
 {
 	ft_putendl_fd(msg, 1);

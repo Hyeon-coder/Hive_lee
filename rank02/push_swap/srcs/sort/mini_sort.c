@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 07:52:12 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:03:04 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:39:04 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../push_swap.h"
 
+/*
+	Sorts three elements in the stack. (스택 내 3개의 요소 정렬)
+*/
 static void	exec_sort_3(t_stack **stack_a, int min, int next_min)
 {
 	t_stack	*head;
@@ -36,6 +39,9 @@ static void	exec_sort_3(t_stack **stack_a, int min, int next_min)
 	}
 }
 
+/*
+	Implements sorting logic for three elements. (3개의 요소를 정렬하는 로직 구현)
+*/
 void	sort_3(t_stack **stack_a)
 {
 	int	min;
@@ -48,6 +54,9 @@ void	sort_3(t_stack **stack_a)
 	exec_sort_3(stack_a, min, next_min);
 }
 
+/*
+	Implements sorting logic for four elements. (4개의 요소를 정렬하는 로직 구현)
+*/
 void	sort_4(t_stack **stack_a, t_stack **stack_b)
 {
 	int	distance;
@@ -71,6 +80,9 @@ void	sort_4(t_stack **stack_a, t_stack **stack_b)
 	pa(stack_a, stack_b);
 }
 
+/*
+	Implements sorting logic for five elements. (5개의 요소를 정렬하는 로직 구현)
+*/
 void	sort_5(t_stack **stack_a, t_stack **stack_b)
 {
 	int	distance;

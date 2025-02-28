@@ -6,12 +6,16 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 20:50:05 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 08:22:25 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:53:55 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Creates a new linked list by applying a function to each node of 
+	an existing list. (연결 리스트의 각 노드에 함수를 적용하여 새로운 리스트 생성)
+*/
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
 	t_list	*newlst;
