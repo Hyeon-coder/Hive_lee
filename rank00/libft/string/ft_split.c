@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 12:38:12 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 01:05:01 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:35:32 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Frees allocated memory for a split string. (분할된 문자열 메모리 해제)
+*/
 static void	free_arr(char **arr, int i)
 {
 	while (i >= 0)
@@ -22,7 +25,9 @@ static void	free_arr(char **arr, int i)
 	free(arr);
 }
 
-/* 문자열 내 단어 개수 세기 */
+/*
+	Counts the number of delimiters in a string. (문자열에서 구분자 개수 계산)
+*/
 static int	cnt_deli(char const *s, char c)
 {
 	int	cnt;
@@ -42,7 +47,9 @@ static int	cnt_deli(char const *s, char c)
 	return (cnt);
 }
 
-/* 단어를 분리하여 저장 */
+/*
+	Performs string splitting based on delimiters. (구분자를 기준으로 문자열을 분할)
+*/
 static char	*get_word(const char **s, char c)
 {
 	size_t		len;
@@ -61,7 +68,10 @@ static char	*get_word(const char **s, char c)
 	return (word);
 }
 
-/* 문자열을 구분자로 나누어 배열로 반환 */
+/*
+	Returns a string into an array, separated by a separator.
+	(문자열을 구분자로 나누어 배열로 반환)
+*/
 char	**ft_split(char const *s, char c)
 {
 	int		i;

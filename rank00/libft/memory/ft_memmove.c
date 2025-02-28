@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 15:01:42 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/02/27 17:08:57 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:26:10 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Moves memory safely. (메모리를 안전하게 이동)
+*/
 void	*ft_memmove(void *dst, const void *src, size_t n)
 {
 	unsigned char	*dst1;

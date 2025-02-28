@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 11:45:16 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/02/27 17:08:53 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:25:49 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Compares two memory areas. (메모리 영역을 비교)
+*/
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
 	unsigned char	*tmp1;

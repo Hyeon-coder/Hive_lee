@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:17:21 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/02/27 17:07:40 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:25:17 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Checks if a character is alphanumeric. (알파벳 또는 숫자인지 확인)
+*/
 int	ft_isalnum(int c)
 {
 	if (('a' <= c && c <= 'z') || \

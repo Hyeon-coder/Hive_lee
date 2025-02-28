@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 19:16:13 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/27 17:08:13 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:49:35 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Counts the number of digits in an integer. (정수의 자리수를 계산)
+*/
 int	cnt_num(int n)
 {
 	int	cnt;
@@ -28,6 +31,9 @@ int	cnt_num(int n)
 	return (cnt);
 }
 
+/*
+	Converts an integer to a string. (정수를 문자열로 변환)
+*/
 char	*ft_itoa(int n)
 {
 	char	*rst;

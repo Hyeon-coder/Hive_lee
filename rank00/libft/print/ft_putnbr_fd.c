@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 00:57:43 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/27 17:09:12 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:27:41 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Prints a number to a file descriptor. (숫자를 파일 디스크립터에 출력)
+*/
 void	ft_putnbr_fd(int n, int fd)
 {
 	char	temp;

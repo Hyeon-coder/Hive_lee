@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 12:16:18 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 08:22:25 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:27:01 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Adds an element to the front of a linked list. (연결 리스트의 앞에 요소 추가)
+*/
 void	ft_lstadd_front(t_list **lst, t_list *new)
 {
 	if (!lst || !new)

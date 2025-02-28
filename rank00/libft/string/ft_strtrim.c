@@ -6,12 +6,16 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 19:21:26 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/27 17:09:49 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:51:33 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Trims characters from the beginning and end of a string.
+	(문자열의 앞뒤에서 특정 문자를 제거)
+*/
 char	*ft_strtrim(char const *s1, char const *set)
 {
 	char	*rst;

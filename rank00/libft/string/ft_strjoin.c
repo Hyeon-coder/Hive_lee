@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 16:39:38 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/27 17:09:26 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:33:10 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Concatenates two strings. (두 문자열을 이어 붙임)
+*/
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	len;

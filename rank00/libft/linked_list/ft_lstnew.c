@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 12:46:36 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/02/28 08:22:25 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:54:09 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Creates a new linked list node. (새로운 연결 리스트 노드 생성)
+*/
 t_list	*ft_lstnew(void *content)
 {
 	t_list	*n_node;

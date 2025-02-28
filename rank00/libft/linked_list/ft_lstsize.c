@@ -6,12 +6,15 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 14:45:00 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/02/28 08:22:25 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:26:46 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
+/*
+	Gets the size of a linked list. (연결 리스트의 크기 반환)
+*/
 int	ft_lstsize(t_list *lst)
 {
 	int			cnt;
