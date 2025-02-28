@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/06 13:24:01 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 08:22:25 by JuHyeon          ###   ########.fr       */
+/*   Created: 2025/02/28 15:05:23 by JuHyeon           #+#    #+#             */
+/*   Updated: 2025/02/28 15:05:36 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft.h"
 
-void	ft_lstdelone(t_list *lst, void (*del)(void*))
+void	ft_error(char *msg)
 {
-	if (!lst)
-		return ;
-	if (del)
-		del(lst->content);
-	free(lst);
+	ft_putendl_fd(msg, 1);
+	exit(0);
 }

@@ -6,11 +6,11 @@
 #    By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/07 23:06:49 by JuHyeon           #+#    #+#              #
-#    Updated: 2025/02/27 17:05:20 by JuHyeon          ###   ########.fr        #
+#    Updated: 2025/02/28 15:06:25 by JuHyeon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = others/libft.a
+NAME = libft.a
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
@@ -49,7 +49,8 @@ SRCS = \
 		print/ft_putchar_fd.c \
 		print/ft_putstr_fd.c \
 		print/ft_putnbr_fd.c \
-		print/ft_putendl_fd.c
+		print/ft_putendl_fd.c \
+		print/ft_error.c
 
 BONUS_SRCS = \
 		linked_list/ft_lstnew.c \

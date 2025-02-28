@@ -6,7 +6,7 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 15:33:55 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/02/27 17:08:14 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 14:58:13 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,25 @@
 
 int	ft_atoi(const char *nptr)
 {
-	int	num;
-	int	flag;
-	int	i;
+	long long	result;
+	int			sign;
 
-	num = 0;
-	flag = 1;
-	i = 0;
-	while (nptr[i] && (nptr[i] == ' ' || nptr[i] == '\t'
-			|| nptr[i] == '\n' || nptr[i] == '\r'
-			|| nptr[i] == '\v' || nptr[i] == '\f'))
-		i++;
-	if (nptr[i] == '-')
+	result = 0;
+	sign = 1;
+	while (*nptr == ' ' || (*nptr >= 9 && *nptr <= 13))
+		nptr++;
+	if (*nptr == '-' || *nptr == '+')
 	{
-		flag *= -1;
-		i++;
+		if (*nptr == '-')
+			sign = -1;
+		nptr++;
 	}
-	else if (nptr[i] == '+')
-		i++;
-	while (ft_isdigit(nptr[i]))
+	while (*nptr >= '0' && *nptr <= '9')
 	{
-		num = (num * 10) + (nptr[i] - '0');
-		i++;
+		result = result * 10 + (*nptr - '0');
+		if ((result * sign) > 2147483647 || (result * sign) < -2147483648)
+			ft_error("Error");
+		nptr++;
 	}
-	return (num * flag);
+	return ((int)(result * sign));
 }
