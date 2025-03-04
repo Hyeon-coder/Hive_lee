@@ -6,12 +6,16 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 16:41:56 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/02/23 21:01:28 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/04 04:03:17 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../so_long.h"
 
+/*
+	ft_putstr_fd - Writes a string to the given file descriptor.
+	(ft_putstr_fd - 문자열을 지정된 파일 디스크립터에 출력합니다.)
+*/
 void	ft_putstr_fd(char *s, int fd)
 {
 	if (!s)
@@ -19,6 +23,10 @@ void	ft_putstr_fd(char *s, int fd)
 	write(fd, s, ft_strlen(s));
 }
 
+/*
+	ft_putnbr_fd - Writes an integer to the given file descriptor.
+	(ft_putnbr_fd - 정수를 지정된 파일 디스크립터에 출력합니다.)
+*/
 void	ft_putnbr_fd(int n, int fd)
 {
 	char	temp;
@@ -45,6 +53,10 @@ void	ft_putnbr_fd(int n, int fd)
 	}
 }
 
+/*
+	free_map - Frees allocated memory for the map structure.
+	(free_map - 맵 구조체에 할당된 메모리를 해제합니다.)
+*/
 void	free_map(char **map, int height)
 {
 	int	i;
@@ -56,10 +68,4 @@ void	free_map(char **map, int height)
 		i++;
 	}
 	free(map);
-}
-
-int	handle_resize(t_game *game)
-{
-	render_map(game);
-	return (0);
 }

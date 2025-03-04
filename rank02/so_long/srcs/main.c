@@ -6,13 +6,17 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:11:48 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/23 21:14:22 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/04 04:11:14 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../so_long.h"
 
-static void	load_images(t_game *game, int *img_w, int *img_h)
+/*
+	load_images - Loads all necessary images for the game.
+	(load_images - 게임에 필요한 모든 이미지를 로드합니다.)
+*/
+void	load_images(t_game *game, int *img_w, int *img_h)
 {
 	game->img_wall = mlx_xpm_file_to_image(game->mlx, \
 									"./images/wall.xpm", img_w, img_h);
@@ -37,6 +41,10 @@ static void	load_images(t_game *game, int *img_w, int *img_h)
 	}
 }
 
+/*
+	init_mlx_window - Sets up the MLX window for rendering.
+	(init_mlx_window - MLX 창을 설정하여 렌더링을 준비합니다.)
+*/
 static void	init_mlx_window(t_game *game)
 {
 	game->mlx = mlx_init();
@@ -54,6 +62,10 @@ static void	init_mlx_window(t_game *game)
 	}
 }
 
+/*
+	init_game - Initializes game variables and settings.
+	(init_game - 게임 변수와 설정을 초기화합니다.)
+*/
 static void	init_game(t_game *game, char *map_file)
 {
 	int	img_w;
@@ -70,13 +82,10 @@ static void	init_game(t_game *game, char *map_file)
 	load_images(game, &img_w, &img_h);
 }
 
-int	handle_exit(t_game *game)
-{
-	free_map(game->map, game->height);
-	exit(0);
-	return (0);
-}
-
+/*
+	main - Entry point of the game.
+	(main - 게임의 진입점입니다.)
+*/
 int	main(int argc, char **argv)
 {
 	t_game	game;
@@ -92,9 +101,7 @@ int	main(int argc, char **argv)
 	write(1, "moves : ", 8);
 	ft_putnbr_fd(game.moves, 1);
 	write(1, "\n", 1);
-	write(1, "collectibles : ", ft_strlen("collectibles : "));
-	ft_putnbr_fd(game.collectibles, 1);
-	write(1, "\n", 1);
+	mlx_expose_hook(game.win, handle_expose, &game);
 	mlx_hook(game.win, 2, 1L << 0, handle_keypress, &game);
 	mlx_hook(game.win, 17, 0, handle_exit, &game);
 	mlx_loop(game.mlx);

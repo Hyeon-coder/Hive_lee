@@ -1,0 +1,142 @@
+**Game Execution Flow and Function Explanation**
+
+---
+
+## **1. Program Start (`main.c`)**
+
+```c
+/*
+	main - Entry point of the game.
+	(main - 게임의 진입점입니다.)
+*/
+```
+- The game starts with the `main()` function.
+  (게임은 `main()` 함수로 시작됩니다.)
+- It calls multiple initialization functions to set up the game.
+  (여러 초기화 함수를 호출하여 게임을 설정합니다.)
+
+```c
+/*
+	init_game - Initializes game variables and settings.
+	(init_game - 게임 변수와 설정을 초기화합니다.)
+*/
+```
+- Initializes game-related variables and structures.
+  (게임과 관련된 변수와 구조체를 초기화합니다.)
+- Sets up the map data and player status.
+  (맵 데이터와 플레이어 상태를 설정합니다.)
+
+```c
+/*
+	init_mlx_window - Sets up the MLX window for rendering.
+	(init_mlx_window - MLX 창을 설정하여 렌더링을 준비합니다.)
+*/
+```
+- Creates an MLX window to render graphics on the screen.
+  (화면에 그래픽을 렌더링할 수 있도록 MLX 창을 생성합니다.)
+
+```c
+/*
+	load_images - Loads all necessary images for the game.
+	(load_images - 게임에 필요한 모든 이미지를 로드합니다.)
+*/
+```
+- Loads images such as walls, floors, player, and collectibles.
+  (벽, 바닥, 플레이어, 수집품 등의 이미지를 로드합니다.)
+
+---
+
+## **2. Map Loading and Validation (`map_reader.c`, `map_validator.c`)**
+
+```c
+/*
+	read_map - Reads the game map from a file and loads it into memory.
+	(read_map - 파일에서 게임 맵을 읽어와 메모리에 로드합니다.)
+*/
+```
+- Reads the `.ber` map file and stores it in memory.
+  (`.ber` 확장자의 맵 파일을 읽고 메모리에 저장합니다.)
+
+```c
+/*
+	count_lines - Counts the number of lines in the map file.
+	(count_lines - 맵 파일에서 줄 수를 계산합니다.)
+*/
+```
+- Calculates the number of lines to allocate memory correctly.
+  (메모리를 올바르게 할당할 수 있도록 맵의 줄 수를 계산합니다.)
+
+```c
+/*
+	validate_map - Validates the game map to ensure it meets requirements.
+	(validate_map - 게임 맵이 요구사항을 충족하는지 검증합니다.)
+*/
+```
+- Checks if the map contains valid components such as a player start, exit, and collectibles.
+  (맵이 플레이어 시작 위치, 출구, 수집품 등의 필수 요소를 포함하고 있는지 확인합니다.)
+
+```c
+/*
+	check_walls - Verifies that the map is surrounded by walls.
+	(check_walls - 맵이 벽으로 완전히 둘러싸여 있는지 검증합니다.)
+*/
+```
+- Ensures the player cannot exit the boundaries of the map.
+  (플레이어가 맵의 경계를 벗어날 수 없도록 보장합니다.)
+
+---
+
+## **3. Rendering the Game Screen (`render.c`)**
+
+```c
+/*
+	render_map - Renders game objects on the screen.
+	(render_map - 게임 개체를 화면에 렌더링합니다.)
+*/
+```
+- Draws all static game objects (walls, floors, etc.) on the screen.
+  (벽, 바닥 등의 정적인 게임 개체를 화면에 그립니다.)
+
+```c
+/*
+	put_tile - Draws a specific tile at the given position.
+	(put_tile - 지정된 위치에 특정 타일을 그립니다.)
+*/
+```
+- Places a specific tile (wall, collectible, etc.) on the screen.
+  (특정 타일(벽, 수집품 등)을 화면에 배치합니다.)
+
+---
+
+## **4. Handling User Input (`events.c`)**
+
+```c
+/*
+	handle_keypress - Handles keyboard inputs for player movement.
+	(handle_keypress - 플레이어 이동을 위한 키보드 입력을 처리합니다.)
+*/
+```
+- Moves the player based on keyboard inputs.
+  (키보드 입력을 기반으로 플레이어를 이동시킵니다.)
+
+```c
+/*
+	handle_exit - Handles game exit events.
+	(handle_exit - 게임 종료 이벤트를 처리합니다.)
+*/
+```
+- Handles the game termination when the exit key is pressed.
+  (종료 키가 눌렸을 때 게임을 종료합니다.)
+
+---
+
+## **5. Cleaning Up Resources (`utils.c`)**
+
+```c
+/*
+	free_map - Frees allocated memory for the map structure.
+	(free_map - 맵 구조체에 할당된 메모리를 해제합니다.)
+*/
+```
+- Releases memory used for storing the game map.
+  (게임 맵을 저장하는 데 사용된 메모리를 해제합니다.)
