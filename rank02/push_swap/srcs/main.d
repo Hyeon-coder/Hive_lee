@@ -1,0 +1,5 @@
+srcs/main.o: srcs/main.c srcs/../push_swap.h srcs/../libft/libft.h
+
+srcs/../push_swap.h:
+
+srcs/../libft/libft.h:

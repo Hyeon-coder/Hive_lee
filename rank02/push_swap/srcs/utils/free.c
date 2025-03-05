@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 07:45:25 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:49:50 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/05 15:22:05 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	free_all_memory(t_stack **stack_a, t_stack **stack_b, char **args)
 		free_stack(stack_b);
 	if (args)
 		ft_split_free(args);
-	write(1, "here", 4);
 }
 
 /*

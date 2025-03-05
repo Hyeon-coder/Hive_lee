@@ -3,16 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+         #
+#    By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/01 09:58:28 by juhyeonl          #+#    #+#              #
-#    Updated: 2025/03/02 08:05:08 by JuHyeon          ###   ########.fr        #
+#    Updated: 2025/03/05 14:00:23 by juhyeonl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = so_long
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Imlx -I. -Iget_next_line -I/usr/include/X11
+CFLAGS = -Wall -Wextra -Werror -g -Imlx -I. -Iget_next_line -I/usr/include/X11
+
 MLX_FLAGS = -Lmlx -lmlx -L/usr/X11/lib -lXext -lX11 -lXrandr -lXinerama -lXcursor
 
 GNL_SRCS = \
@@ -57,3 +58,4 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+

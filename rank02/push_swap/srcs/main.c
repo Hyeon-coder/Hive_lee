@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 07:42:38 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:36:54 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/05 17:15:35 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	sort_stack(&stack_a, &stack_b);
+	write(1, "-----a-----\n", 12);
+	print_list(stack_a);
+	write(1, "-----b-----\n", 12);
+	print_list(stack_b);
 	free_all_memory(&stack_a, &stack_b, args);
 	return (0);
 }

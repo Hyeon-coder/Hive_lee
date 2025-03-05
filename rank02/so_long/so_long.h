@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 16:38:46 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/02 15:36:43 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/05 13:48:35 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
-# include "mlx.h"
+# include "mlx/mlx.h"
+# include "mlx/mlx_int.h"
 # include "get_next_line/get_next_line.h"
 # include "printf/ft_printf.h"
 
