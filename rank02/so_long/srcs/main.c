@@ -3,14 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:11:48 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/03/05 13:46:02 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/03/06 07:51:17 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../so_long.h"
+
+/*
+	check_map_size_line - Check map size (max_width : 1920 / max_height : 1080)
+							and check the new line
+	(check_map_size_line - 맵의 사이즈를 체크한다 (max_width : 1920 / max_height : 1080))
+							그리고 줄바꿈을 확인 한다.
+*/
+static void	check_map_size_line(t_game *game)
+{
+	int	last_row;
+	int	last_char_index;
+
+	if (game->width > MAX_WIDTH || game->height > MAX_HEIGHT)
+	{
+		ft_putstr_fd("Error: Map size exceeds maximum allowed size.\n", 2);
+		free_map(game->map, game->height);
+		exit(1);
+	}
+	last_row = game->height - 1;
+	if (game->map[last_row])
+	{
+		last_char_index = ft_strlen(game->map[last_row]) - 1;
+		if (game->map[last_row][last_char_index] == '\n')
+		{
+			ft_putstr_fd("Error: contains an extra newline at the end.\n", 2);
+			free_map(game->map, game->height);
+			exit(1);
+		}
+	}
+}
 
 /*
 	load_images - Loads all necessary images for the game.
@@ -78,6 +108,7 @@ static void	init_game(t_game *game, char *map_file)
 		free_map(game->map, game->height);
 		exit(1);
 	}
+	check_map_size_line(game);
 	init_mlx_window(game);
 	load_images(game, &img_w, &img_h);
 }
