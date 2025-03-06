@@ -6,7 +6,7 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:00:00 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/04 04:09:18 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/06 06:40:26 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,18 @@ void	render_player(t_game *game)
 }
 
 /*
+	display_moves - Display number of moves at screen.
+	(display_moves - 화면에 이동 횟수를 보여준다.)
+*/
+void	display_moves(t_game *game)
+{
+	char	move_str[50];
+
+	sprintf(move_str, "Moves: %d", game->moves);
+	mlx_string_put(game->mlx, game->win, 10, 10, 0xFFFFFF, move_str);
+}
+
+/*
 	render_map - Renders game objects on the screen.
 	(render_map - 게임 객체를 화면에 렌더링합니다.)
 */
@@ -94,5 +106,6 @@ void	render_map(t_game *game)
 		}
 		y++;
 	}
+	display_moves(game);
 	render_player(game);
 }

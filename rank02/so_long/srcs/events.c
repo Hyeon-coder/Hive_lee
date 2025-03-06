@@ -6,7 +6,7 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:00:00 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/03/04 04:06:42 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/06 06:40:43 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static void	handle_move_and_count(t_game *game, int new_x, int new_y)
 	game->player_x = new_x;
 	game->player_y = new_y;
 	game->map[new_y][new_x] = 'P';
-	render_map(game);
 	game->moves++;
+	render_map(game);
 	ft_putnbr_fd(game->moves, 1);
 	write(1, "\n", 1);
 	if (next_pos == 'E' && game->collectibles == 0)
