@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 18:33:22 by shovsepy          #+#    #+#             */
-/*   Updated: 2025/02/28 15:43:09 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/11 15:43:34 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ static int	ft_isnum(char *num)
 /*
 	Validates the arguments provided to push_swap.
 	(push_swap에 제공된 인자들을 검증)
+
+	Do i need really ft_contains ?
 */
+#include <stdio.h>
 void	ft_check_args(int argc, char **argv)
 {
 	int		i;
@@ -69,11 +72,11 @@ void	ft_check_args(int argc, char **argv)
 	{
 		tmp = ft_atoi(args[i]);
 		if (!ft_isnum(args[i]))
-			ft_error("Error");
+			ft_error("Error", args);
 		if (ft_contains(tmp, args, i))
-			ft_error("Error");
+			ft_error("Error", args);
 		if (tmp < -2147483648 || tmp > 2147483647)
-			ft_error("Error");
+			ft_error("Error", args);
 		i++;
 	}
 	if (argc == 2)

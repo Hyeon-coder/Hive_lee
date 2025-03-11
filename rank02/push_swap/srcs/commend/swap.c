@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   swap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 07:38:49 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:44:18 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/11 15:24:23 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ int	swap(t_stack **stack)
 		return (-1);
 	head = *stack;
 	next = head->next;
-	if (!head && !next)
-		ft_error("Error occured while swapping!");
 	tmp_val = head->value;
 	tmp_index = head->index;
 	head->value = next->value;
