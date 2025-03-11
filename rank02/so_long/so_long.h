@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 16:38:46 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/06 07:20:56 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/11 16:17:00 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include "printf/ft_printf.h"
 
 # define TILE_SIZE 64
-# define MAX_WIDTH (1920 / TILE_SIZE)
-# define MAX_HEIGHT (1080 / TILE_SIZE) - 1
+# define MAX_WIDTH (3840 / TILE_SIZE)
+# define MAX_HEIGHT (2160 / TILE_SIZE) - 1
 
 typedef struct s_game
 {

@@ -6,14 +6,14 @@
 #    By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/01 09:58:28 by juhyeonl          #+#    #+#              #
-#    Updated: 2025/03/06 06:34:51 by JuHyeon          ###   ########.fr        #
+#    Updated: 2025/03/11 16:14:38 by juhyeonl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = so_long
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g -Iminilibx-linux -I. -Iget_next_line -I/usr/include/X11 \
-         -Wno-deprecated-non-prototype -Wno-return-type -Wno-pointer-sign
+	-Wno-return-type -Wno-pointer-sign
 
 MLX_DIR = minilibx-linux
 MLX_LIB = $(MLX_DIR)/libmlx.a

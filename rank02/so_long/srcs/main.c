@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:11:48 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/03/06 07:51:17 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/11 16:17:27 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../so_long.h"
 
 /*
-	check_map_size_line - Check map size (max_width : 1920 / max_height : 1080)
+	check_map_size_line - Check map size (max_width : 3840 / max_height : 2160)
 							and check the new line
-	(check_map_size_line - 맵의 사이즈를 체크한다 (max_width : 1920 / max_height : 1080))
+	(check_map_size_line - 맵의 사이즈를 체크한다 (max_width : 3840 / max_height : 2160))
 							그리고 줄바꿈을 확인 한다.
 */
 static void	check_map_size_line(t_game *game)
