@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   check_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 18:33:22 by shovsepy          #+#    #+#             */
-/*   Updated: 2025/03/11 15:43:34 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/03/13 20:37:55 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../push_swap.h"
 
 /*
-	Checks if a string contains a specific character.
-	(문자열이 특정 문자를 포함하는지 확인)
+	Checks duplicates.
+	(중복 확인.)
 */
-static int	ft_contains(int num, char **argv, int i)
+static int	ft_contains(int curr, char **argv, int i)
 {
 	i++;
 	while (argv[i])
 	{
-		if (ft_atoi(argv[i]) == num)
+		if (ft_atoi(argv[i]) == curr)
 			return (1);
 		i++;
 	}
@@ -50,14 +50,11 @@ static int	ft_isnum(char *num)
 /*
 	Validates the arguments provided to push_swap.
 	(push_swap에 제공된 인자들을 검증)
-
-	Do i need really ft_contains ?
 */
-#include <stdio.h>
 void	ft_check_args(int argc, char **argv)
 {
 	int		i;
-	long	tmp;
+	long	curr;
 	char	**args;	
 
 	i = 0;
@@ -70,12 +67,12 @@ void	ft_check_args(int argc, char **argv)
 	}
 	while (args[i])
 	{
-		tmp = ft_atoi(args[i]);
+		curr = ft_atoi(args[i]);
 		if (!ft_isnum(args[i]))
 			ft_error("Error", args);
-		if (ft_contains(tmp, args, i))
+		if (ft_contains(curr, args, i) == 1)
 			ft_error("Error", args);
-		if (tmp < -2147483648 || tmp > 2147483647)
+		if (curr < -2147483648 || curr > 2147483647)
 			ft_error("Error", args);
 		i++;
 	}

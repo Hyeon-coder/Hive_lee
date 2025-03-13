@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+         #
+#    By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/28 08:20:39 by JuHyeon           #+#    #+#              #
-#    Updated: 2025/03/05 15:18:21 by juhyeonl         ###   ########.fr        #
+#    Updated: 2025/03/13 21:23:07 by JuHyeon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,10 +31,9 @@ LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 OBJS = ${SRCS:.c=.o}
-DEPS = ${SRCS:.c=.d}
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -MMD -MP
+CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
@@ -43,13 +42,12 @@ $(NAME): $(OBJS) $(LIBFT)
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
-	@if [ ! -f $(LIBFT) ]; then echo "Error: libft.a not found!"; exit 1; fi
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJS) $(DEPS) push_swap.dSYM
+	rm -rf $(OBJS)
 	make -C $(LIBFT_DIR) clean
 
 fclean: clean
@@ -59,4 +57,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
--include $(DEPS)

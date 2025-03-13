@@ -6,7 +6,7 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 18:33:22 by shovsepy          #+#    #+#             */
-/*   Updated: 2025/02/28 15:07:16 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/13 20:47:36 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int		get_distance(t_stack **stack, int index);
 void	make_top(t_stack **stack, int distance);
 void	index_stack(t_stack **stack);
 void	ft_check_args(int argc, char **argv);
+void	ft_error(char *msg, char **tgt_arr);
 
 // stack_utils
 void	print_list(t_stack *head);

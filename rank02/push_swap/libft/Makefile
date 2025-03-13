@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+         #
+#    By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/07 23:06:49 by JuHyeon           #+#    #+#              #
-#    Updated: 2025/03/05 15:17:30 by juhyeonl         ###   ########.fr        #
+#    Updated: 2025/03/13 20:47:00 by JuHyeon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 SRCS = \
 		string/ft_strlen.c \
@@ -49,8 +49,7 @@ SRCS = \
 		print/ft_putchar_fd.c \
 		print/ft_putstr_fd.c \
 		print/ft_putnbr_fd.c \
-		print/ft_putendl_fd.c \
-		print/ft_error.c
+		print/ft_putendl_fd.c
 
 BONUS_SRCS = \
 		linked_list/ft_lstnew.c \

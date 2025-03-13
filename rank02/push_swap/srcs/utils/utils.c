@@ -6,7 +6,7 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 07:42:45 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:41:37 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/13 21:17:02 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,11 @@ void	print_list(t_stack *head)
 		ft_putendl_fd("", 1);
 		tmp = tmp->next;
 	}
+}
+
+void	ft_error(char *msg, char **tgt_arr)
+{
+	(void) tgt_arr;
+	ft_putendl_fd(msg, 2);
+	exit(0);
 }
