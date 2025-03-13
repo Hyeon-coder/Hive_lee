@@ -6,7 +6,7 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 07:42:45 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/03/13 21:17:02 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/14 00:56:45 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,13 @@ void	print_list(t_stack *head)
 	}
 }
 
-void	ft_error(char *msg, char **tgt_arr)
+/*
+	에러 메시지 출력 후 프로그램 종료
+*/
+void	ft_error(char **args)
 {
-	(void) tgt_arr;
-	ft_putendl_fd(msg, 2);
-	exit(0);
+	if (args)
+		ft_free_args(args);
+	write(2, "Error\n", 6);
+	exit(1);
 }

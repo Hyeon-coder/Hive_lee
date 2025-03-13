@@ -6,14 +6,14 @@
 #    By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/07 23:06:49 by JuHyeon           #+#    #+#              #
-#    Updated: 2025/03/13 20:47:00 by JuHyeon          ###   ########.fr        #
+#    Updated: 2025/03/14 01:16:49 by JuHyeon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 
 SRCS = \
 		string/ft_strlen.c \

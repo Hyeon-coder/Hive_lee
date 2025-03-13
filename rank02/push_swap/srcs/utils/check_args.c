@@ -6,38 +6,42 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 18:33:22 by shovsepy          #+#    #+#             */
-/*   Updated: 2025/03/13 20:37:55 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/14 01:12:37 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../push_swap.h"
 
 /*
-	Checks duplicates.
-	(중복 확인.)
+	메모리 해제 함수 (ft_split로 분리한 배열을 해제)
 */
-static int	ft_contains(int curr, char **argv, int i)
+void	ft_free_args(char **args)
 {
-	i++;
-	while (argv[i])
+	int	i;
+
+	i = 0;
+	while (args[i])
 	{
-		if (ft_atoi(argv[i]) == curr)
-			return (1);
+		free(args[i]);
 		i++;
 	}
-	return (0);
+	free(args);
 }
 
 /*
-	Checks if a string represents a number. (문자열이 숫자인지 확인)
+	Checks if a string represents a valid number. (문자열이 유효한 숫자인지 확인)
 */
 static int	ft_isnum(char *num)
 {
 	int	i;
 
 	i = 0;
-	if (num[0] == '-')
+	while (num[i] == ' ' || num[i] == '\t')
 		i++;
+	if (num[i] == '-' || num[i] == '+')
+		i++;
+	if (num[i] == '\0')
+		return (0);
 	while (num[i])
 	{
 		if (!ft_isdigit(num[i]))
@@ -48,34 +52,57 @@ static int	ft_isnum(char *num)
 }
 
 /*
-	Validates the arguments provided to push_swap.
-	(push_swap에 제공된 인자들을 검증)
+	Checks for duplicate numbers. (중복된 숫자가 있는지 확인)
+*/
+static int	ft_contains(int num, char **argv, int i)
+{
+	int	j;
+
+	j = 1;
+	while (j < i)
+	{
+		if (ft_atoi(argv[j]) == num)
+			return (1);
+		j++;
+	}
+	return (0);
+}
+
+/*
+	Validates and processes arguments. (인자 검증 및 처리)
+*/
+static void	process_args(char **args)
+{
+	int	i;
+	int	num;
+
+	i = 0;
+	while (args[i])
+	{
+		if (!ft_isnum(args[i]))
+			ft_error(args);
+		num = ft_atoi_with_free(args, args[i]);
+		if (ft_contains(num, args, i))
+			ft_error(args);
+		i++;
+	}
+}
+
+/*
+	Validates all arguments. (모든 인자를 검증하고 잘못된 입력이면 프로그램 종료)
 */
 void	ft_check_args(int argc, char **argv)
 {
-	int		i;
-	long	curr;
-	char	**args;	
+	char	**args;
 
-	i = 0;
 	if (argc == 2)
+	{
 		args = ft_split(argv[1], ' ');
+		if (!args || !args[0])
+			ft_error(args);
+		process_args(args);
+		ft_free_args(args);
+	}
 	else
-	{
-		i = 1;
-		args = argv;
-	}
-	while (args[i])
-	{
-		curr = ft_atoi(args[i]);
-		if (!ft_isnum(args[i]))
-			ft_error("Error", args);
-		if (ft_contains(curr, args, i) == 1)
-			ft_error("Error", args);
-		if (curr < -2147483648 || curr > 2147483647)
-			ft_error("Error", args);
-		i++;
-	}
-	if (argc == 2)
-		ft_free(args);
+		process_args(argv + 1);
 }
