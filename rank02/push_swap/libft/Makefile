@@ -1,96 +1,42 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/11/07 23:06:49 by JuHyeon           #+#    #+#              #
-#    Updated: 2025/03/14 01:16:49 by JuHyeon          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+# ************************************************************************** #
+#                                                                            #
+#                                                        :::      ::::::::   #
+#   Makefile                                           :+:      :+:    :+:   #
+#                                                    +:+ +:+         +:+     #
+#   By: shovsepy <marvin@42.fr>                    +#+  +:+       +#+        #
+#                                                +#+#+#+#+#+   +#+           #
+#   Created: 2021/07/09 18:33:22 by shovsepy          #+#    #+#             #
+#   Updated: 2021/07/09 18:33:23 by shovsepy         ###   ########.fr       #
+#                                                                            #
+# ************************************************************************** #
 
-NAME = libft.a
+NAME		= libft.a
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
+SRCS		= $(shell find "." -name "*.c")
 
-SRCS = \
-		string/ft_strlen.c \
-		string/ft_strlcpy.c \
-		string/ft_strlcat.c \
-		string/ft_strncmp.c \
-		string/ft_strnstr.c \
-		string/ft_strchr.c \
-		string/ft_strrchr.c \
-		string/ft_strdup.c \
-		string/ft_strjoin.c \
-		string/ft_strtrim.c \
-		string/ft_substr.c \
-		string/ft_split.c \
-		string/ft_strmapi.c \
-		string/ft_striteri.c \
-		memory/ft_memset.c \
-		memory/ft_memcpy.c \
-		memory/ft_memmove.c \
-		memory/ft_memchr.c \
-		memory/ft_memcmp.c \
-		memory/ft_bzero.c \
-		memory/ft_calloc.c \
-		char/ft_isalpha.c \
-		char/ft_isdigit.c \
-		char/ft_isalnum.c \
-		char/ft_isascii.c \
-		char/ft_isprint.c \
-		char/ft_toupper.c \
-		char/ft_tolower.c \
-		conversion/ft_atoi.c \
-		conversion/ft_itoa.c \
-		print/ft_putchar_fd.c \
-		print/ft_putstr_fd.c \
-		print/ft_putnbr_fd.c \
-		print/ft_putendl_fd.c
+OBJS		= ${SRCS:.c=.o}
+BONUS_OBJS 	= ${BONUSES:.c=.o}
 
-BONUS_SRCS = \
-		linked_list/ft_lstnew.c \
-		linked_list/ft_lstadd_front.c \
-		linked_list/ft_lstsize.c \
-		linked_list/ft_lstlast.c \
-		linked_list/ft_lstadd_back.c \
-		linked_list/ft_lstdelone.c \
-		linked_list/ft_lstclear.c \
-		linked_list/ft_lstiter.c \
-		linked_list/ft_lstmap.c
+CC		= gcc
+RM		= rm -rf
+CFLAGS		= -Wall -Wextra -Werror
+AR		= ar csr
 
-OBJS = $(SRCS:.c=.o)
-BONUS_OBJS = $(BONUS_SRCS:.c=.o)
-RM = rm -f
-AR = ar rcs
+.c.o :
+	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
-all: $(NAME)
+all : ${NAME}
 
-$(NAME): $(OBJS)
-	@mkdir -p others
-	@$(AR) $(NAME) $(OBJS)
-	@echo "$(NAME) created"
-	@ranlib $(NAME)
-	@echo "$(NAME) indexed"
+$(NAME) : ${OBJS}
+	@${AR} libft.a ${OBJS}
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+clean :
+	@${RM} ${OBJS} ${BONUS_OBJS}
 
-bonus: $(BONUS_OBJS)
-	@$(AR) $(NAME) $(BONUS_OBJS)
-	@ranlib $(NAME)
+fclean : clean
+	@${RM} ${NAME}
 
-clean:
-	@$(RM) $(OBJS) $(BONUS_OBJS)
-	@echo "OBJS deleted"
+re : fclean all
 
-fclean: clean
-	@$(RM) $(NAME)
-	@echo "$(NAME) deleted"
+.PHONY: all clean fclean re .c.o
 
-re: fclean all
-
-.PHONY: all clean fclean re bonus

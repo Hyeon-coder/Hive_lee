@@ -1,31 +1,29 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/02/28 08:20:39 by JuHyeon           #+#    #+#              #
-#    Updated: 2025/03/13 21:23:07 by JuHyeon          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+# ************************************************************************** #
+#                                                                            #
+#                                                        :::      ::::::::   #
+#   Makefile                                           :+:      :+:    :+:   #
+#                                                    +:+ +:+         +:+     #
+#   By: shovsepy <marvin@42.fr>                    +#+  +:+       +#+        #
+#                                                +#+#+#+#+#+   +#+           #
+#   Created: 2021/07/09 18:33:22 by shovsepy          #+#    #+#             #
+#   Updated: 2021/07/09 18:33:23 by shovsepy         ###   ########.fr       #
+#                                                                            #
+# ************************************************************************** #
 
 NAME = push_swap
 
-SRCS = \
-		srcs/main.c \
-		srcs/commend/push.c \
-		srcs/commend/reverse_rotate.c \
-		srcs/commend/rotate.c \
-		srcs/commend/swap.c \
-		srcs/sort/mini_sort.c \
-		srcs/sort/radix_sort.c \
-		srcs/sort/simple_sort.c \
-		srcs/utils/check_args.c \
-		srcs/utils/free.c \
-		srcs/utils/index.c \
-		srcs/utils/stack_utils.c \
-		srcs/utils/utils.c
+SRCS =  \
+		src/main.c \
+		src/radix.c \
+		src/simple.c \
+		utils/check_args.c \
+		utils/index.c \
+		utils/stack.c \
+		utils/utils.c \
+		commend/push.c \
+		commend/reverse_rotate.c \
+		commend/rotate.c \
+		commend/swap.c
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a

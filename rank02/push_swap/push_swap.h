@@ -6,14 +6,14 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 18:33:22 by shovsepy          #+#    #+#             */
-/*   Updated: 2025/03/14 00:59:25 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/17 22:48:30 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-# include "libft/libft.h"
+# include "../libft/libft.h"
 
 // Stack
 typedef struct s_stack
@@ -23,56 +23,45 @@ typedef struct s_stack
 	struct s_stack	*next;
 }				t_stack;
 
-// free
-void	free_stack(t_stack **stack);
-void	ft_free(char **str);
-void	free_all_memory(t_stack **stack_a, t_stack **stack_b, char **args);
-void	ft_split_free(char **args);
+// Util functions
+t_stack	*ft_lstnew(int value);
+t_stack	*ft_lstlast(t_stack *head);
+void	ft_lstadd_front(t_stack **stack, t_stack *new);
+void	ft_lstadd_back(t_stack **stack, t_stack *new);
+void	print_stack(t_stack *head);
+int		ft_lstsize(t_stack *head);
 
-// utils
-int		is_sorted(t_stack *stack);
+void	ft_error(char *msg);
+void	ft_check_args(int argc, char **argv);
+int		is_sorted(t_stack **stack);
 int		get_distance(t_stack **stack, int index);
 void	make_top(t_stack **stack, int distance);
-void	index_stack(t_stack **stack);
-void	ft_check_args(int argc, char **argv);
-void	ft_error(char **args);
-void	ft_free_args(char **args);
+void	free_stack(t_stack **stack);
+void	ft_free(char **str);
 
-// stack_utils
-void	print_list(t_stack *head);
-t_stack	*ps_lstnew(int value);
-void	ps_lstadd_front(t_stack **stack, t_stack *new);
-t_stack	*ps_lstlast(t_stack *head);
-void	ps_lstadd_back(t_stack **stack, t_stack *new);
-int		ps_lstsize(t_stack *head);
-
-// sort
-int		get_min(t_stack **stack, int val);
-void	simple_sort(t_stack **stack_a, t_stack **stack_b);
-void	sort_3(t_stack **stack_a);
-void	sort_4(t_stack **stack_a, t_stack **stack_b);
-void	sort_5(t_stack **stack_a, t_stack **stack_b);
-int		get_max_bits(t_stack **stack);
+// Algorithm utils
 void	radix_sort(t_stack **stack_a, t_stack **stack_b);
+void	simple_sort(t_stack **stack_a, t_stack **stack_b);
+void	index_stack(t_stack **stack);
+void	sort_5(t_stack **stack_a, t_stack **stack_b);
 
-// commend functions
+// Instruction functions
 int		swap(t_stack **stack);
+int		push(t_stack **stack_to, t_stack **stack_from);
+int		rotate(t_stack **stack);
+int		reverse_rotate(t_stack **stack);
+
 int		sa(t_stack **stack_a);
 int		sb(t_stack **stack_b);
 int		ss(t_stack **stack_a, t_stack **stack_b);
-
-int		push(t_stack **stack_to, t_stack **stack_from);
 int		pa(t_stack **stack_a, t_stack **stack_b);
 int		pb(t_stack **stack_b, t_stack **stack_a);
-
-int		rotate(t_stack **stack);
 int		ra(t_stack **stack_a);
 int		rb(t_stack **stack_b);
 int		rr(t_stack **stack_a, t_stack **stack_b);
-
-int		reverse_rotate(t_stack **stack);
 int		rra(t_stack **stack_a);
 int		rrb(t_stack **stack_b);
 int		rrr(t_stack **stack_a, t_stack **stack_b);
 
 #endif
+
