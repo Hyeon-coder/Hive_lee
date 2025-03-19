@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handles.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 17:00:00 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/03/04 04:12:09 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/19 17:15:15 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	handle_exit_game(t_game *game, int x, int y)
 */
 int	handle_exit(void)
 {
-	ft_printf("Game Over! Thanks for playing.\n");
 	exit(0);
 	return (0);
 }

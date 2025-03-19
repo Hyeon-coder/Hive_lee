@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 16:38:46 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/11 16:17:00 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:05:46 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,6 @@
 # include "get_next_line/get_next_line.h"
 # include "printf/ft_printf.h"
 
-# define TILE_SIZE 64
-# define MAX_WIDTH (3840 / TILE_SIZE)
-# define MAX_HEIGHT (2160 / TILE_SIZE) - 1
-
 typedef struct s_game
 {
 	void	*mlx;
@@ -36,6 +32,9 @@ typedef struct s_game
 	int		player_y;
 	int		collectibles;
 	int		moves;
+	int		tile_size;
+	int		max_width;
+	int		max_height;
 	void	*img_wall;
 	void	*img_player;
 	void	*img_collectible_before;

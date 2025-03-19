@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:00:00 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/06 06:40:26 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/19 17:07:43 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,24 @@ void	put_tile(t_game *game, int x, int y)
 	tile = game->map[y][x];
 	if (tile == '1')
 		mlx_put_image_to_window(game->mlx, game->win,
-			game->img_wall, x * TILE_SIZE, y * TILE_SIZE);
+			game->img_wall, x * game->tile_size, y * game->tile_size);
 	else if (tile == 'C' && game->collectibles != 0)
-		mlx_put_image_to_window(game->mlx, game->win,
-			game->img_collectible_before, x * TILE_SIZE, y * TILE_SIZE);
+		mlx_put_image_to_window(game->mlx, game->win, \
+			game->img_collectible_before, x * game->tile_size, \
+			y * game->tile_size);
 	else if (tile == 'C' && game->collectibles == 0)
-		mlx_put_image_to_window(game->mlx, game->win,
-			game->img_collectible_after, x * TILE_SIZE, y * TILE_SIZE);
+		mlx_put_image_to_window(game->mlx, game->win, \
+			game->img_collectible_after, x * game->tile_size, \
+			y * game->tile_size);
 	else if (tile == 'E' && game->collectibles != 0)
 		mlx_put_image_to_window(game->mlx, game->win,
-			game->img_exit_close, x * TILE_SIZE, y * TILE_SIZE);
+			game->img_exit_close, x * game->tile_size, y * game->tile_size);
 	else if (tile == 'E' && game->collectibles == 0)
 		mlx_put_image_to_window(game->mlx, game->win,
-			game->img_exit_open, x * TILE_SIZE, y * TILE_SIZE);
+			game->img_exit_open, x * game->tile_size, y * game->tile_size);
 	else
 		mlx_put_image_to_window(game->mlx, game->win,
-			game->img_floor, x * TILE_SIZE, y * TILE_SIZE);
+			game->img_floor, x * game->tile_size, y * game->tile_size);
 }
 
 /*
@@ -61,7 +63,7 @@ void	render_player(t_game *game)
 				game->player_x = x;
 				game->player_y = y;
 				mlx_put_image_to_window(game->mlx, game->win,
-					game->img_player, x * TILE_SIZE, y * TILE_SIZE);
+					game->img_player, x * game->tile_size, y * game->tile_size);
 			}
 			x++;
 		}

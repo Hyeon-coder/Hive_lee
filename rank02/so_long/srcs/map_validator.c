@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_validator.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 16:41:18 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/04 04:10:43 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/19 17:11:33 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	check_tile(t_game *game, int x, int y, int *flags)
 		game->collectibles++;
 	else if (game->map[y][x] != '0' && game->map[y][x] != '1')
 	{
-		printf("Error\nInvalid character in map: %c\n", game->map[y][x]);
+		ft_putstr_fd("Error: Invalid character in map.\n", 2);
 		handle_exit();
 	}
 }
@@ -50,7 +50,7 @@ static int	check_rectangle(t_game *game)
 	while (y < game->height)
 	{
 		if ((int)ft_strlen(game->map[y]) != width)
-			return (printf("Error\nMap is not rectangular.\n"), 0);
+			return (ft_putstr_fd("Error: It's not rectangle map.\n", 2), 0);
 		y++;
 	}
 	game->width = width;
@@ -70,14 +70,14 @@ static int	check_walls(t_game *game)
 	while (x < game->width)
 	{
 		if (game->map[0][x] != '1' || game->map[game->height - 1][x] != '1')
-			return (printf("Error\nMap is not enclosed by walls.\n"), 0);
+			return (ft_putstr_fd("Error: It's not surrounded by walls\n", 2), 0);
 		x++;
 	}
 	y = 0;
 	while (y < game->height)
 	{
 		if (game->map[y][0] != '1' || game->map[y][game->width - 1] != '1')
-			return (printf("Error\nMap is not enclosed by walls.\n"), 0);
+			return (ft_putstr_fd("Error: It's not surrounded by walls\n", 2), 0);
 		y++;
 	}
 	return (1);
@@ -104,8 +104,11 @@ static int	validate_map_elements(t_game *game, int *flags)
 		y++;
 	}
 	if (flags[0] != 1 || flags[1] != 1 || game->collectibles < 1)
-		return (printf("Error\nMap must have 1 player, 1 exit, \
-		nand at least 1 collectible.\n"), 0);
+	{
+		ft_putstr_fd("Error: Map must have 1 player, 1 exit, \
+nand at least 1 collectible.\n", 2);
+		return (0);
+	}
 	return (1);
 }
 

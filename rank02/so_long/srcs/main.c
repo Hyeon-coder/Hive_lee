@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:11:48 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/03/11 16:17:27 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:25:45 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	check_map_size_line(t_game *game)
 	int	last_row;
 	int	last_char_index;
 
-	if (game->width > MAX_WIDTH || game->height > MAX_HEIGHT)
+	if (game->width > game->max_width || game->height > game->max_height)
 	{
 		ft_putstr_fd("Error: Map size exceeds maximum allowed size.\n", 2);
 		free_map(game->map, game->height);
@@ -83,8 +83,8 @@ static void	init_mlx_window(t_game *game)
 		ft_putstr_fd("Error: Failed to initialize MiniLibX\n", 2);
 		exit(1);
 	}
-	game->win = mlx_new_window(game->mlx, game->width * TILE_SIZE, \
-	game->height * TILE_SIZE, "so_long");
+	game->win = mlx_new_window(game->mlx, game->width * game->tile_size, \
+	game->height * game->tile_size, "so_long");
 	if (!game->win)
 	{
 		ft_putstr_fd("Error: Failed to create window\n", 2);
@@ -102,9 +102,11 @@ static void	init_game(t_game *game, char *map_file)
 	int	img_h;
 
 	game->map = read_map(map_file, &game->width, &game->height);
+	game->tile_size = 64;
+	game->max_width = (3840 / game->tile_size);
+	game->max_height = (2160 / game->tile_size) - 1;
 	if (!game->map || !validate_map(game))
 	{
-		ft_putstr_fd("Error: Invalid map\n", 2);
 		free_map(game->map, game->height);
 		exit(1);
 	}
