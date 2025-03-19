@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: shovsepy <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/09 18:33:22 by shovsepy          #+#    #+#             */
-/*   Updated: 2021/07/09 18:33:23 by shovsepy         ###   ########.fr       */
+/*   Created: 2025/03/19 15:10:12 by juhyeonl          #+#    #+#             */
+/*   Updated: 2025/03/19 15:21:35 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../push_swap.h"
 
 static int	ft_contains(int num, char **argv, int i)
 {
@@ -31,6 +31,8 @@ static int	ft_isnum(char *num)
 	i = 0;
 	if (num[0] == '-')
 		i++;
+	if (!ft_isdigit(num[i]))
+		return (0);
 	while (num[i])
 	{
 		if (!ft_isdigit(num[i]))
