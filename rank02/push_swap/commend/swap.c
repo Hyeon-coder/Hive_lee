@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:11:14 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/19 15:11:15 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:25:20 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	swap(t_stack **stack)
 	head = *stack;
 	next = head->next;
 	if (!head && !next)
-		ft_error("Error occured while swapping!");
+		ft_error(NULL, "Error occured while swapping!");
 	tmp_val = head->value;
 	tmp_index = head->index;
 	head->value = next->value;

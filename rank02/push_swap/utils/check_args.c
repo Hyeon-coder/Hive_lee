@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:10:12 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/19 15:21:35 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:44:48 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,31 +42,54 @@ static int	ft_isnum(char *num)
 	return (1);
 }
 
-void	ft_check_args(int argc, char **argv)
+static void	for_split(char *arg, char **args, long tmp, int i)
 {
-	int		i;
-	long	tmp;
-	char	**args;	
-
-	i = 0;
-	if (argc == 2)
-		args = ft_split(argv[1], ' ');
-	else
-	{
-		i = 1;
-		args = argv;
-	}
+	args = ft_split(arg, ' ');
 	while (args[i])
 	{
 		tmp = ft_atoi(args[i]);
 		if (!ft_isnum(args[i]))
-			ft_error("Error");
+			ft_error(args, "Error");
 		if (ft_contains(tmp, args, i))
-			ft_error("Error");
+			ft_error(args, "Error");
 		if (tmp < -2147483648 || tmp > 2147483647)
-			ft_error("Error");
+			ft_error(args, "Error");
 		i++;
 	}
+	ft_free(args);
+	free(args);
+}
+
+static void	for_normal(char **argv, char **args, long tmp, int i)
+{
+	i = 1;
+	args = argv;
+	while (args[i])
+	{
+		tmp = ft_atoi(args[i]);
+		if (!ft_isnum(args[i]))
+			ft_error(NULL, "Error");
+		if (ft_contains(tmp, args, i))
+			ft_error(NULL, "Error");
+		if (tmp < -2147483648 || tmp > 2147483647)
+			ft_error(NULL, "Error");
+		i++;
+	}
+}
+
+void	ft_check_args(int argc, char **argv)
+{
+	int		i;
+	long	tmp;
+	char	**args;
+	char	*arg;
+
+	args = NULL;
+	arg = argv[1];
+	i = 0;
+	tmp = 0;
 	if (argc == 2)
-		ft_free(args);
+		for_split(arg, args, tmp, i);
+	else
+		for_normal(argv, args, tmp, i);
 }

@@ -6,7 +6,7 @@
 #    By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 15:11:01 by juhyeonl          #+#    #+#              #
-#    Updated: 2025/03/19 15:11:03 by juhyeonl         ###   ########.fr        #
+#    Updated: 2025/03/20 16:34:55 by juhyeonl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRCS =  \
 		src/main.c \
 		src/radix.c \
 		src/simple.c \
+		src/sort_three_stack.c \
 		utils/check_args.c \
 		utils/index.c \
 		utils/stack.c \
@@ -31,7 +32,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 OBJS = ${SRCS:.c=.o}
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 all: $(NAME)
 

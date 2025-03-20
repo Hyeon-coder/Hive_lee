@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:10:06 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/19 15:10:08 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:46:29 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,3 @@ void	index_stack(t_stack **stack)
 		head = get_next_min(stack);
 	}
 }
-

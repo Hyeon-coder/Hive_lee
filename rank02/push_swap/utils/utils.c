@@ -6,17 +6,11 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:09:38 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/19 15:09:39 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:47:27 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
-
-void	ft_error(char *msg)
-{
-	ft_putendl_fd(msg, 1);
-	exit(0);
-}
 
 void	ft_free(char **str)
 {

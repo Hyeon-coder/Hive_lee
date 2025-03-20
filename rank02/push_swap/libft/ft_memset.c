@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:52:49 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/03/19 15:50:21 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:26:48 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*ft_memset(void *b, int c, size_t len)
 {
-	size_t		i;
+	size_t			i;
 	unsigned char	*ptr;
 
 	ptr = b;

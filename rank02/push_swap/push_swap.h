@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:10:56 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/19 15:10:57 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:38:45 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_lstadd_back(t_stack **stack, t_stack *new);
 void	print_stack(t_stack *head);
 int		ft_lstsize(t_stack *head);
 
-void	ft_error(char *msg);
+void	ft_error(char **arg, char *msg);
 void	ft_check_args(int argc, char **argv);
 int		is_sorted(t_stack **stack);
 int		get_distance(t_stack **stack, int index);
@@ -43,7 +43,9 @@ void	ft_free(char **str);
 void	radix_sort(t_stack **stack_a, t_stack **stack_b);
 void	simple_sort(t_stack **stack_a, t_stack **stack_b);
 void	index_stack(t_stack **stack);
+int		get_min(t_stack **stack, int val);
 void	sort_5(t_stack **stack_a, t_stack **stack_b);
+void	sort_3(t_stack **stack_a);
 
 // Instruction functions
 int		swap(t_stack **stack);
@@ -64,4 +66,3 @@ int		rrb(t_stack **stack_b);
 int		rrr(t_stack **stack_a, t_stack **stack_b);
 
 #endif
-

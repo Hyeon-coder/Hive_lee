@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:53:11 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/03/19 15:38:11 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:24:22 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ static size_t	ft_w_count(const char *str, char c)
 	return (w_count);
 }
 
-static int	ft_fill_array(char **array, const char *s, char c, size_t w_count)
+static void	ft_fill_array(char **array, const char *s, char c, size_t w_count)
 {
 	const char	*start;
 	const char	*end;
@@ -139,13 +139,11 @@ static int	ft_fill_array(char **array, const char *s, char c, size_t w_count)
 		if (!array[i])
 		{
 			ft_free_array((void **)array, i);
-			return (0);
 		}
 		start = end + (*end == c);
 		i++;
 	}
 	array[i] = NULL;
-	return (1);
 }
 
 char	**ft_split(const char *s, char c)
@@ -159,7 +157,8 @@ char	**ft_split(const char *s, char c)
 	array = (char **)ft_calloc(w_count + 1, sizeof(char *));
 	if (!array)
 		return (NULL);
-	if (!ft_fill_array(array, s, c, w_count))
+	ft_fill_array(array, s, c, w_count);
+	if (!array)
 	{
 		free(array);
 		return (NULL);

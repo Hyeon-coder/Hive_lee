@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:09:50 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/19 15:10:00 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:47:36 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,4 @@ int	ft_lstsize(t_stack *head)
 		i++;
 	}
 	return (i);
-}
-
-void	print_stack(t_stack *head)
-{
-	t_stack	*tmp;
-
-	tmp = head;
-	while (tmp != NULL)
-	{
-		ft_putnbr_fd(tmp->value, 1);
-		ft_putendl_fd("", 1);
-		tmp = tmp->next;
-	}
 }
