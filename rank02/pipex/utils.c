@@ -3,19 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 19:59:41 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/03/16 20:07:40 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/20 17:48:21 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+static void	ft_free(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	while (i >= 0)
+		free(str[i--]);
+}
+
 void	perror_exit(char *opt)
 {
 	write(2, opt, ft_strlen(opt));
-	write(2, "\n", 1);
 	exit(EXIT_FAILURE);
 }
 
@@ -64,12 +74,18 @@ void	execute(char *cmd, char **envp)
 	{
 		paths = get_env_path(envp);
 		if (!paths)
-			perror_exit("PATH not found");
+			perror_exit("PATH not found\n");
 		cmd_arg = ft_split(cmd, ' ');
 		cmd_path = get_cmd(paths, cmd_arg[0]);
 		if (!cmd_path)
-			perror_exit("command error");
+		{
+			ft_free(cmd_arg);
+			free(cmd_arg);
+			ft_free(paths);
+			free(paths);
+			perror_exit("command error\n");
+		}
 	}
 	if (execve(cmd_path, cmd_arg, envp) == -1)
-		perror_exit("execve error");
+		perror_exit("execve error\n");
 }

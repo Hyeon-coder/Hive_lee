@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 20:16:03 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/03/16 20:16:08 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/03/20 16:52:05 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ static void	dup_child_1(char **av, int *fd)
 
 	infile = open(av[1], O_RDONLY);
 	if (infile == -1)
-		perror_exit("infile error");
+		perror_exit("infile error\n");
 	if (dup2(infile, STDIN_FILENO) == -1)
-		perror_exit("dup2 error");
+		perror_exit("dup2 error\n");
 	if (dup2(fd[1], STDOUT_FILENO) == -1)
-		perror_exit("dup2 error");
+		perror_exit("dup2 error\n");
 	close(infile);
 	close(fd[0]);
 	close(fd[1]);
@@ -34,10 +34,10 @@ static void	child_process_1(char **av, char **envp)
 	pid_t	pid;
 
 	if (pipe(fd) == -1)
-		perror_exit("pipe error");
+		perror_exit("pipe error\n");
 	pid = fork();
 	if (pid == -1)
-		perror_exit("fork error");
+		perror_exit("fork error\n");
 	if (pid == 0)
 	{
 		dup_child_1(av, fd);
@@ -45,7 +45,7 @@ static void	child_process_1(char **av, char **envp)
 	}
 	close(fd[1]);
 	if (dup2(fd[0], STDIN_FILENO) == -1)
-		perror_exit("dup2 error");
+		perror_exit("dup2 error\n");
 	close(fd[0]);
 }
 
@@ -56,14 +56,14 @@ static void	child_process_2(char **av, char **envp)
 
 	pid = fork();
 	if (pid == -1)
-		perror_exit("fork error");
+		perror_exit("fork error\n");
 	if (pid == 0)
 	{
 		outfile = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (outfile == -1)
-			perror_exit("outfile error");
+			perror_exit("outfile error\n");
 		if (dup2(outfile, STDOUT_FILENO) == -1)
-			perror_exit("dup2 error");
+			perror_exit("dup2 error\n");
 		close(outfile);
 		execute(av[3], envp);
 	}
@@ -78,7 +78,7 @@ int	main(int ac, char **av, char **envp)
 	stdin_dup = dup(0);
 	stdout_dup = dup(1);
 	if (ac != 5)
-		perror_exit("Follow this : ./pipex file1 cmd1 cmd2 file2");
+		perror_exit("Follow this : ./pipex file1 cmd1 cmd2 file2\n");
 	i = -1;
 	while (++i < 2)
 	{
