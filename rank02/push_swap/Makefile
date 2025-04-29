@@ -6,7 +6,7 @@
 #    By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 15:11:01 by juhyeonl          #+#    #+#              #
-#    Updated: 2025/03/20 16:34:55 by juhyeonl         ###   ########.fr        #
+#    Updated: 2025/04/29 15:39:12 by juhyeonl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,8 @@ LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 OBJS = ${SRCS:.c=.o}
+
+.SECONDARY : $(OBJS)
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g

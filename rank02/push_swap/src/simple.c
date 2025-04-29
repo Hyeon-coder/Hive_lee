@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:10:21 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/20 16:33:39 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:33:11 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,21 +76,46 @@ void	sort_5(t_stack **stack_a, t_stack **stack_b)
 	sort_4(stack_a, stack_b);
 	pa(stack_a, stack_b);
 }
+#include <stdio.h>
+void print_stack(t_stack *stack)
+{
+    printf("----------stack----------\n");
+    while (stack)
+    {
+        printf("%d ", stack->value);
+        stack = stack->next;
+    }
+	printf("\n----------stack----------\n");
+    printf("\n");
+}
 
-void	simple_sort(t_stack **stack_a, t_stack **stack_b)
+void	simple_sort(t_stack **stack_a, t_stack **stack_b, int argc)
 {
 	int	size;
 
 	if (is_sorted(stack_a) || ft_lstsize(*stack_a) == 0
 		|| ft_lstsize(*stack_a) == 1)
 		return ;
+	size = argc;
+	// printf("argc: %d\n", argc);
 	size = ft_lstsize(*stack_a);
+	// print_stack(*stack_a);
+	// printf("size %d\n", size);
 	if (size == 2)
+	// {
+	// 	printf("Reach here 2\n");
 		sa(stack_a);
+	// }
 	else if (size == 3)
+	// {
+	// 	printf("Reach here 3\n");
 		sort_3(stack_a);
+	// }
 	else if (size == 4)
+	// {
+	// 	printf("Reach here 4\n");
 		sort_4(stack_a, stack_b);
+	// }
 	else if (size == 5)
 		sort_5(stack_a, stack_b);
 }

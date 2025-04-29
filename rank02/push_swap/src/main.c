@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:10:35 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/20 16:47:16 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:49:04 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_error(char **arg, char *msg)
 {
-	ft_putendl_fd(msg, 1);
+	ft_putendl_fd(msg, 2);
 	if (arg)
 	{
 		ft_free(arg);
@@ -30,7 +30,7 @@ static void	init_stack(t_stack **stack, int argc, char **argv)
 	char	*arg;
 	int		i;
 
-	i = -1;
+	i = 0;
 	arg = argv[1];
 	if (argc == 2)
 		args = ft_split(arg, ' ');
@@ -39,9 +39,9 @@ static void	init_stack(t_stack **stack, int argc, char **argv)
 		i = 1;
 		args = argv;
 	}
-	while (args[++i])
+	while (args[i])
 	{
-		new = ft_lstnew(ft_atoi(args[i]));
+		new = ft_lstnew(ft_atoi(args[i++]));
 		ft_lstadd_back(stack, new);
 	}
 	index_stack(stack);
@@ -52,12 +52,18 @@ static void	init_stack(t_stack **stack, int argc, char **argv)
 	}
 }
 
-static void	sort_stack(t_stack **stack_a, t_stack **stack_b)
+static void	sort_stack(t_stack **stack_a, t_stack **stack_b, int argc)
 {
 	if (ft_lstsize(*stack_a) <= 5)
-		simple_sort(stack_a, stack_b);
+	// {
+	// 	printf("reach here 6\n");
+		simple_sort(stack_a, stack_b, argc);
+	// }
 	else
+	// {
+	// 	printf("reach here 7\n");
 		radix_sort(stack_a, stack_b);
+	// }
 }
 
 int	main(int argc, char **argv)
@@ -69,17 +75,26 @@ int	main(int argc, char **argv)
 		return (-1);
 	ft_check_args(argc, argv);
 	stack_a = (t_stack **)malloc(sizeof(t_stack));
+	if(!stack_a)
+		return (0);
 	stack_b = (t_stack **)malloc(sizeof(t_stack));
+	if(!stack_b)
+		return (0);
+	
 	*stack_a = NULL;
 	*stack_b = NULL;
+	// printf("first\n");
+	// print_stack(*stack_a);
 	init_stack(stack_a, argc, argv);
+	// printf("after init\n");
+	// print_stack(*stack_a);
 	if (is_sorted(stack_a))
 	{
 		free_stack(stack_a);
 		free_stack(stack_b);
 		return (0);
 	}
-	sort_stack(stack_a, stack_b);
+	sort_stack(stack_a, stack_b, argc);
 	free_stack(stack_a);
 	free_stack(stack_b);
 	return (0);

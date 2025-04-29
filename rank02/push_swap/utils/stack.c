@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:09:50 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/20 16:47:36 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:33:30 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	ft_lstsize(t_stack *head)
 	while (tmp)
 	{
 		tmp = tmp->next;
+		// printf("tmp_val: %d\n", head->value);
 		i++;
 	}
 	return (i);

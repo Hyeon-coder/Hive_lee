@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:10:56 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/20 16:38:45 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:11:55 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_free(char **str);
 
 // Algorithm utils
 void	radix_sort(t_stack **stack_a, t_stack **stack_b);
-void	simple_sort(t_stack **stack_a, t_stack **stack_b);
+void	simple_sort(t_stack **stack_a, t_stack **stack_b, int argc);
 void	index_stack(t_stack **stack);
 int		get_min(t_stack **stack, int val);
 void	sort_5(t_stack **stack_a, t_stack **stack_b);
