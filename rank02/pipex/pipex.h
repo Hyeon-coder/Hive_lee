@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 19:59:43 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/03/16 20:17:22 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/04/29 20:32:40 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <fcntl.h>
 # include "libft/libft.h"
 
-void	perror_exit(char *opt);
-void	execute(char *cmd, char **envp);
+void	perror_exit(char *opt, int exit_code, int *fd);
+void	execute(char *cmd, char **envp, int *fd);
 
 #endif

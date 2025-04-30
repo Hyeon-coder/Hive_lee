@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+         #
+#    By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/16 20:08:16 by JuHyeon           #+#    #+#              #
-#    Updated: 2025/03/16 20:23:52 by JuHyeon          ###   ########.fr        #
+#    Updated: 2025/04/29 17:51:32 by juhyeonl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ SRCS = \
 	main.c \
 	utils.c
 OBJS = $(SRCS:.c=.o)
+
+.SECONDARY : $(OBJS)
 
 LIBFT = libft/libft.a
 LIBFT_DIR = libft

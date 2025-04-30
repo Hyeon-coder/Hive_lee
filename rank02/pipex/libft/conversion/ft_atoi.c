@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 15:33:55 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/02/28 15:28:21 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/04/29 13:29:19 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_atoi(const char *nptr)
 	{
 		result = result * 10 + (*nptr - '0');
 		if ((result * sign) > 2147483647 || (result * sign) < -2147483648)
-			ft_error("Error");
+			ft_error("Error\n");
 		nptr++;
 	}
 	return ((int)(result * sign));

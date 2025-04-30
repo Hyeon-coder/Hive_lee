@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 19:59:41 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/03/20 17:48:21 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/04/30 12:08:22 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,20 @@ static void	ft_free(char **str)
 		free(str[i--]);
 }
 
-void	perror_exit(char *opt)
+void	perror_exit(char *opt, int exit_code, int *fd)
 {
-	write(2, opt, ft_strlen(opt));
-	exit(EXIT_FAILURE);
+	int	i;
+
+	i = 0;
+	while (i < 2)
+	{
+		if (fd[i] > 2)
+			close(fd[i]);
+		i++;
+	}
+	if (opt)
+		perror(opt);
+	exit(exit_code);
 }
 
 static char	**get_env_path(char **envp)
@@ -62,7 +72,7 @@ static char	*get_cmd(char **path, char *cmd)
 	return (NULL);
 }
 
-void	execute(char *cmd, char **envp)
+void	execute(char *cmd, char **envp, int *fd)
 {
 	char	**paths;
 	char	**cmd_arg;
@@ -74,7 +84,7 @@ void	execute(char *cmd, char **envp)
 	{
 		paths = get_env_path(envp);
 		if (!paths)
-			perror_exit("PATH not found\n");
+			perror_exit("PATH not found\n", 126, fd);
 		cmd_arg = ft_split(cmd, ' ');
 		cmd_path = get_cmd(paths, cmd_arg[0]);
 		if (!cmd_path)
@@ -83,9 +93,9 @@ void	execute(char *cmd, char **envp)
 			free(cmd_arg);
 			ft_free(paths);
 			free(paths);
-			perror_exit("command error\n");
+			perror_exit("command error\n", 127, fd);
 		}
 	}
 	if (execve(cmd_path, cmd_arg, envp) == -1)
-		perror_exit("execve error\n");
+		perror_exit("execve error\n", 0, fd);
 }
