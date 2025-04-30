@@ -3,42 +3,47 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+         #
+#    By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/16 20:08:16 by JuHyeon           #+#    #+#              #
-#    Updated: 2025/04/29 17:51:32 by juhyeonl         ###   ########.fr        #
+#    Updated: 2025/04/30 20:29:55 by JuHyeon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
-
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
+RM = rm -f
 
-SRCS = \
-	main.c \
-	utils.c
+SRCS = srcs/main.c \
+	   srcs/utils.c \
+	   srcs/perror_exit.c \
+	   srcs/child.c \
+	   srcs/path_utils.c
+
 OBJS = $(SRCS:.c=.o)
 
-.SECONDARY : $(OBJS)
-
 LIBFT = libft/libft.a
-LIBFT_DIR = libft
 
-all: $(LIBFT) $(NAME)
+all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L$(LIBFT_DIR) -lft
+$(NAME): $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 
 $(LIBFT):
-	make -C $(LIBFT_DIR)
+	make -C libft
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
-	make clean -C $(LIBFT_DIR)
+	$(RM) $(OBJS)
+	make -C libft clean
 
 fclean: clean
-	rm -f $(NAME)
-	make fclean -C $(LIBFT_DIR)
+	$(RM) $(NAME)
+	make -C libft fclean
 
 re: fclean all
+
+.PHONY: all clean fclean re

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 12:38:12 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:35:32 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/04/30 15:42:05 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ char	**ft_split(char const *s, char c)
 	int		i;
 	char	**arr;
 
-	if (!s)
+	if (!s || !*s)
+		return (NULL);
+	if ((cnt_deli(s, c)) == 0)
 		return (NULL);
 	arr = (char **)malloc((cnt_deli(s, c) + 1) * sizeof(char *));
 	if (!arr)

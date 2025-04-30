@@ -3,73 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 19:59:41 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/04/30 12:08:22 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/04/30 20:54:37 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../pipex.h"
 
-static void	ft_free(char **str)
+void	ft_free(char **str)
 {
 	int	i;
 
+	if (!str)
+		return ;
 	i = 0;
 	while (str[i])
-		i++;
-	while (i >= 0)
-		free(str[i--]);
+		free(str[i++]);
+	free(str);
 }
 
-void	perror_exit(char *opt, int exit_code, int *fd)
+static void	cleanup_and_exit(char **cmd_arg, char **paths,
+	char *cmd_path, int *fd)
 {
-	int	i;
+	if (cmd_arg)
+		ft_free(cmd_arg);
+	if (paths)
+		ft_free(paths);
+	if (cmd_path)
+		free(cmd_path);
+	perror_exit("execve failed", 126, fd);
+}
 
-	i = 0;
-	while (i < 2)
+static void	check_cmd_access(char *cmd_path, char **cmd_arg,
+	char **paths, int *fd)
+{
+	struct stat	st;
+
+	if (stat(cmd_path, &st) == -1)
 	{
-		if (fd[i] > 2)
-			close(fd[i]);
-		i++;
+		ft_free(cmd_arg);
+		if (paths)
+			ft_free(paths);
+		perror_exit("command not found", 127, fd);
 	}
-	if (opt)
-		perror(opt);
-	exit(exit_code);
-}
-
-static char	**get_env_path(char **envp)
-{
-	while (*envp && ft_strncmp("PATH=", *envp, 5))
-		envp++;
-	if (!*envp)
-		return (NULL);
-	return (ft_split(*envp + 5, ':'));
-}
-
-static char	*get_cmd(char **path, char *cmd)
-{
-	int		i;
-	char	*joined_cmd;
-	char	*ret_cmd;
-
-	i = 0;
-	if (access(cmd, X_OK) != -1)
-		return (cmd);
-	joined_cmd = ft_strjoin("/", cmd);
-	while (path[i])
+	if (!(st.st_mode & S_IXUSR))
 	{
-		ret_cmd = ft_strjoin(path[i++], joined_cmd);
-		if (access(ret_cmd, X_OK) != -1)
-		{
-			free(joined_cmd);
-			return (ret_cmd);
-		}
-		free(ret_cmd);
+		ft_free(cmd_arg);
+		if (paths)
+			ft_free(paths);
+		free(cmd_path);
+		perror_exit("Permission denied", 126, fd);
 	}
-	free(joined_cmd);
-	return (NULL);
 }
 
 void	execute(char *cmd, char **envp, int *fd)
@@ -78,24 +64,25 @@ void	execute(char *cmd, char **envp, int *fd)
 	char	**cmd_arg;
 	char	*cmd_path;
 
-	if (access(cmd, X_OK) == 0)
-		cmd_path = cmd;
-	else
+	if (!cmd || !*cmd)
+		perror_exit("command not found", 127, fd);
+	cmd_arg = ft_split(cmd, ' ');
+	if (!cmd_arg || !cmd_arg[0])
 	{
-		paths = get_env_path(envp);
-		if (!paths)
-			perror_exit("PATH not found\n", 126, fd);
-		cmd_arg = ft_split(cmd, ' ');
-		cmd_path = get_cmd(paths, cmd_arg[0]);
-		if (!cmd_path)
-		{
+		if (cmd_arg)
 			ft_free(cmd_arg);
-			free(cmd_arg);
-			ft_free(paths);
-			free(paths);
-			perror_exit("command error\n", 127, fd);
-		}
+		perror_exit("command not found", 127, fd);
 	}
+	paths = get_env_path(envp);
+	cmd_path = get_cmd(paths, cmd_arg[0]);
+	if (!cmd_path)
+	{
+		ft_free(cmd_arg);
+		if (paths)
+			ft_free(paths);
+		perror_exit("command not found", 127, fd);
+	}
+	check_cmd_access(cmd_path, cmd_arg, paths, fd);
 	if (execve(cmd_path, cmd_arg, envp) == -1)
-		perror_exit("execve error\n", 0, fd);
+		cleanup_and_exit(cmd_arg, paths, cmd_path, fd);
 }
