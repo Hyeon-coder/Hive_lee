@@ -16,6 +16,7 @@ void	load_images(t_game *game)
 	load_image(game, &game->img_player, "textures/chara.xpm");
 	load_image(game, &game->img_collectible, "textures/chest.xpm");
 	load_image(game, &game->img_exit, "textures/rune.xpm");
+	load_image(game, &game->img_exit_light, "textures/rune_light.xpm");
 	load_image(game, &game->img_floor, "textures/land.xpm");
 }
 
@@ -33,7 +34,12 @@ static void	render_tile(t_game *game, int x, int y)
 	else if (game->map[y][x] == COLLECTIBLE)
 		put_image(game, game->img_collectible, x, y);
 	else if (game->map[y][x] == EXIT)
-		put_image(game, game->img_exit, x, y);
+	{
+		if (game->collectibles == 0)
+			put_image(game, game->img_exit_light, x, y);
+		else
+			put_image(game, game->img_exit, x, y);
+	}
 	else if (game->map[y][x] == PLAYER)
 		put_image(game, game->img_player, x, y);
 }

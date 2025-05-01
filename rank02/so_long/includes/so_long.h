@@ -31,6 +31,7 @@ typedef struct s_game
 	void	*img_player;
 	void	*img_collectible;
 	void	*img_exit;
+	void	*img_exit_light;
 	void	*img_floor;
 }	t_game;
 
