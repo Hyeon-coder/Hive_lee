@@ -1,113 +1,77 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/16 14:00:00 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/03/19 17:07:43 by juhyeonl         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "../includes/so_long.h"
 
-#include "../so_long.h"
-
-/*
-	put_tile - Draws a specific tile at the given position on the screen.
-	(put_tile - 주어진 위치에 특정 타일을 화면에 그립니다.)
-*/
-void	put_tile(t_game *game, int x, int y)
+static void	load_image(t_game *game, void **img, char *path)
 {
-	char	tile;
+	int	width;
+	int	height;
 
-	tile = game->map[y][x];
-	if (tile == '1')
-		mlx_put_image_to_window(game->mlx, game->win,
-			game->img_wall, x * game->tile_size, y * game->tile_size);
-	else if (tile == 'C' && game->collectibles != 0)
-		mlx_put_image_to_window(game->mlx, game->win, \
-			game->img_collectible_before, x * game->tile_size, \
-			y * game->tile_size);
-	else if (tile == 'C' && game->collectibles == 0)
-		mlx_put_image_to_window(game->mlx, game->win, \
-			game->img_collectible_after, x * game->tile_size, \
-			y * game->tile_size);
-	else if (tile == 'E' && game->collectibles != 0)
-		mlx_put_image_to_window(game->mlx, game->win,
-			game->img_exit_close, x * game->tile_size, y * game->tile_size);
-	else if (tile == 'E' && game->collectibles == 0)
-		mlx_put_image_to_window(game->mlx, game->win,
-			game->img_exit_open, x * game->tile_size, y * game->tile_size);
-	else
-		mlx_put_image_to_window(game->mlx, game->win,
-			game->img_floor, x * game->tile_size, y * game->tile_size);
+	*img = mlx_xpm_file_to_image(game->mlx, path, &width, &height);
+	if (!*img)
+		error_exit("Failed to load image");
 }
 
-/*
-	render_player - Renders the player character on the screen.
-	(render_player - 플레이어 캐릭터를 화면에 렌더링합니다.)
-*/
-void	render_player(t_game *game)
+void	load_images(t_game *game)
 {
-	int	x;
-	int	y;
-
-	y = 0;
-	while (y < game->height)
-	{
-		x = 0;
-		while (x < game->width)
-		{
-			if (game->map[y][x] == 'P')
-			{
-				game->player_x = x;
-				game->player_y = y;
-				mlx_put_image_to_window(game->mlx, game->win,
-					game->img_player, x * game->tile_size, y * game->tile_size);
-			}
-			x++;
-		}
-		y++;
-	}
+	load_image(game, &game->img_wall, "textures/wall.xpm");
+	load_image(game, &game->img_player, "textures/chara.xpm");
+	load_image(game, &game->img_collectible, "textures/chest.xpm");
+	load_image(game, &game->img_exit, "textures/rune.xpm");
+	load_image(game, &game->img_floor, "textures/land.xpm");
 }
 
-/*
-	display_moves - Display number of moves at screen.
-	(display_moves - 화면에 이동 횟수를 보여준다.)
-*/
-void	display_moves(t_game *game)
+static void	put_image(t_game *game, void *img, int x, int y)
 {
-	char	move_str[50];
-
-	sprintf(move_str, "Moves: %d", game->moves);
-	mlx_string_put(game->mlx, game->win, 10, 10, 0xFFFFFF, move_str);
+	mlx_put_image_to_window(game->mlx, game->win, img,
+		x * game->tile_size, y * game->tile_size);
 }
 
-/*
-	render_map - Renders game objects on the screen.
-	(render_map - 게임 객체를 화면에 렌더링합니다.)
-*/
+static void	render_tile(t_game *game, int x, int y)
+{
+	put_image(game, game->img_floor, x, y);
+	if (game->map[y][x] == WALL)
+		put_image(game, game->img_wall, x, y);
+	else if (game->map[y][x] == COLLECTIBLE)
+		put_image(game, game->img_collectible, x, y);
+	else if (game->map[y][x] == EXIT)
+		put_image(game, game->img_exit, x, y);
+	else if (game->map[y][x] == PLAYER)
+		put_image(game, game->img_player, x, y);
+}
+
+static void	render_text(t_game *game)
+{
+	char	*collectibles;
+	char	*moves;
+	char	*collectibles_text;
+	char	*moves_text;
+
+	collectibles = ft_itoa(game->collectibles);
+	moves = ft_itoa(game->moves);
+	collectibles_text = ft_strjoin("Collectibles: ", collectibles);
+	moves_text = ft_strjoin("Moves: ", moves);
+	mlx_string_put(game->mlx, game->win, 10, 20, 0xFFFFFF, collectibles_text);
+	mlx_string_put(game->mlx, game->win, 10, 40, 0xFFFFFF, moves_text);
+	free(collectibles);
+	free(moves);
+	free(collectibles_text);
+	free(moves_text);
+}
+
 void	render_map(t_game *game)
 {
 	int	x;
 	int	y;
 
-	if (!game->mlx || !game->win || !game->map)
-	{
-		ft_putstr_fd("Error: Null reference in game structure\n", 2);
-		return ;
-	}
 	y = 0;
 	while (y < game->height)
 	{
 		x = 0;
 		while (x < game->width)
 		{
-			put_tile(game, x, y);
+			render_tile(game, x, y);
 			x++;
 		}
 		y++;
 	}
-	display_moves(game);
-	render_player(game);
-}
+	render_text(game);
+} 

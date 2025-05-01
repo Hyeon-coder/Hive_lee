@@ -1,83 +1,95 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   map_reader.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/23 20:54:21 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/03/06 06:54:52 by JuHyeon          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "../includes/so_long.h"
 
-#include "../so_long.h"
-
-/*
-	count_lines - Counts the number of lines in the map file.
-	(count_lines - 맵 파일에서 줄 수를 계산합니다.)
-*/
-static int	count_lines(char *filename)
+static int	get_dimensions(char *filename, int *width, int *height)
 {
 	int		fd;
-	int		count;
 	char	*line;
+	char	*last_line;
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		return (-1);
-	count = 0;
+		return (0);
+	*height = 1;
+	*width = 0;
 	line = get_next_line(fd);
-	while (line)
+	if (!line)
 	{
-		free(line);
-		count++;
-		line = get_next_line(fd);
+		close(fd);
+		return (0);
 	}
+	*width = ft_strlen(line);
+	if (line[*width - 1] == '\n')
+		(*width)--;
+	last_line = line;
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		free(last_line);
+		last_line = line;
+		(*height)++;
+	}
+	if (last_line[ft_strlen(last_line) - 1] == '\n')
+	{
+		free(last_line);
+		close(fd);
+		return (0);
+	}
+	free(last_line);
 	close(fd);
-	return (count);
+	return (*width > 0 && *height > 0);
 }
 
-/*
-	read_map_lines - Reads individual lines of the map from a file.
-	(read_map_lines - 파일에서 맵의 각 줄을 읽어옵니다.)
-*/
-static void	read_map_lines(char **map, int fd, int height)
+static void	cleanup_map(char **map, int height)
 {
-	int		row;
-	char	*line;
+	int	i;
 
-	row = 0;
-	line = get_next_line(fd);
-	while (row < height && line)
+	if (!map)
+		return ;
+	i = 0;
+	while (i < height)
 	{
-		if (line[ft_strlen(line) - 1] == '\n')
-			line[ft_strlen(line) - 1] = '\0';
-		map[row++] = line;
-		line = get_next_line(fd);
+		if (map[i])
+			free(map[i]);
+		i++;
 	}
-	map[row] = NULL;
+	free(map);
 }
 
-/*
-	read_map - Reads the game map from a file and loads it into memory.
-	(read_map - 파일에서 게임 맵을 읽어와 메모리에 로드합니다.)
-*/
 char	**read_map(char *filename, int *width, int *height)
 {
-	int		fd;
 	char	**map;
+	int		fd;
+	char	*line;
+	int		i;
 
-	*height = count_lines(filename);
-	if (*height <= 0)
+	if (!get_dimensions(filename, width, height))
 		return (NULL);
-	map = malloc(sizeof(char *) * (*height + 1));
+	map = (char **)malloc(sizeof(char *) * (*height + 1));
 	if (!map)
 		return (NULL);
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
+	{
+		free(map);
 		return (NULL);
-	read_map_lines(map, fd, *height);
+	}
+	i = 0;
+	while (i < *height && (line = get_next_line(fd)) != NULL)
+	{
+		if (line[ft_strlen(line) - 1] == '\n')
+			line[ft_strlen(line) - 1] = '\0';
+		map[i++] = line;
+	}
+	map[i] = NULL;
 	close(fd);
-	*width = ft_strlen(map[0]);
+	if (i < *height)
+	{
+		cleanup_map(map, i);
+		return (NULL);
+	}
 	return (map);
 }
+
+void	free_map(char **map, int height)
+{
+	cleanup_map(map, height);
+} 

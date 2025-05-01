@@ -41,7 +41,8 @@ char	*ft_update_left_str(int fd, char *left)
 			return (left);
 		}
 		temp = ft_strjoin(left, buffer);
-		free(left);
+		if (left)
+			free(left);
 		left = temp;
 		if (!left)
 		{
@@ -113,6 +114,13 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (!left)
+	{
+		left = malloc(1);
+		if (!left)
+			return (NULL);
+		left[0] = '\0';
+	}
 	left = ft_update_left_str(fd, left);
 	if (!left)
 		return (NULL);
