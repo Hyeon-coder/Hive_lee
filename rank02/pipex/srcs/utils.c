@@ -46,15 +46,30 @@ static void	check_cmd_access(char *cmd_path, char **cmd_arg,
 		ft_free(cmd_arg);
 		if (paths)
 			ft_free(paths);
+		free(cmd_path);
 		perror_exit("command not found", 127, fd);
 	}
-	if (!(st.st_mode & S_IXUSR))
+	if (access(cmd_path, X_OK) == -1)
 	{
-		ft_free(cmd_arg);
-		if (paths)
-			ft_free(paths);
-		free(cmd_path);
-		perror_exit("Permission denied", 126, fd);
+		if (errno == EACCES)
+		{
+			write(2, "pipex: ", 7);
+			write(2, cmd_path, ft_strlen(cmd_path));
+			write(2, ": Permission denied\n", 19);
+			ft_free(cmd_arg);
+			if (paths)
+				ft_free(paths);
+			free(cmd_path);
+			exit(126);
+		}
+		else
+		{
+			ft_free(cmd_arg);
+			if (paths)
+				ft_free(paths);
+			free(cmd_path);
+			perror_exit("command not found", 127, fd);
+		}
 	}
 }
 

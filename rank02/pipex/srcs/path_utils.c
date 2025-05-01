@@ -59,8 +59,12 @@ char	*get_cmd(char **path, char *cmd)
 
 	if (!cmd || !*cmd)
 		return (NULL);
-	if (access(cmd, X_OK) != -1)
+	if (access(cmd, F_OK) == 0)
+	{
+		if (access(cmd, X_OK) == -1)
+			return (NULL);
 		return (ft_strdup(cmd));
+	}
 	if (!path)
 		return (NULL);
 	joined_cmd = ft_strjoin("/", cmd);

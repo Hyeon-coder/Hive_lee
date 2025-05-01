@@ -14,10 +14,7 @@
 
 static void	print_error(char *prefix, char *msg)
 {
-	char	*error;
-
-	error = strerror(errno);
-	write(2, "pipex: ", 7);
+	write(2, "pipex : ", 8);
 	if (prefix)
 	{
 		write(2, prefix, ft_strlen(prefix));
@@ -26,10 +23,8 @@ static void	print_error(char *prefix, char *msg)
 	if (msg)
 	{
 		write(2, msg, ft_strlen(msg));
-		write(2, ": ", 2);
+		write(2, "\n", 1);
 	}
-	write(2, error, ft_strlen(error));
-	write(2, "\n", 1);
 }
 
 void	perror_exit(char *opt, int exit_code, int *fd)
