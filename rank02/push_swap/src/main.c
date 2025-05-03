@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:10:35 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/04/29 18:49:04 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:09:22 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,9 @@ static void	init_stack(t_stack **stack, int argc, char **argv)
 static void	sort_stack(t_stack **stack_a, t_stack **stack_b, int argc)
 {
 	if (ft_lstsize(*stack_a) <= 5)
-	// {
-	// 	printf("reach here 6\n");
 		simple_sort(stack_a, stack_b, argc);
-	// }
 	else
-	// {
-	// 	printf("reach here 7\n");
 		radix_sort(stack_a, stack_b);
-	// }
 }
 
 int	main(int argc, char **argv)
@@ -75,19 +69,14 @@ int	main(int argc, char **argv)
 		return (-1);
 	ft_check_args(argc, argv);
 	stack_a = (t_stack **)malloc(sizeof(t_stack));
-	if(!stack_a)
+	if (!stack_a)
 		return (0);
 	stack_b = (t_stack **)malloc(sizeof(t_stack));
-	if(!stack_b)
+	if (!stack_b)
 		return (0);
-	
 	*stack_a = NULL;
 	*stack_b = NULL;
-	// printf("first\n");
-	// print_stack(*stack_a);
 	init_stack(stack_a, argc, argv);
-	// printf("after init\n");
-	// print_stack(*stack_a);
 	if (is_sorted(stack_a))
 	{
 		free_stack(stack_a);

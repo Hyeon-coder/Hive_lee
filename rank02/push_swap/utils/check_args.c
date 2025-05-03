@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:10:12 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/05/02 15:14:42 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:14:15 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	ft_check_args(int argc, char **argv)
 	tmp = 0;
 	if (argc == 2)
 	{
-		if (argv[2] == NULL)
+		if (argv[1] == NULL)
 		{
 			write(2, "Error\n", 6);
 			return ;
