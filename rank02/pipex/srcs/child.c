@@ -3,93 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/30 20:00:00 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/04/30 20:40:52 by JuHyeon          ###   ########.fr       */
+/*   Created: 2025/05/05 04:00:35 by juhyeonl          #+#    #+#             */
+/*   Updated: 2025/05/05 04:00:40 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-void	close_fds(int *fd, int infile, int outfile)
+static void	open_infile_or_exit(t_pipex *pipex, char *filename)
 {
-	if (fd[0] != -1)
-		close(fd[0]);
-	if (fd[1] != -1)
-		close(fd[1]);
-	if (infile != -1)
-		close(infile);
-	if (outfile != -1)
-		close(outfile);
+	pipex->infile = open(filename, O_RDONLY);
+	if (pipex->infile == -1)
+	{
+		if (access(filename, F_OK) == -1)
+			error_exit(filename, 127);
+		else if (access(filename, R_OK) == -1)
+			error_exit(filename, 126);
+		error_exit(filename, 1);
+	}
 }
 
-void	dup_child_1(char **av, int *fd)
+static void	open_outfile_or_exit(t_pipex *pipex, char *filename)
 {
-	int	infile;
-
-	infile = open(av[1], O_RDONLY);
-	if (infile == -1)
-		perror_exit(av[1], 1, fd);
-	if (dup2(infile, STDIN_FILENO) == -1)
+	pipex->outfile = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (pipex->outfile == -1)
 	{
-		close_fds(fd, infile, -1);
-		perror_exit("dup2", 1, fd);
+		if (access(filename, F_OK) == -1 || access(filename, W_OK) == -1)
+			error_exit(filename, 1);
+		error_exit(filename, 1);
 	}
-	if (dup2(fd[1], STDOUT_FILENO) == -1)
-	{
-		close_fds(fd, infile, -1);
-		perror_exit("dup2", 1, fd);
-	}
-	close_fds(fd, infile, -1);
 }
 
-void	dup_child_2(char **av, int *fd)
+void	child_process1(t_pipex *pipex, char **av, char **envp)
 {
-	int	outfile;
-
-	outfile = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (outfile == -1)
-		perror_exit(av[4], 1, fd);
-	if (dup2(fd[0], STDIN_FILENO) == -1)
-	{
-		close_fds(fd, -1, outfile);
-		perror_exit("dup2", 1, fd);
-	}
-	if (dup2(outfile, STDOUT_FILENO) == -1)
-	{
-		close_fds(fd, -1, outfile);
-		perror_exit("dup2", 1, fd);
-	}
-	close_fds(fd, -1, outfile);
+	open_infile_or_exit(pipex, av[1]);
+	if (dup2(pipex->infile, STDIN_FILENO) == -1)
+		error_exit("dup2", 1);
+	if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
+		error_exit("dup2", 1);
+	close(pipex->fd[0]);
+	close(pipex->infile);
+	execute(pipex, envp, 1);
 }
 
-pid_t	child_process_1(char **av, char **envp, int *fd)
+void	child_process2(t_pipex *pipex, char **av, char **envp)
 {
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-		perror_exit("fork", 1, fd);
-	if (pid == 0)
-	{
-		dup_child_1(av, fd);
-		execute(av[2], envp, fd);
-	}
-	return (pid);
-}
-
-pid_t	child_process_2(char **av, char **envp, int *fd)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-		perror_exit("fork", 1, fd);
-	if (pid == 0)
-	{
-		dup_child_2(av, fd);
-		execute(av[3], envp, fd);
-	}
-	return (pid);
+	open_outfile_or_exit(pipex, av[4]);
+	if (dup2(pipex->fd[0], STDIN_FILENO) == -1)
+		error_exit("dup2", 1);
+	if (dup2(pipex->outfile, STDOUT_FILENO) == -1)
+		error_exit("dup2", 1);
+	close(pipex->fd[1]);
+	close(pipex->outfile);
+	execute(pipex, envp, 2);
 }

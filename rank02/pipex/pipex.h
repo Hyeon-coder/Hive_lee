@@ -13,24 +13,41 @@
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <errno.h>
 # include <unistd.h>
+# include <stdlib.h>
 # include <fcntl.h>
+# include <sys/wait.h>
+# include <stdio.h>
+# include <errno.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include "libft/libft.h"
 
-void	perror_exit(char *opt, int exit_code, int *fd);
-void	execute(char *cmd, char **envp, int *fd);
-void	close_fds(int *fd, int infile, int outfile);
-void	dup_child_1(char **av, int *fd);
-void	dup_child_2(char **av, int *fd);
-pid_t	child_process_1(char **av, char **envp, int *fd);
-pid_t	child_process_2(char **av, char **envp, int *fd);
+typedef struct s_pipex
+{
+	int		fd[2];
+	int		infile;
+	int		outfile;
+	pid_t	pid1;
+	pid_t	pid2;
+	char	**cmd1;
+	char	**cmd2;
+	char	*path1;
+	char	*path2;
+	int		status1;
+	int		status2;
+}	t_pipex;
+
+/* utils.c */
 void	ft_free(char **str);
-char	**get_env_path(char **envp);
-char	*get_cmd(char **path, char *cmd);
+void	init_pipex(t_pipex *pipex);
+void	clean_pipex(t_pipex *pipex);
+void	error_exit(char *msg, int exit_code);
+char	*find_path(char *cmd, char **envp);
+void	execute(t_pipex *pipex, char **envp, int cmd_num);
+
+/* pipex.c */
+void	child_process1(t_pipex *pipex, char **av, char **envp);
+void	child_process2(t_pipex *pipex, char **av, char **envp);
 
 #endif

@@ -15,11 +15,11 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 
-SRCS = srcs/main.c \
+SRCS = srcs/execute.c \
+	   srcs/find_path.c \
+	   srcs/pipex.c \
 	   srcs/utils.c \
-	   srcs/perror_exit.c \
-	   srcs/child.c \
-	   srcs/path_utils.c
+	   srcs/child.c
 
 OBJS = $(SRCS:.c=.o)
 

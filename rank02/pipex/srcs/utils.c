@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/16 19:59:41 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/04/30 20:54:37 by JuHyeon          ###   ########.fr       */
+/*   Created: 2025/05/05 03:35:21 by juhyeonl          #+#    #+#             */
+/*   Updated: 2025/05/05 03:39:22 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,88 +16,50 @@ void	ft_free(char **str)
 {
 	int	i;
 
-	if (!str)
-		return ;
 	i = 0;
 	while (str[i])
 		free(str[i++]);
 	free(str);
 }
 
-static void	cleanup_and_exit(char **cmd_arg, char **paths,
-	char *cmd_path, int *fd)
+void	init_pipex(t_pipex *pipex)
 {
-	if (cmd_arg)
-		ft_free(cmd_arg);
-	if (paths)
-		ft_free(paths);
-	if (cmd_path)
-		free(cmd_path);
-	perror_exit("execve failed", 126, fd);
+	pipex->infile = -1;
+	pipex->outfile = -1;
+	pipex->fd[0] = -1;
+	pipex->fd[1] = -1;
+	pipex->pid1 = -1;
+	pipex->pid2 = -1;
+	pipex->cmd1 = NULL;
+	pipex->cmd2 = NULL;
+	pipex->path1 = NULL;
+	pipex->path2 = NULL;
+	pipex->status1 = 0;
+	pipex->status2 = 0;
 }
 
-static void	check_cmd_access(char *cmd_path, char **cmd_arg,
-	char **paths, int *fd)
+void	clean_pipex(t_pipex *pipex)
 {
-	struct stat	st;
-
-	if (stat(cmd_path, &st) == -1)
-	{
-		ft_free(cmd_arg);
-		if (paths)
-			ft_free(paths);
-		free(cmd_path);
-		perror_exit("command not found", 127, fd);
-	}
-	if (access(cmd_path, X_OK) == -1)
-	{
-		if (errno == EACCES)
-		{
-			write(2, "pipex: ", 7);
-			write(2, cmd_path, ft_strlen(cmd_path));
-			write(2, ": Permission denied\n", 19);
-			ft_free(cmd_arg);
-			if (paths)
-				ft_free(paths);
-			free(cmd_path);
-			exit(126);
-		}
-		else
-		{
-			ft_free(cmd_arg);
-			if (paths)
-				ft_free(paths);
-			free(cmd_path);
-			perror_exit("command not found", 127, fd);
-		}
-	}
+	if (pipex->cmd1)
+		ft_free(pipex->cmd1);
+	if (pipex->cmd2)
+		ft_free(pipex->cmd2);
+	if (pipex->path1)
+		free(pipex->path1);
+	if (pipex->path2)
+		free(pipex->path2);
+	if (pipex->infile != -1)
+		close(pipex->infile);
+	if (pipex->outfile != -1)
+		close(pipex->outfile);
+	if (pipex->fd[0] != -1)
+		close(pipex->fd[0]);
+	if (pipex->fd[1] != -1)
+		close(pipex->fd[1]);
 }
 
-void	execute(char *cmd, char **envp, int *fd)
+void	error_exit(char *msg, int exit_code)
 {
-	char	**paths;
-	char	**cmd_arg;
-	char	*cmd_path;
-
-	if (!cmd || !*cmd)
-		perror_exit("command not found", 127, fd);
-	cmd_arg = ft_split(cmd, ' ');
-	if (!cmd_arg || !cmd_arg[0])
-	{
-		if (cmd_arg)
-			ft_free(cmd_arg);
-		perror_exit("command not found", 127, fd);
-	}
-	paths = get_env_path(envp);
-	cmd_path = get_cmd(paths, cmd_arg[0]);
-	if (!cmd_path)
-	{
-		ft_free(cmd_arg);
-		if (paths)
-			ft_free(paths);
-		perror_exit("command not found", 127, fd);
-	}
-	check_cmd_access(cmd_path, cmd_arg, paths, fd);
-	if (execve(cmd_path, cmd_arg, envp) == -1)
-		cleanup_and_exit(cmd_arg, paths, cmd_path, fd);
+	perror(msg);
+	exit(exit_code);
 }
