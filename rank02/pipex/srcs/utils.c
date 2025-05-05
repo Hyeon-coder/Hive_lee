@@ -16,6 +16,8 @@ void	ft_free(char **str)
 {
 	int	i;
 
+	if (!str)
+		return ;
 	i = 0;
 	while (str[i])
 		free(str[i++]);
@@ -40,6 +42,8 @@ void	init_pipex(t_pipex *pipex)
 
 void	clean_pipex(t_pipex *pipex)
 {
+	if (!pipex)
+		return ;
 	if (pipex->cmd1)
 		ft_free(pipex->cmd1);
 	if (pipex->cmd2)
@@ -56,6 +60,7 @@ void	clean_pipex(t_pipex *pipex)
 		close(pipex->fd[0]);
 	if (pipex->fd[1] != -1)
 		close(pipex->fd[1]);
+	init_pipex(pipex);
 }
 
 void	error_exit(char *msg, int exit_code)
