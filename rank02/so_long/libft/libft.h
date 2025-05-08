@@ -19,7 +19,7 @@
 # include <fcntl.h>
 
 # define BUFF_SIZE	1
-# define MAX_FD (1025)
+# define MAX_FD 1025
 
 void	*ft_bzero(void *s, size_t len);
 void	ft_putchar_fd(char c, int fd);
@@ -57,5 +57,6 @@ char	*ft_strtrim(char const *str, char const *set);
 char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char	**ft_split(char const *s, char c);
+void	free_split(char **array);
 
 #endif

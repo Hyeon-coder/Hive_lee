@@ -1,113 +1,95 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_check_path.c                                    :+:      :+:    :+:  */
+/*   map_check_path.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:54:27 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/05/08 15:48:08 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/05/08 16:30:00 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../so_long.h"
 
-static void	print_map_error(void)
+static void	dfs(t_path_ctx *ctx, int x, int y)
 {
-	write(2, "Error\n", 6);
-	exit(1);
+	if (ctx->map[y][x] == '1' || ctx->visited[y][x]
+		|| (ctx->map[y][x] == 'E' && !ctx->allow_exit))
+		return ;
+	ctx->visited[y][x] = 1;
+	if (x > 0)
+		dfs(ctx, x - 1, y);
+	if (ctx->map[y][x + 1])
+		dfs(ctx, x + 1, y);
+	if (y > 0)
+		dfs(ctx, x, y - 1);
+	if (ctx->map[y + 1])
+		dfs(ctx, x, y + 1);
 }
 
-void	validate_elements(char **m)
+static void	init_visited(t_path_ctx *ctx)
+{
+	int	y;
+
+	ctx->visited = malloc(sizeof(int *) * ctx->height);
+	if (!ctx->visited)
+		safe_print_map_error(ctx);
+	y = 0;
+	while (y < ctx->height)
+	{
+		ctx->visited[y] = ft_calloc(ctx->width, sizeof(int));
+		if (!ctx->visited[y])
+			safe_print_map_error(ctx);
+		y++;
+	}
+}
+
+static void	check_all_coins(t_game *g, t_path_ctx *ctx)
 {
 	int	y;
 	int	x;
-	int	p;
-	int	e;
-	int	c;
 
 	y = 0;
-	p = 0;
-	e = 0;
-	c = 0;
-	while (m[y])
+	while (y < ctx->height)
 	{
 		x = 0;
-		while (m[y][x])
+		while (x < ctx->width)
 		{
-			if (!ft_strchr("01PEC", m[y][x]))
-				print_map_error();
-			if (m[y][x] == 'P')
-				p++;
-			else if (m[y][x] == 'E')
-				e++;
-			else if (m[y][x] == 'C')
-				c++;
+			if (g->map[y][x] == 'C' && !ctx->visited[y][x])
+				safe_print_map_error(ctx);
 			x++;
 		}
+		ft_bzero(ctx->visited[y], sizeof(int) * ctx->width);
 		y++;
 	}
-	if (p != 1 || e != 1 || c < 1)
-		print_map_error();
 }
 
-static void	dfs(char **m, int **v, int x, int y, int allow_e)
+static void	check_exit_reachable(t_game *g, t_path_ctx *ctx)
 {
-	if (m[y][x] == '1' || v[y][x] || (m[y][x] == 'E' && !allow_e))
-		return ;
-	v[y][x] = 1;
-	if (x > 0)
-		dfs(m, v, x - 1, y, allow_e);
-	if (m[y][x + 1])
-		dfs(m, v, x + 1, y, allow_e);
-	if (y > 0)
-		dfs(m, v, x, y - 1, allow_e);
-	if (m[y + 1])
-		dfs(m, v, x, y + 1, allow_e);
+	ctx->allow_exit = 1;
+	dfs(ctx, g->player_x, g->player_y);
+	if (!ctx->visited[g->exit_y][g->exit_x])
+		safe_print_map_error(ctx);
 }
 
-void	validate_path(t_game *g)
+void	validate_path(t_game *g, t_path_ctx *ctx)
 {
-	int	**v;
-	int	h;
-	int	w;
-	int	y;
-	int	x;
+	int	i;
 
-	h = g->map_height;
-	w = g->map_width;
-	v = malloc(sizeof(int *) * h);
-
-	if (!v)
-		print_map_error();
-	y = -1;
-	++y;
-	while (y < h)
-	{
-		if (!(v[y] = ft_calloc(w, sizeof(int))))
-			print_map_error();
-		y++;
-	}
-	dfs(g->map, v, g->player_x, g->player_y, 0);
-	y = -1;
-	++y;
-	while (y < h)
-	{
-		x = -1;
-		++x;
-		while (x < w)
-		{
-			if (g->map[y][x] == 'C' && !v[y][x])
-				print_map_error();
-			x++;
-		}
-		ft_bzero(v[y], sizeof(int) * w);
-		y++;
-	}
-	dfs(g->map, v, g->player_x, g->player_y, 1);
-	if (!v[g->exit_y][g->exit_x])
-		print_map_error();
-	while (h--)
-		free(v[h]);
-	free(v);
+	ctx->map = g->map;
+	ctx->height = g->map_height;
+	ctx->width = g->map_width;
+	ctx->player_x = g->player_x;
+	ctx->player_y = g->player_y;
+	ctx->allow_exit = 0;
+	init_visited(ctx);
+	dfs(ctx, g->player_x, g->player_y);
+	check_all_coins(g, ctx);
+	check_exit_reachable(g, ctx);
+	i = 0;
+	while (i < ctx->height)
+		free(ctx->visited[i++]);
+	free(ctx->visited);
+	ctx->visited = NULL;
 }

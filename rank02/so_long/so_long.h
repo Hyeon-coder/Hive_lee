@@ -38,6 +38,7 @@ typedef struct s_game
 	void	*mlx;
 	void	*win;
 	char	**map;
+	int		**visited;
 	int		map_width;
 	int		map_height;
 	int		player_x;
@@ -54,9 +55,35 @@ typedef struct s_game
 	void	*img_coin;
 }	t_game;
 
+typedef struct s_file_buffer
+{
+	int		fd;
+	char	*buffer;
+	char	tmp[1024];
+	ssize_t	bytes;
+	size_t	total;
+	char	*new_buf;
+}	t_file_buffer;
+
+typedef struct s_path_ctx
+{
+	int		**visited;
+	int		width;
+	int		height;
+	int		player_x;
+	int		player_y;
+	int		coin_count;
+	int		allow_exit;
+	char	**map;
+}	t_path_ctx;
+
+
+void    error_exit_free(const char *msg, void *ptr, t_path_ctx *ctx);
+void	error_exit_with_ctx(const char *msg, t_path_ctx *ctx);
 void	error_exit(const char *msg);
 void	free_map(char **map);
-char	**read_map(const char *filename, t_game *game);
+char	**read_map(const char *filename, t_game *game, t_path_ctx *ctx);
+char	*read_file(const char *filename);
 void	render_map(t_game *game);
 int		handle_input(int keycode, t_game *game);
 void	close_game(t_game *game);
@@ -65,12 +92,16 @@ void	load_images(t_game *game);
 void	display_move_count(t_game *game);
 void	move_player(t_game *game, int dx, int dy);
 int		is_valid_extension(const char *filename, const char *ext);
-void	validate_not_directory(const char *filename);
-void	validate_extension(const char *filename);
-void	validate_rectangular(char **map);
-void	validate_walls(char **map);
-void	validate_elements(char **map);
-void	validate_path(t_game *game);
+void	validate_not_directory(const char *filename, t_path_ctx *ctx);
+void	validate_extension(const char *filename, t_path_ctx *ctx);
+void	validate_rectangular(char **map, t_path_ctx *ctx);
+void	validate_walls(char **map, t_path_ctx *ctx);
+void	validate_elements(char **map, t_path_ctx *ctx);
+void	validate_path(t_game *game, t_path_ctx *ctx);
 void	count_player_and_coins(char **map, t_game *game);
+void	safe_print_map_error(t_path_ctx *ctx);
+void	free_visited(int **visited, int height);
+void	init_game(t_game *game);
+void	init_path_ctx(t_path_ctx *ctx);
 
 #endif

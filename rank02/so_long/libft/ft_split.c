@@ -3,90 +3,95 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 22:53:11 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/05/02 14:38:34 by juhyeonl         ###   ########.fr       */
+/*   Created: 2025/05/08 06:26:29 by juhyeonl          #+#    #+#             */
+/*   Updated: 2025/05/08 06:26:31 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	ft_free_array(void **array, size_t count)
+static void	ft_free_array(void **array, size_t i)
 {
-	size_t	i;
-
-	i = 0;
-	while (i < count)
-	{
+	while (i--)
 		free(array[i]);
-		i++;
-	}
 	free(array);
-	array = NULL;
 }
 
-static size_t	ft_w_count(const char *str, char c)
+static size_t	ft_word_count(const char *s, char c)
 {
-	size_t	w_count;
+	size_t	count;
+	int		in_word;
 
-	w_count = 0;
-	while (*str)
+	count = 0;
+	in_word = 0;
+	while (*s)
 	{
-		while (*str == c)
-			str++;
-		if (*str)
+		if (*s != c && !in_word)
 		{
-			w_count++;
-			while (*str && *str != c)
-				str++;
+			in_word = 1;
+			count++;
 		}
+		else if (*s == c)
+			in_word = 0;
+		s++;
 	}
-	return (w_count);
+	return (count);
 }
 
-static void	ft_fill_array(char **array, const char *s, char c, size_t w_count)
+static int	ft_fill_array(char **array, const char *s, char c, size_t w_count)
 {
+	size_t		i;
 	const char	*start;
 	const char	*end;
-	size_t		i;
 
-	start = s;
 	i = 0;
+	start = s;
 	while (i < w_count)
 	{
 		while (*start == c)
 			start++;
-		end = ft_strchr(start, c);
-		if (!end)
-			end = start + ft_strlen(start);
+		end = start;
+		while (*end && *end != c)
+			end++;
 		array[i] = ft_substr(start, 0, end - start);
 		if (!array[i])
 		{
 			ft_free_array((void **)array, i);
+			return (0);
 		}
-		start = end + (*end == c);
+		start = end;
 		i++;
 	}
 	array[i] = NULL;
+	return (1);
+}
+
+void	free_split(char **array)
+{
+	size_t	i;
+
+	if (!array)
+		return ;
+	i = 0;
+	while (array[i])
+		free(array[i++]);
+	free(array);
 }
 
 char	**ft_split(const char *s, char c)
 {
-	char		**array;
-	size_t		w_count;
+	char	**array;
+	size_t	w_count;
 
 	if (!s)
 		return (NULL);
-	w_count = ft_w_count(s, c);
-	array = (char **)ft_calloc(w_count + 1, sizeof(char *));
+	w_count = ft_word_count(s, c);
+	array = (char **)malloc(sizeof(char *) * (w_count + 1));
 	if (!array)
 		return (NULL);
-	ft_fill_array(array, s, c, w_count);
-	if (!array)
-	{
-		free(array);
+	if (!ft_fill_array(array, s, c, w_count))
 		return (NULL);
-	}
 	return (array);
 }

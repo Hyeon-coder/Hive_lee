@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:54:27 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/05/08 15:48:08 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/05/08 05:06:02 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,35 +27,45 @@ void	load_images(t_game *game)
 	height = TILE_SIZE;
 	game->img_wall = mlx_xpm_file_to_image(game->mlx,
 			PATH_WALL, &width, &height);
-	if (!game->img_wall)
-		error_exit("Error\nFailed to load wall image");
 	game->img_floor = mlx_xpm_file_to_image(game->mlx,
 			PATH_FLOOR, &width, &height);
-	if (!game->img_floor)
-		error_exit("Error\nFailed to load floor image");
 	game->img_player = mlx_xpm_file_to_image(game->mlx,
 			PATH_PLAYER, &width, &height);
-	if (!game->img_player)
-		error_exit("Error\nFailed to load player image");
 	game->img_exit = mlx_xpm_file_to_image(game->mlx,
 			PATH_EXIT, &width, &height);
-	if (!game->img_exit)
-		error_exit("Error\nFailed to load exit image");
 	game->img_coin = mlx_xpm_file_to_image(game->mlx,
 			PATH_COIN, &width, &height);
-	if (!game->img_coin)
-		error_exit("Error\nFailed to load coin image");
 	game->img_exit_open = mlx_xpm_file_to_image(game->mlx,
 			PATH_EXIT_OPEN, &width, &height);
-	if (!game->img_exit_open)
-		error_exit("Error\nFailed to load open exit image");
+}
+
+static void	render_tile(t_game *game, int x, int y, char tile)
+{
+	if (tile == '1')
+		draw_tile(game, x, y, game->img_wall);
+	else
+		draw_tile(game, x, y, game->img_floor);
+	if (tile == 'P')
+	{
+		game->player_x = x;
+		game->player_y = y;
+		draw_tile(game, x, y, game->img_player);
+	}
+	else if (tile == 'C')
+		draw_tile(game, x, y, game->img_coin);
+	else if (tile == 'E')
+	{
+		if (can_exit(game))
+			draw_tile(game, x, y, game->img_exit_open);
+		else
+			draw_tile(game, x, y, game->img_exit);
+	}
 }
 
 void	render_map(t_game *game)
 {
 	int		x;
 	int		y;
-	char	tile;
 
 	y = 0;
 	while (y < game->map_height)
@@ -63,26 +73,7 @@ void	render_map(t_game *game)
 		x = 0;
 		while (x < game->map_width)
 		{
-			tile = game->map[y][x];
-			if (tile == '1')
-				draw_tile(game, x, y, game->img_wall);
-			else
-				draw_tile(game, x, y, game->img_floor);
-			if (tile == 'P')
-			{
-				game->player_x = x;
-				game->player_y = y;
-				draw_tile(game, x, y, game->img_player);
-			}
-			else if (tile == 'C')
-				draw_tile(game, x, y, game->img_coin);
-			else if (tile == 'E')
-			{
-				if (can_exit(game))
-					draw_tile(game, x, y, game->img_exit_open);
-				else
-					draw_tile(game, x, y, game->img_exit);
-			}
+			render_tile(game, x, y, game->map[y][x]);
 			x++;
 		}
 		y++;

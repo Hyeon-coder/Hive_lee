@@ -6,109 +6,93 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 22:54:27 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/05/08 15:48:08 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/05/08 05:10:36 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../so_long.h"
 
-static char	*read_file(const char *filename)
+void	append_to_buffer(t_file_buffer *f)
 {
-	int		fd;
-	char	*buffer;
-	char	tmp[1024];
-	ssize_t	bytes;
-	size_t	total;
-
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-		error_exit("Error\nFailed to open map file");
-	buffer = (char *)malloc(1);
-	if (!buffer)
+	f->tmp[f->bytes] = '\0';
+	f->new_buf = malloc(f->total + f->bytes + 1);
+	if (!f->new_buf)
+	{
+		free(f->buffer);
 		error_exit("Error\nmalloc failed");
-	buffer[0] = '\0';
-	total = 0;
-	while ((bytes = read(fd, tmp, 1023)) > 0)
-	{
-		tmp[bytes] = '\0';
-		char *new_buf = malloc(total + bytes + 1);
-		if (!new_buf)
-			error_exit("Error\nmalloc failed");
-		strcpy(new_buf, buffer);
-		strcat(new_buf, tmp);
-		free(buffer);
-		buffer = new_buf;
-		total += bytes;
 	}
-	close(fd);
-	return (buffer);
+	ft_strlcpy(f->new_buf, f->buffer, f->total + 1);
+	ft_strlcat(f->new_buf, f->tmp, f->total + f->bytes + 1);
+	free(f->buffer);
+	f->buffer = f->new_buf;
+	f->total += f->bytes;
 }
 
-void	count_player_and_coins(char **map, t_game *game)
+char	*read_file(const char *filename)
 {
-	int	i;
-	int	j;
+	t_file_buffer	f;
 
-	i = 0;
-	game->coins = 0;
-	while (map[i])
+	f.fd = open(filename, O_RDONLY);
+	if (f.fd < 0)
+		error_exit("Error\nFailed to open map file");
+	f.buffer = malloc(1);
+	if (!f.buffer)
+		error_exit("Error\nmalloc failed");
+	f.buffer[0] = '\0';
+	f.total = 0;
+	f.bytes = read(f.fd, f.tmp, 1023);
+	while (f.bytes > 0)
 	{
-		j = 0;
-		while (map[i][j])
-		{
-			if (map[i][j] == 'C')
-				game->coins++;
-			else if (map[i][j] == 'P')
-			{
-				game->player_x = j;
-				game->player_y = i;
-			}
-			else if (map[i][j] == 'E' && game->exit_x == -1)
-			{
-				game->exit_x = j;
-				game->exit_y = i;
-			}
-			j++;
-		}
-		i++;
+		append_to_buffer(&f);
+		f.bytes = read(f.fd, f.tmp, 1023);
 	}
+	close(f.fd);
+	if (f.total == 0)
+	{
+		free(f.buffer);
+		return (NULL);
+	}
+	return (f.buffer);
 }
 
-static void	validate_no_empty_lines(char *content)
+int	validate_no_empty_lines(const char *s)
 {
-	int	len;
-	int	i;
+	size_t	len;
 
-	len = ft_strlen(content);
-	if (len == 0 || content[0] == '\n' || content[len - 1] == '\n'
-		|| ft_strnstr(content, "\n\n", len))
-		error_exit("Error\n");
-	i = 0;
-	while (content[i])
-	{
-		if (content[i] == '\n' && content[i + 1] == '\0')
-			error_exit("Error\n");
-		i++;
-	}
+	if (!s)
+		return (0);
+	len = ft_strlen(s);
+	if (len == 0 || s[0] == '\n' || s[len - 1] == '\n'
+		|| ft_strnstr(s, "\n\n", len))
+		return (0);
+	for (size_t i = 0; s[i]; ++i)
+		if (s[i] == '\n' && s[i + 1] == '\0')
+			return (0);
+	return (1);
 }
 
-char	**read_map(const char *filename, t_game *game)
+char	**read_map(const char *filename, t_game *game, t_path_ctx *ctx)
 {
 	char	*content;
 	char	**map;
 	int		i;
 
 	content = read_file(filename);
-	validate_no_empty_lines(content);
+	if (!content)
+		error_exit_with_ctx("Error\nFailed to read map file", ctx);
+	if (!validate_no_empty_lines(content))
+		error_exit_free("Error\n", content, ctx);
 	map = ft_split(content, '\n');
-	if (!map)
-		error_exit("Error\nFailed to split map");
 	free(content);
+	if (!map)
+		error_exit_with_ctx("Error\nFailed to split map", ctx);
 	i = 0;
 	while (map[i])
 		i++;
 	game->map_height = i;
 	game->map_width = ft_strlen(map[0]);
+	game->map = map;
+	ctx->map = map;
 	count_player_and_coins(map, game);
 	return (map);
 }

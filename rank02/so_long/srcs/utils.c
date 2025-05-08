@@ -43,3 +43,38 @@ void	free_map(char **map)
 		free(map[i++]);
 	free(map);
 }
+
+static void	check_tile(char tile, int x, int y, t_game *game)
+{
+	if (tile == 'C')
+		game->coins++;
+	else if (tile == 'P')
+	{
+		game->player_x = x;
+		game->player_y = y;
+	}
+	else if (tile == 'E' && game->exit_x == -1)
+	{
+		game->exit_x = x;
+		game->exit_y = y;
+	}
+}
+
+void	count_player_and_coins(char **map, t_game *game)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	game->coins = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			check_tile(map[i][j], j, i, game);
+			j++;
+		}
+		i++;
+	}
+}

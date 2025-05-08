@@ -12,30 +12,41 @@
 
 #include "../so_long.h"
 
-static void	print_map_error(void)
+void	safe_print_map_error(t_path_ctx *ctx)
 {
+	int	i;
+
+	if (ctx->visited)
+	{
+		i = 0;
+		while (i < ctx->height)
+			free(ctx->visited[i++]);
+		free(ctx->visited);
+	}
+	if (ctx->map)
+		free_split(ctx->map);
 	write(2, "Error\n", 6);
 	exit(1);
 }
 
-void	validate_not_directory(const char *filename)
+void	validate_not_directory(const char *filename, t_path_ctx *ctx)
 {
 	struct stat	path_stat;
 
 	if (stat(filename, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
-		print_map_error();
+		safe_print_map_error(ctx);
 }
 
-void	validate_extension(const char *filename)
+void	validate_extension(const char *filename, t_path_ctx *ctx)
 {
 	int	len;
 
 	len = ft_strlen(filename);
 	if (len < 4 || ft_strncmp(filename + len - 4, ".ber", 4) != 0)
-		print_map_error();
+		safe_print_map_error(ctx);
 }
 
-void	validate_rectangular(char **map)
+void	validate_rectangular(char **map, t_path_ctx *ctx)
 {
 	int	i;
 	int	width;
@@ -45,12 +56,12 @@ void	validate_rectangular(char **map)
 	while (map[i])
 	{
 		if (width == 0 || (int)ft_strlen(map[i]) != width)
-			print_map_error();
+			safe_print_map_error(ctx);
 		i++;
 	}
 }
 
-void	validate_walls(char **map)
+void	validate_walls(char **map, t_path_ctx *ctx)
 {
 	int	width;
 	int	height;
@@ -65,14 +76,14 @@ void	validate_walls(char **map)
 	while (x < width)
 	{
 		if (map[0][x] != '1' || map[height - 1][x] != '1')
-			print_map_error();
+			safe_print_map_error(ctx);
 		x++;
 	}
 	y = 0;
 	while (y < height)
 	{
 		if (map[y][0] != '1' || map[y][width - 1] != '1')
-			print_map_error();
+			safe_print_map_error(ctx);
 		y++;
 	}
 }

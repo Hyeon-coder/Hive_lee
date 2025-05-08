@@ -8,8 +8,8 @@ MLXFLAG := -L$(MLX_DIR) -lmlx -lXext -lX11
 
 SRC := \
     srcs/main.c srcs/map.c srcs/render.c srcs/input.c srcs/game.c srcs/utils.c \
-    srcs/map_check_basic.c srcs/map_check_path.c
-
+    srcs/map_check_basic.c srcs/map_check_path.c srcs/validate_elements.c \
+    srcs/init.c
 OBJ := $(SRC:.c=.o)
 
 all: $(NAME)
