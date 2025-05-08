@@ -1,34 +1,42 @@
-#include "../includes/so_long.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/17 22:54:27 by JuHyeon           #+#    #+#             */
+/*   Updated: 2025/05/08 15:48:08 by juhyeonl         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../so_long.h"
 
 static void	init_game(t_game *game)
 {
-	game->mlx = mlx_init();
-	if (!game->mlx)
-		error_exit("MLX initialization failed");
-	game->tile_size = TILE_SIZE;
-	game->moves = 0;
-	game->map = NULL;
+	game->mlx = NULL;
 	game->win = NULL;
+	game->map = NULL;
+	game->map_width = 0;
+	game->map_height = 0;
+	game->player_x = 0;
+	game->player_y = 0;
+	game->coins = 0;
+	game->moves = 0;
 	game->img_wall = NULL;
-	game->img_player = NULL;
-	game->img_collectible = NULL;
-	game->img_exit = NULL;
 	game->img_floor = NULL;
+	game->img_player = NULL;
+	game->img_exit = NULL;
+	game->img_exit_open = NULL;
+	game->img_coin = NULL;
+	game->exit_x = -1;
+	game->exit_y = -1;
 }
 
-static void	start_game(t_game *game)
+int	exit_hook(t_game *game)
 {
-	game->win = mlx_new_window(game->mlx,
-			game->width * game->tile_size,
-			game->height * game->tile_size,
-			"So Long!");
-	if (!game->win)
-		error_exit("Window creation failed");
-	load_images(game);
-	render_map(game);
-	mlx_hook(game->win, 2, 1L << 0, handle_keypress, game);
-	mlx_hook(game->win, 17, 0, handle_exit, game);
-	mlx_loop(game->mlx);
+	close_game(game);
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -36,19 +44,32 @@ int	main(int argc, char **argv)
 	t_game	game;
 
 	if (argc != 2)
-		error_exit("Usage: ./so_long <map_file>");
+	{
+		write(2, "Error\n", 6);
+		return (1);
+	}
+	validate_not_directory(argv[1]);
+	validate_extension(argv[1]);
 	init_game(&game);
-	game.map = read_map(argv[1], &game.width, &game.height);
-	if (!game.map)
-	{
-		cleanup_game(&game);
-		error_exit("Failed to read map");
-	}
-	if (!validate_map(&game))
-	{
-		cleanup_game(&game);
-		error_exit(NULL);
-	}
-	start_game(&game);
+	game.map = read_map(argv[1], &game);
+	validate_rectangular(game.map);
+	validate_walls(game.map);
+	validate_elements(game.map);
+	validate_path(&game);
+	game.mlx = mlx_init();
+	if (!game.mlx)
+		error_exit("mlx_init failed");
+	game.win = mlx_new_window(game.mlx,
+			game.map_width * TILE_SIZE,
+			game.map_height * TILE_SIZE,
+			"So Long");
+	if (!game.win)
+		error_exit("mlx_new_window failed");
+	load_images(&game);
+	render_map(&game);
+	display_move_count(&game);
+	mlx_key_hook(game.win, handle_input, &game);
+	mlx_hook(game.win, 17, 0, exit_hook, &game);
+	mlx_loop(game.mlx);
 	return (0);
-} 
+}

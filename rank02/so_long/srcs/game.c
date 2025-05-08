@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,34 +12,39 @@
 
 #include "../so_long.h"
 
-void	*safe_malloc(size_t size)
+int	can_exit(t_game *game)
 {
-	void	*ptr;
-
-	ptr = malloc(size);
-	if (!ptr)
-		error_exit("Error\nmalloc failed");
-	return (ptr);
+	return (game->coins <= 0);
 }
 
-int	is_valid_extension(const char *filename, const char *ext)
+void	close_game(t_game *g)
 {
-	size_t	len_filename;
-	size_t	len_ext;
-
-	len_filename = ft_strlen(filename);
-	len_ext = ft_strlen(ext);
-	if (len_filename < len_ext)
-		return (0);
-	return (ft_strncmp(filename + len_filename - len_ext, ext, len_ext) == 0);
+	if (g->img_wall)
+		mlx_destroy_image(g->mlx, g->img_wall);
+	if (g->img_floor)
+		mlx_destroy_image(g->mlx, g->img_floor);
+	if (g->img_player)
+		mlx_destroy_image(g->mlx, g->img_player);
+	if (g->img_coin)
+		mlx_destroy_image(g->mlx, g->img_coin);
+	if (g->img_exit)
+		mlx_destroy_image(g->mlx, g->img_exit);
+	if (g->img_exit_open)
+		mlx_destroy_image(g->mlx, g->img_exit_open);
+	if (g->win)
+		mlx_destroy_window(g->mlx, g->win);
+	if (g->mlx)
+	{
+		mlx_loop_end(g->mlx);
+		mlx_destroy_display(g->mlx);
+		free(g->mlx);
+	}
+	free_map(g->map);
+	exit(0);
 }
 
-void	free_map(char **map)
+void	error_exit(const char *msg)
 {
-	int	i;
-
-	i = 0;
-	while (map[i])
-		free(map[i++]);
-	free(map);
+	write(2, msg, ft_strlen(msg));
+	exit(1);
 }

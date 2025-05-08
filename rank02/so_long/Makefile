@@ -1,50 +1,42 @@
-NAME = so_long
+NAME    := so_long
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -I. -Iget_next_line
-MLX_FLAGS = -Lminilibx-linux -lmlx -L/usr/X11/lib -lXext -lX11 -lXrandr -lXinerama -lXcursor
+CC      := cc
+CFLAGS  := -Wall -Wextra -Werror
+MLX_DIR := mlx
+INCS    := -I. -Ilibft -I$(MLX_DIR)
+MLXFLAG := -L$(MLX_DIR) -lmlx -lXext -lX11
 
-SRCS = srcs/main.c \
-       srcs/map_reader.c \
-       srcs/map_validator.c \
-       srcs/render.c \
-       srcs/events.c \
-       srcs/utils.c \
-       get_next_line/get_next_line.c \
-       get_next_line/get_next_line_utils.c
+SRC := \
+    srcs/main.c srcs/map.c srcs/render.c srcs/input.c srcs/game.c srcs/utils.c \
+    srcs/map_check_basic.c srcs/map_check_path.c
 
-OBJS = $(SRCS:.c=.o)
-SECONDARY = $(OBJS)
-
-MLX_DIR = minilibx-linux
-MLX_LIB = $(MLX_DIR)/libmlx.a
+OBJ := $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(MLX_LIB):
-	@if [ ! -d "$(MLX_DIR)" ]; then \
-		git clone https://github.com/42Paris/minilibx-linux.git $(MLX_DIR); \
-	fi
-	@make -C $(MLX_DIR)
-
-$(NAME): $(MLX_LIB) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(MLX_FLAGS)
+$(NAME): $(OBJ) $(MLX_DIR)/libmlx.a libft/libft.a
+	$(CC) $(CFLAGS) $(OBJ) $(MLXFLAG) libft/libft.a -o $@
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCS) -c $< -o $@
+
+$(MLX_DIR)/libmlx.a:
+	@git clone --depth 1 https://github.com/42Paris/minilibx-linux.git $(MLX_DIR) 2>/dev/null || true
+	@$(MAKE) -C $(MLX_DIR) >/dev/null
+
+libft/libft.a:
+	@$(MAKE) -C libft >/dev/null
 
 clean:
-	rm -f $(OBJS)
-	@if [ -d "$(MLX_DIR)" ]; then \
-		make -C $(MLX_DIR) clean; \
-	fi
+	@$(MAKE) -C libft clean >/dev/null
+	@rm -f $(OBJ)
 
 fclean: clean
-	rm -f $(NAME)
-	@if [ -d "$(MLX_DIR)" ]; then \
-		rm -rf $(MLX_DIR); \
-	fi
+	@rm -f $(NAME)
+	@rm -rf $(MLX_DIR)
+	@$(MAKE) -C libft fclean >/dev/null
 
 re: fclean all
 
-.PHONY: all clean fclean re 
+.PHONY: all clean fclean re
+.SECONDARY: $(OBJ)

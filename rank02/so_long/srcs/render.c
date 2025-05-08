@@ -1,83 +1,103 @@
-#include "../includes/so_long.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/17 22:54:27 by JuHyeon           #+#    #+#             */
+/*   Updated: 2025/05/08 15:48:08 by juhyeonl         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static void	load_image(t_game *game, void **img, char *path)
+#include "../so_long.h"
+
+void	draw_tile(t_game *game, int x, int y, void *img)
 {
-	int	width;
-	int	height;
-
-	*img = mlx_xpm_file_to_image(game->mlx, path, &width, &height);
-	if (!*img)
-		error_exit("Failed to load image");
+	mlx_put_image_to_window(game->mlx, game->win,
+		img, x * TILE_SIZE, y * TILE_SIZE);
 }
 
 void	load_images(t_game *game)
 {
-	load_image(game, &game->img_wall, "textures/wall.xpm");
-	load_image(game, &game->img_player, "textures/chara.xpm");
-	load_image(game, &game->img_collectible, "textures/chest.xpm");
-	load_image(game, &game->img_exit, "textures/rune.xpm");
-	load_image(game, &game->img_exit_light, "textures/rune_light.xpm");
-	load_image(game, &game->img_floor, "textures/land.xpm");
-}
+	int	width;
+	int	height;
 
-static void	put_image(t_game *game, void *img, int x, int y)
-{
-	mlx_put_image_to_window(game->mlx, game->win, img,
-		x * game->tile_size, y * game->tile_size);
-}
-
-static void	render_tile(t_game *game, int x, int y)
-{
-	put_image(game, game->img_floor, x, y);
-	if (game->map[y][x] == WALL)
-		put_image(game, game->img_wall, x, y);
-	else if (game->map[y][x] == COLLECTIBLE)
-		put_image(game, game->img_collectible, x, y);
-	else if (game->map[y][x] == EXIT)
-	{
-		if (game->collectibles == 0)
-			put_image(game, game->img_exit_light, x, y);
-		else
-			put_image(game, game->img_exit, x, y);
-	}
-	else if (game->map[y][x] == PLAYER)
-		put_image(game, game->img_player, x, y);
-}
-
-static void	render_text(t_game *game)
-{
-	char	*collectibles;
-	char	*moves;
-	char	*collectibles_text;
-	char	*moves_text;
-
-	collectibles = ft_itoa(game->collectibles);
-	moves = ft_itoa(game->moves);
-	collectibles_text = ft_strjoin("Collectibles: ", collectibles);
-	moves_text = ft_strjoin("Moves: ", moves);
-	mlx_string_put(game->mlx, game->win, 10, 20, 0xFFFFFF, collectibles_text);
-	mlx_string_put(game->mlx, game->win, 10, 40, 0xFFFFFF, moves_text);
-	free(collectibles);
-	free(moves);
-	free(collectibles_text);
-	free(moves_text);
+	width = TILE_SIZE;
+	height = TILE_SIZE;
+	game->img_wall = mlx_xpm_file_to_image(game->mlx,
+			PATH_WALL, &width, &height);
+	if (!game->img_wall)
+		error_exit("Error\nFailed to load wall image");
+	game->img_floor = mlx_xpm_file_to_image(game->mlx,
+			PATH_FLOOR, &width, &height);
+	if (!game->img_floor)
+		error_exit("Error\nFailed to load floor image");
+	game->img_player = mlx_xpm_file_to_image(game->mlx,
+			PATH_PLAYER, &width, &height);
+	if (!game->img_player)
+		error_exit("Error\nFailed to load player image");
+	game->img_exit = mlx_xpm_file_to_image(game->mlx,
+			PATH_EXIT, &width, &height);
+	if (!game->img_exit)
+		error_exit("Error\nFailed to load exit image");
+	game->img_coin = mlx_xpm_file_to_image(game->mlx,
+			PATH_COIN, &width, &height);
+	if (!game->img_coin)
+		error_exit("Error\nFailed to load coin image");
+	game->img_exit_open = mlx_xpm_file_to_image(game->mlx,
+			PATH_EXIT_OPEN, &width, &height);
+	if (!game->img_exit_open)
+		error_exit("Error\nFailed to load open exit image");
 }
 
 void	render_map(t_game *game)
 {
-	int	x;
-	int	y;
+	int		x;
+	int		y;
+	char	tile;
 
 	y = 0;
-	while (y < game->height)
+	while (y < game->map_height)
 	{
 		x = 0;
-		while (x < game->width)
+		while (x < game->map_width)
 		{
-			render_tile(game, x, y);
+			tile = game->map[y][x];
+			if (tile == '1')
+				draw_tile(game, x, y, game->img_wall);
+			else
+				draw_tile(game, x, y, game->img_floor);
+			if (tile == 'P')
+			{
+				game->player_x = x;
+				game->player_y = y;
+				draw_tile(game, x, y, game->img_player);
+			}
+			else if (tile == 'C')
+				draw_tile(game, x, y, game->img_coin);
+			else if (tile == 'E')
+			{
+				if (can_exit(game))
+					draw_tile(game, x, y, game->img_exit_open);
+				else
+					draw_tile(game, x, y, game->img_exit);
+			}
 			x++;
 		}
 		y++;
 	}
-	render_text(game);
-} 
+}
+
+void	display_move_count(t_game *game)
+{
+	char	*str;
+	char	*count;
+
+	count = ft_itoa(game->moves);
+	str = ft_strjoin("Moves: ", count);
+	mlx_string_put(game->mlx, game->win, 10, 10, 0xFFFFFF, str);
+	printf("Moves: %d\n", game->moves);
+	free(str);
+	free(count);
+}

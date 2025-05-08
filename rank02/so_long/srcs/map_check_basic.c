@@ -1,0 +1,78 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_check_basic.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/17 22:54:27 by JuHyeon           #+#    #+#             */
+/*   Updated: 2025/05/08 15:48:08 by juhyeonl         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../so_long.h"
+
+static void	print_map_error(void)
+{
+	write(2, "Error\n", 6);
+	exit(1);
+}
+
+void	validate_not_directory(const char *filename)
+{
+	struct stat	path_stat;
+
+	if (stat(filename, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
+		print_map_error();
+}
+
+void	validate_extension(const char *filename)
+{
+	int	len;
+
+	len = ft_strlen(filename);
+	if (len < 4 || ft_strncmp(filename + len - 4, ".ber", 4) != 0)
+		print_map_error();
+}
+
+void	validate_rectangular(char **map)
+{
+	int	i;
+	int	width;
+
+	i = 0;
+	width = ft_strlen(map[0]);
+	while (map[i])
+	{
+		if (width == 0 || (int)ft_strlen(map[i]) != width)
+			print_map_error();
+		i++;
+	}
+}
+
+void	validate_walls(char **map)
+{
+	int	width;
+	int	height;
+	int	x;
+	int	y;
+
+	width = ft_strlen(map[0]);
+	height = 0;
+	while (map[height])
+		height++;
+	x = 0;
+	while (x < width)
+	{
+		if (map[0][x] != '1' || map[height - 1][x] != '1')
+			print_map_error();
+		x++;
+	}
+	y = 0;
+	while (y < height)
+	{
+		if (map[y][0] != '1' || map[y][width - 1] != '1')
+			print_map_error();
+		y++;
+	}
+}
