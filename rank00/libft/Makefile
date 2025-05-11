@@ -72,7 +72,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@mkdir -p others
-	@$(AR) $(NAME) $(OBJS)
+	@$(AR) $(NAME) $(OBJS) printf/printf.a get_next_line/get_next_line.a
 	@echo "$(NAME) created"
 	@ranlib $(NAME)
 	@echo "$(NAME) indexed"
@@ -95,3 +95,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re bonus
+
+.SECONDARY: $(OBJS) $(BONUS_OBJS)
