@@ -6,7 +6,7 @@
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 19:21:26 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/04/30 20:48:41 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/02/28 15:51:33 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 	while (ft_strchr(set, s1[i]) && i <= j)
 		i++;
 	if (i > j)
-		return (ft_strdup(s1 + j + 1));
-	while (ft_strchr(set, s1[j]) && i <= j)
+		return (ft_strdup(""));
+	while (ft_strchr(set, s1[j]) && j > i)
 		j--;
 	rst = malloc(j - i + 2);
 	if (!rst)

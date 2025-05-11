@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: JuHyeon <ljh3900@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/04 00:47:35 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:28:00 by JuHyeon          ###   ########.fr       */
+/*   Created: 2024/11/19 13:31:57 by JuHyeon           #+#    #+#             */
+/*   Updated: 2024/11/19 13:33:00 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "ft_printf.h"
 
-/*
-	Prints a string followed by a newline. (문자열을 출력 후 개행 추가)
-*/
-void	ft_putendl_fd(char *s, int fd)
+char	*ft_strchr(const char *str, int c)
 {
-	if (!s)
-		return ;
-	ft_putstr_fd(s, fd);
-	ft_putchar_fd('\n', fd);
+	while (*str)
+	{
+		if (*str == (char)c)
+			return ((char *)str);
+		str++;
+	}
+	if (*str == (char)c)
+		return ((char *)str);
+	return (NULL);
 }

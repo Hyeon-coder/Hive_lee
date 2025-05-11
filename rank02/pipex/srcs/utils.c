@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../pipex.h"
+#include "../include/pipex.h"
 
 void	ft_free(char **str)
 {
@@ -26,18 +26,13 @@ void	ft_free(char **str)
 
 void	init_pipex(t_pipex *pipex)
 {
+	ft_memset(pipex, 0, sizeof(t_pipex));
 	pipex->infile = -1;
 	pipex->outfile = -1;
 	pipex->fd[0] = -1;
 	pipex->fd[1] = -1;
 	pipex->pid1 = -1;
 	pipex->pid2 = -1;
-	pipex->cmd1 = NULL;
-	pipex->cmd2 = NULL;
-	pipex->path1 = NULL;
-	pipex->path2 = NULL;
-	pipex->status1 = 0;
-	pipex->status2 = 0;
 }
 
 void	clean_pipex(t_pipex *pipex)

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../pipex.h"
+#include "../include/pipex.h"
 
 static void	select_cmd_and_path(t_pipex *pipex, int cmd_num, char ***cmd
 , char **path)
@@ -29,9 +29,11 @@ static void	select_cmd_and_path(t_pipex *pipex, int cmd_num, char ***cmd
 
 static void	handle_command_error(t_pipex *pipex, char *cmd)
 {
-	ft_putstr_fd("command not found: ", 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd("\n", 2);
+	if (cmd && *cmd)
+	{
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": command not found\n", 2);
+	}
 	clean_pipex(pipex);
 	exit(127);
 }
@@ -55,10 +57,10 @@ void	execute(t_pipex *pipex, char **envp, int cmd_num)
 	char	*path;
 
 	select_cmd_and_path(pipex, cmd_num, &cmd, &path);
-	if (!cmd || !cmd[0])
+	if (!cmd || !cmd[0] || !cmd[0][0])
 	{
 		clean_pipex(pipex);
-		exit(1);
+		exit(0);
 	}
 	if (!path)
 		handle_command_error(pipex, cmd[0]);

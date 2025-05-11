@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../pipex.h"
+#include "../include/pipex.h"
 
 static char	*join_and_check(char *path, int len, char *cmd)
 {

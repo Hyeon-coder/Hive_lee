@@ -5,46 +5,46 @@
 #                                                     +:+ +:+         +:+      #
 #    By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/03/16 20:08:16 by JuHyeon           #+#    #+#              #
-#    Updated: 2025/04/30 20:29:55 by JuHyeon          ###   ########.fr        #
+#    Created: 2024/11/15 11:20:32 by JuHyeon           #+#    #+#              #
+#    Updated: 2025/02/27 17:13:16 by JuHyeon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = pipex
+NAME = printf.a
+
+SRCS = \
+	ft_printf.c \
+	ft_putchar_rt.c \
+	ft_putstr_rt.c \
+	ft_strchr.c \
+	ft_strlen.c \
+	ft_itoa.c \
+	ft_itoa_base.c \
+	ft_form_check.c \
+	ft_putpointer.c
+
+OBJ = $(SRCS:.c=.o)
+
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-RM = rm -f
-
-SRCS = srcs/execute.c \
-	   srcs/find_path.c \
-	   srcs/pipex.c \
-	   srcs/utils.c \
-	   srcs/child.c
-
-OBJS = $(SRCS:.c=.o)
-
-LIBFT = libft/libft.a
+AR = ar -rcs
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
-
-$(LIBFT):
-	make -C libft
+$(NAME): $(OBJ)
+	$(AR) $(NAME) $(OBJ)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJS)
-	make -C libft clean
+	rm -f $(OBJ)
 
 fclean: clean
-	$(RM) $(NAME)
-	make -C libft fclean
+	rm -f $(NAME)
 
 re: fclean all
 
 .PHONY: all clean fclean re
-.SECONDARY: $(OBJS)
+
+.SECONDARY: $(OBJ)

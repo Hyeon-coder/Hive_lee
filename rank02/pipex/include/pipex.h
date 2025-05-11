@@ -21,7 +21,7 @@
 # include <errno.h>
 # include <sys/types.h>
 # include <sys/stat.h>
-# include "libft/libft.h"
+# include "../libft/libft.h"
 
 typedef struct s_pipex
 {

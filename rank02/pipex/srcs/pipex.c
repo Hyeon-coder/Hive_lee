@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../pipex.h"
+#include "../include/pipex.h"
 
 static void	validate_arguments(int ac, char **av)
 {
@@ -25,8 +25,6 @@ static void	validate_arguments(int ac, char **av)
 		ft_putstr_fd("Error: Empty file name\n", 2);
 		exit(1);
 	}
-	if (!av[2][0] || !av[3][0])
-		error_exit("empty command", 127);
 }
 
 static void	prepare_commands(t_pipex *pipex, char **av, char **envp)
@@ -52,13 +50,16 @@ static void	fork_and_run(t_pipex *pipex, char **av, char **envp)
 		clean_pipex(pipex);
 		error_exit("fork", 1);
 	}
-	pipex->pid2 = fork();
-	if (pipex->pid2 == 0)
-		child_process2(pipex, av, envp);
-	else if (pipex->pid2 < 0)
+	if (pipex->pid1 > 0)
 	{
-		clean_pipex(pipex);
-		error_exit("fork", 1);
+		pipex->pid2 = fork();
+		if (pipex->pid2 == 0)
+			child_process2(pipex, av, envp);
+		else if (pipex->pid2 < 0)
+		{
+			clean_pipex(pipex);
+			error_exit("fork", 1);
+		}
 	}
 }
 

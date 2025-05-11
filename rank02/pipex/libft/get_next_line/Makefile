@@ -5,46 +5,45 @@
 #                                                     +:+ +:+         +:+      #
 #    By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/03/16 20:08:16 by JuHyeon           #+#    #+#              #
-#    Updated: 2025/04/30 20:29:55 by JuHyeon          ###   ########.fr        #
+#    Created: 2024/02/28 16:00:00 by JuHyeon           #+#    #+#              #
+#    Updated: 2024/02/28 16:00:00 by JuHyeon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = pipex
+NAME = get_next_line.a
+
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
+AR = ar rcs
 RM = rm -f
 
-SRCS = srcs/execute.c \
-	   srcs/find_path.c \
-	   srcs/pipex.c \
-	   srcs/utils.c \
-	   srcs/child.c
+SRCS = \
+		get_next_line.c \
+		get_next_line_utils.c
 
 OBJS = $(SRCS:.c=.o)
 
-LIBFT = libft/libft.a
-
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
-
-$(LIBFT):
-	make -C libft
+$(NAME): $(OBJS)
+	@$(AR) $(NAME) $(OBJS)
+	@echo "$(NAME) created"
+	@ranlib $(NAME)
+	@echo "$(NAME) indexed"
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OBJS)
-	make -C libft clean
+	@$(RM) $(OBJS)
+	@echo "OBJS deleted"
 
 fclean: clean
-	$(RM) $(NAME)
-	make -C libft fclean
+	@$(RM) $(NAME)
+	@echo "$(NAME) deleted"
 
 re: fclean all
 
 .PHONY: all clean fclean re
-.SECONDARY: $(OBJS)
+
+.SECONDARY: $(OBJS) 
