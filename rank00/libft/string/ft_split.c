@@ -85,6 +85,10 @@ char	**ft_split(char const *s, char c)
 	i = 0;
 	while (*s)
 	{
+		while (*s && *s == c)
+			s++;
+		if (!*s)
+			break ;
 		arr[i] = get_word(&s, c);
 		if (!arr[i])
 		{
