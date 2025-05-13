@@ -31,8 +31,9 @@ static void	handle_command_error(t_pipex *pipex, char *cmd)
 {
 	if (cmd && *cmd)
 	{
+		ft_putstr_fd("command not found: ", 2);
 		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": command not found\n", 2);
+		ft_putstr_fd("\n", 2);
 	}
 	clean_pipex(pipex);
 	exit(127);
