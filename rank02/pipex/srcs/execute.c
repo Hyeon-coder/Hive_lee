@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhyeonl <juhyeonl@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 03:36:59 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/05/05 04:29:42 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:31:22 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,23 @@ static void	handle_command_error(t_pipex *pipex, char *cmd)
 
 static void	handle_execve_error(t_pipex *pipex, char *path, char *cmd)
 {
-	clean_pipex(pipex);
+	int	fd;
+
+	fd = open(path, O_DIRECTORY);
+	if (fd != -1)
+	{
+		close(fd);
+		write(2, cmd, ft_strlen(cmd));
+		write(2, ": Is a directory\n", 17);
+		clean_pipex(pipex);
+		exit(126);
+	}
 	if (access(path, X_OK) == -1)
 	{
-		ft_putstr_fd("Permission denied: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd("\n", 2);
+		write(2, "Permission denied: ", 20);
+		write(2, cmd, ft_strlen(cmd));
+		write(2, "\n", 1);
+		clean_pipex(pipex);
 		exit(126);
 	}
 	handle_command_error(pipex, cmd);
@@ -61,7 +72,7 @@ void	execute(t_pipex *pipex, char **envp, int cmd_num)
 	if (!cmd || !cmd[0] || !cmd[0][0])
 	{
 		clean_pipex(pipex);
-		exit(0);
+		handle_command_error(pipex, "");
 	}
 	if (!path)
 		handle_command_error(pipex, cmd[0]);

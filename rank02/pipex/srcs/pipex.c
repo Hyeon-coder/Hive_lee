@@ -3,26 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 19:59:43 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/05/05 04:31:01 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:36:42 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-static void	validate_arguments(int ac, char **av)
+static void	validate_arguments(int ac)
 {
 	if (ac != 5)
 	{
 		ft_putstr_fd("Error: Invalid number of arguments\n", 2);
 		ft_putstr_fd("Usage: ./pipex infile cmd1 cmd2 outfile\n", 2);
-		exit(1);
-	}
-	if (!av[1][0])
-	{
-		ft_putstr_fd("Error: Empty file name\n", 2);
 		exit(1);
 	}
 }
@@ -50,16 +45,13 @@ static void	fork_and_run(t_pipex *pipex, char **av, char **envp)
 		clean_pipex(pipex);
 		error_exit("fork", 1);
 	}
-	if (pipex->pid1 > 0)
+	pipex->pid2 = fork();
+	if (pipex->pid2 == 0)
+		child_process2(pipex, av, envp);
+	else if (pipex->pid2 < 0)
 	{
-		pipex->pid2 = fork();
-		if (pipex->pid2 == 0)
-			child_process2(pipex, av, envp);
-		else if (pipex->pid2 < 0)
-		{
-			clean_pipex(pipex);
-			error_exit("fork", 1);
-		}
+		clean_pipex(pipex);
+		error_exit("fork", 1);
 	}
 }
 
@@ -77,7 +69,7 @@ int	main(int ac, char **av, char **envp)
 	t_pipex	pipex;
 	int		exit_status;
 
-	validate_arguments(ac, av);
+	validate_arguments(ac);
 	initialize_and_fork(&pipex, av, envp);
 	close(pipex.fd[0]);
 	close(pipex.fd[1]);
@@ -85,8 +77,12 @@ int	main(int ac, char **av, char **envp)
 	waitpid(pipex.pid2, &pipex.status2, 0);
 	if (WIFEXITED(pipex.status2))
 		exit_status = WEXITSTATUS(pipex.status2);
+	else if (WIFSIGNALED(pipex.status2))
+		exit_status = 128 + WTERMSIG(pipex.status2);
 	else if (WIFEXITED(pipex.status1))
 		exit_status = WEXITSTATUS(pipex.status1);
+	else if (WIFSIGNALED(pipex.status1))
+		exit_status = 128 + WTERMSIG(pipex.status1);
 	else
 		exit_status = 1;
 	clean_pipex(&pipex);
