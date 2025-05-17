@@ -5,74 +5,49 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: juhyeonl <juhyeonl@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 04:00:35 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/05/05 04:00:40 by juhyeonl         ###   ########.fr       */
+/*   Created: 2025/05/17 21:45:22 by juhyeonl          #+#    #+#             */
+/*   Updated: 2025/05/17 21:45:25 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-static void	open_infile_or_exit(t_pipex *pipex, char *filename)
+void	child_process1(t_pipex *ctx)
 {
-	pipex->infile = open(filename, O_RDONLY);
-	if (pipex->infile == -1)
+	if (!ctx->av[1] || ctx->av[1][0] == '\0')
 	{
-		clean_pipex(pipex);
-		if (access(filename, F_OK) == -1)
-		{
-			ft_putstr_fd("No such file or directory: ", 2);
-			ft_putstr_fd(filename, 2);
-			ft_putstr_fd("\n", 2);
-			exit(1);
-		}
-		else if (access(filename, R_OK) == -1)
-		{
-			ft_putstr_fd("Permission denied: ", 2);
-			ft_putstr_fd(filename, 2);
-			ft_putstr_fd("\n", 2);
-			exit(1);
-		}
-		error_exit(filename, 1);
-	}
-}
-
-static void	open_outfile_or_exit(t_pipex *pipex, char *filename)
-{
-	pipex->outfile = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (pipex->outfile == -1)
-	{
-		clean_pipex(pipex);
-		perror(filename);
+		write(2, "no such file or directory\n", 26);
 		exit(1);
 	}
+	ctx->infile = open(ctx->av[1], O_RDONLY);
+	if (ctx->infile < 0)
+		error_exit(ctx->av[1], 1);
+	if (dup2(ctx->infile, STDIN_FILENO) < 0)
+		error_exit("dup2", 1);
+	if (dup2(ctx->fd[1], STDOUT_FILENO) < 0)
+		error_exit("dup2", 1);
+	close(ctx->fd[0]);
+	close(ctx->fd[1]);
+	ctx->r = ctx->av[2];
+	execute(ctx, 1);
 }
 
-void	child_process1(t_pipex *pipex, char **av, char **envp)
+void	child_process2(t_pipex *ctx)
 {
-	open_infile_or_exit(pipex, av[1]);
-	if (dup2(pipex->infile, STDIN_FILENO) == -1)
+	if (!ctx->av[4] || ctx->av[4][0] == '\0')
 	{
-		clean_pipex(pipex);
-		error_exit("dup2", 1);
+		write(2, "no such file or directory\n", 26);
+		exit(1);
 	}
-	if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
-	{
-		clean_pipex(pipex);
+	ctx->outfile = open(ctx->av[4], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (ctx->outfile < 0)
+		error_exit(ctx->av[4], 1);
+	if (dup2(ctx->fd[0], STDIN_FILENO) < 0)
 		error_exit("dup2", 1);
-	}
-	close(pipex->fd[0]);
-	close(pipex->infile);
-	execute(pipex, envp, 1);
-}
-
-void	child_process2(t_pipex *pipex, char **av, char **envp)
-{
-	open_outfile_or_exit(pipex, av[4]);
-	if (dup2(pipex->fd[0], STDIN_FILENO) == -1)
+	if (dup2(ctx->outfile, STDOUT_FILENO) < 0)
 		error_exit("dup2", 1);
-	if (dup2(pipex->outfile, STDOUT_FILENO) == -1)
-		error_exit("dup2", 1);
-	close(pipex->fd[1]);
-	close(pipex->outfile);
-	execute(pipex, envp, 2);
+	close(ctx->fd[0]);
+	close(ctx->fd[1]);
+	ctx->r = ctx->av[3];
+	execute(ctx, 2);
 }

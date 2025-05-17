@@ -5,90 +5,84 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: juhyeonl <juhyeonl@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 03:36:40 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/05/05 04:32:35 by juhyeonl         ###   ########.fr       */
+/*   Created: 2025/05/17 21:45:52 by juhyeonl          #+#    #+#             */
+/*   Updated: 2025/05/17 21:45:54 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-static char	*join_and_check(char *path, int len, char *cmd)
+char	*ft_getenv(char *envp[], const char *name)
 {
-	char	*dir;
-	char	*bin;
-	char	*full_path;
+	size_t	i;
+	size_t	len;
 
-	dir = ft_substr(path, 0, len);
-	if (!dir)
-		return (NULL);
-	bin = ft_strjoin(dir, "/");
-	free(dir);
-	if (!bin)
-		return (NULL);
-	full_path = ft_strjoin(bin, cmd);
-	free(bin);
-	if (!full_path)
-		return (NULL);
-	if (access(full_path, F_OK) == 0)
-		return (full_path);
-	free(full_path);
-	return (NULL);
-}
-
-static char	*check_absolute_path(char *cmd)
-{
-	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
+	len = ft_strlen(name);
+	i = 0;
+	while (envp[i])
 	{
-		if (access(cmd, F_OK) == 0)
-			return (ft_strdup(cmd));
+		if (ft_strncmp(envp[i], name, len) == 0
+			&& envp[i][len] == '=')
+		{
+			return (&envp[i][len + 1]);
+		}
+		i++;
 	}
 	return (NULL);
 }
 
-static char	*get_env_path(char **envp)
+char	*search_paths(char **paths, char *cmd)
 {
-	int	i;
-
-	i = 0;
-	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5))
-		i++;
-	if (!envp[i])
-		return (NULL);
-	return (envp[i] + 5);
-}
-
-static char	*search_paths(char *path, char *cmd)
-{
-	char	*found;
+	char	*tmp;
+	char	*full;
 	int		i;
 
-	while (*path)
+	i = 0;
+	while (paths[i])
 	{
-		i = 0;
-		while (path[i] && path[i] != ':')
-			i++;
-		found = join_and_check(path, i, cmd);
-		if (found)
-			return (found);
-		path += i;
-		if (*path)
-			path++;
+		tmp = ft_strjoin(paths[i], "/");
+		full = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (!full)
+			return (NULL);
+		if (access(full, X_OK) == 0)
+			return (full);
+		free(full);
+		i++;
 	}
 	return (NULL);
 }
 
-char	*find_path(char *cmd, char **envp)
+static char	*handle_slash_case(char *cmd)
 {
-	char	*path;
-	char	*found;
+	if (access(cmd, F_OK) != 0)
+		error_exit(cmd, 127);
+	if (is_directory(cmd))
+	{
+		if (cmd[0] == '/' || cmd[0] == '.')
+			error_exit(cmd, 126);
+		error_exit(cmd, 127);
+	}
+	if (access(cmd, X_OK) != 0)
+		error_exit(cmd, 126);
+	return (ft_strdup(cmd));
+}
 
-	if (!cmd || !cmd[0])
+char	*find_path(t_pipex *ctx, char *cmd)
+{
+	char	**paths;
+	char	*env_path;
+	char	*res;
+
+	if (ft_strchr(cmd, '/'))
+		return (handle_slash_case(cmd));
+	env_path = ft_getenv(ctx->envp, "PATH");
+	if (!env_path || *env_path == '\0')
+		error_exit(cmd, 127);
+	paths = ft_split(env_path, ':');
+	if (!paths)
 		return (NULL);
-	found = check_absolute_path(cmd);
-	if (found)
-		return (found);
-	path = get_env_path(envp);
-	if (!path)
-		return (NULL);
-	return (search_paths(path, cmd));
+	res = search_paths(paths, cmd);
+	ft_free(paths);
+	return (res);
 }

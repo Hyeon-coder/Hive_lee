@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 19:59:43 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/05/14 17:33:05 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/05/17 00:00:00 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <errno.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+# include <string.h>       /* strerror */
 # include "../libft/libft.h"
 
 typedef struct s_pipex
@@ -28,26 +29,50 @@ typedef struct s_pipex
 	int		fd[2];
 	int		infile;
 	int		outfile;
-	pid_t	pid1;
-	pid_t	pid2;
-	char	**cmd1;
-	char	**cmd2;
-	char	*path1;
-	char	*path2;
 	int		status1;
 	int		status2;
+	int		status_code;
+	int		ac;
+	char	**av;
+	char	**envp;
+	char	**cmd1;
+	char	**cmd2;
+	char	*r;
+	pid_t	pid1;
+	pid_t	pid2;
 }	t_pipex;
 
-/* utils.c */
-void	ft_free(char **str);
-void	init_pipex(t_pipex *pipex);
-void	clean_pipex(t_pipex *pipex);
-void	error_exit(char *msg, int exit_code);
-char	*find_path(char *cmd, char **envp);
-void	execute(t_pipex *pipex, char **envp, int cmd_num);
+/* main.c */
+void	run_pipeline(t_pipex *ctx);
 
-/* pipex.c */
-void	child_process1(t_pipex *pipex, char **av, char **envp);
-void	child_process2(t_pipex *pipex, char **av, char **envp);
+/* child.c */
+void	child_process1(t_pipex *ctx);
+void	child_process2(t_pipex *ctx);
+
+/* execute.c */
+void	execute(t_pipex *ctx, int cmd_num);
+
+/* find_path.c */
+char	*search_paths(char **paths, char *cmd);
+char	*find_path(t_pipex *ctx, char *cmd);
+
+/* utils.c */
+void	ft_free(char **strs);
+void	init_pipex(t_pipex *ctx);
+void	clean_pipex(t_pipex *ctx);
+void	error_exit(char *msg, int exit_code);
+char	*ft_getenv(char *envp[], const char *name);
+int		is_directory(char *path);
+int		ft_isspace(int c);
+
+/* parse_quoted_cmd.c */
+char	**ft_split_quoted(const char *s);
+
+/* parser_helpers.c */
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+// int		buf_add(char **buf, size_t *cap, size_t *len, char c);
+// int		parse_escape(const char **p, char **buf, size_t *cap, size_t *len);
+// int		parse_quoted(const char **p, char **buf, size_t *cap, size_t *len);
+size_t	ft_count_words_quoted(const char *s);
 
 #endif

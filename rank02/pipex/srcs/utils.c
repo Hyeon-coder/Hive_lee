@@ -5,61 +5,83 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: juhyeonl <juhyeonl@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 03:35:21 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/05/05 03:39:22 by juhyeonl         ###   ########.fr       */
+/*   Created: 2025/05/17 21:46:12 by juhyeonl          #+#    #+#             */
+/*   Updated: 2025/05/17 21:46:18 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-void	ft_free(char **str)
+void	ft_free(char **strs)
 {
 	int	i;
 
-	if (!str)
+	if (!strs)
 		return ;
 	i = 0;
-	while (str[i])
-		free(str[i++]);
-	free(str);
+	while (strs[i])
+	{
+		free(strs[i]);
+		i++;
+	}
+	free(strs);
 }
 
-void	init_pipex(t_pipex *pipex)
+void	print_error(char *msg, int exit_code)
 {
-	ft_memset(pipex, 0, sizeof(t_pipex));
-	pipex->infile = -1;
-	pipex->outfile = -1;
-	pipex->fd[0] = -1;
-	pipex->fd[1] = -1;
-	pipex->pid1 = -1;
-	pipex->pid2 = -1;
-}
-
-void	clean_pipex(t_pipex *pipex)
-{
-	if (!pipex)
-		return ;
-	if (pipex->cmd1)
-		ft_free(pipex->cmd1);
-	if (pipex->cmd2)
-		ft_free(pipex->cmd2);
-	if (pipex->path1)
-		free(pipex->path1);
-	if (pipex->path2)
-		free(pipex->path2);
-	if (pipex->infile != -1)
-		close(pipex->infile);
-	if (pipex->outfile != -1)
-		close(pipex->outfile);
-	if (pipex->fd[0] != -1)
-		close(pipex->fd[0]);
-	if (pipex->fd[1] != -1)
-		close(pipex->fd[1]);
-	init_pipex(pipex);
+	if (exit_code == 127)
+	{
+		if (msg && strchr(msg, '/'))
+			write(2, "no such file or directory\n", 26);
+		else
+			write(2, "command not found\n", 18);
+	}
+	else if (exit_code == 126)
+	{
+		if (msg[0] == '/' || msg[0] == '.')
+			write(2, "is a directory\n", 16);
+		else
+			write(2, "permission denied\n", 18);
+	}
 }
 
 void	error_exit(char *msg, int exit_code)
 {
-	perror(msg);
+	char	*err;
+
+	if (msg && msg[0])
+	{
+		write(2, msg, ft_strlen(msg));
+		write(2, ": ", 2);
+	}
+	if (exit_code == 127 || exit_code == 126)
+		print_error(msg, exit_code);
+	else
+	{
+		err = strerror(exit_code);
+		write(2, err, ft_strlen(err));
+		write(2, "\n", 1);
+	}
 	exit(exit_code);
+}
+
+int	is_directory(char *path)
+{
+	int	fd;
+
+	fd = open(path, O_DIRECTORY);
+	if (fd == -1)
+		return (0);
+	close(fd);
+	return (1);
+}
+
+int	ft_isspace(int c)
+{
+	return (c == ' '
+		|| c == '\t'
+		|| c == '\n'
+		|| c == '\v'
+		|| c == '\f'
+		|| c == '\r');
 }

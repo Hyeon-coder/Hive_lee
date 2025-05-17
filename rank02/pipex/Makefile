@@ -6,7 +6,7 @@
 #    By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/16 20:08:16 by JuHyeon           #+#    #+#              #
-#    Updated: 2025/04/30 20:29:55 by JuHyeon          ###   ########.fr        #
+#    Updated: 2025/05/17 00:00:00 by JuHyeon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,26 +15,27 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 
-SRCS = srcs/execute.c \
-	   srcs/find_path.c \
-	   srcs/pipex.c \
-	   srcs/utils.c \
-	   srcs/child.c
+SRCS = srcs/child.c \
+       srcs/execute.c \
+       srcs/find_path.c \
+       srcs/ft_count_words_quoted.c \
+       srcs/main.c \
+       srcs/parse_quoted_cmd.c \
+       srcs/parser_helpers.c \
+       srcs/utils.c
 
 OBJS = $(SRCS:.c=.o)
 
-LIBFT = libft/libft.a
-
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+$(NAME): $(OBJS) libft/libft.a
+	$(CC) $(CFLAGS) $(OBJS) libft/libft.a -o $(NAME)
 
-$(LIBFT):
+libft/libft.a:
 	make -C libft
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c include/pipex.h
+	$(CC) $(CFLAGS) -I include -c $< -o $@
 
 clean:
 	$(RM) $(OBJS)
@@ -47,4 +48,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
-.SECONDARY: $(OBJS)
