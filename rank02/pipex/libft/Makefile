@@ -25,7 +25,7 @@ SRC = \
 	linked_list/ft_lstmap.c linked_list/ft_lstsize.c linked_list/ft_lstadd_front.c \
 	linked_list/ft_lstdelone.c linked_list/ft_lstlast.c linked_list/ft_lstnew.c \
 	memory/ft_bzero.c memory/ft_calloc.c memory/ft_memchr.c memory/ft_memcmp.c \
-	memory/ft_memcpy.c memory/ft_memmove.c memory/ft_memset.c \
+	memory/ft_memcpy.c memory/ft_memmove.c memory/ft_memset.c memory/ft_realloc.c \
 	print/ft_error.c print/ft_putchar_fd.c print/ft_putendl_fd.c print/ft_putnbr_fd.c print/ft_putstr_fd.c \
 	string/ft_split.c string/ft_strdup.c string/ft_strjoin.c string/ft_strlcpy.c \
 	string/ft_strmapi.c string/ft_strnstr.c string/ft_strtrim.c string/ft_strchr.c \

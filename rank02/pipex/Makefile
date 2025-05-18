@@ -21,7 +21,6 @@ SRCS = srcs/child.c \
        srcs/ft_count_words_quoted.c \
        srcs/main.c \
        srcs/parse_quoted_cmd.c \
-       srcs/parser_helpers.c \
        srcs/utils.c
 
 OBJS = $(SRCS:.c=.o)

@@ -12,36 +12,39 @@
 
 #include "../include/pipex.h"
 
-size_t ft_count_words_quoted(const char *s)
+size_t	ft_count_words_quoted(const char *s)
 {
-    size_t count = 0;
-    int    in_w  = 0;
-    char   q;
+	size_t	count;
+	int		in_w;
+	char	q;
 
-    while (*s)
-    {
-        if (!ft_isspace((unsigned char)*s) && !in_w)
-        {
-            in_w = 1;
-            count++;
-        }
-        if (in_w)
-        {
-            if (*s == '\\' && s[1])
-                s += 2;
-            else if (*s == '"' || *s == '\'')
-            {
-                q = *s++;
-                while (*s && *s != q)
-                    s++;
-            }
-            else if (ft_isspace((unsigned char)*s))
-                in_w = 0;
-            if (*s)
-                s++;
-        }
-        else
-            s++;
-    }
-    return (count);
+	count = 0;
+	in_w = 0;
+	q = 0;
+	while (*s)
+	{
+		if (!ft_isspace((unsigned char)*s) && !in_w)
+		{
+			in_w = 1;
+			count++;
+		}
+		if (in_w)
+		{
+			if (*s == '\\' && s[1])
+				s += 2;
+			else if (*s == '"' || *s == '\'')
+			{
+				q = *s++;
+				while (*s && *s != q)
+					s++;
+			}
+			else if (ft_isspace((unsigned char)*s))
+				in_w = 0;
+			if (*s)
+				s++;
+		}
+		else
+			s++;
+	}
+	return (count);
 }
