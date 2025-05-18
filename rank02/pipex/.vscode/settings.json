@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "pipex.h": "c",
+        "stdlib.h": "c",
+        "stat.h": "c",
+        "stdio.h": "c"
+    }
+}

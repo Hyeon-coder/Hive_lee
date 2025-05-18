@@ -12,68 +12,77 @@
 
 #include "../include/pipex.h"
 
+static char	*resize_buffer(t_parser *parser)
+{
+	size_t	old_cap;
+	char	*new_buf;
+
+	old_cap = parser->cap;
+	parser->cap *= 2;
+	new_buf = ft_realloc(parser->buf, old_cap, parser->cap);
+	return (new_buf);
+}
+
+static void	handle_normal_char(const char **p, t_parser *parser)
+{
+	char	*new_buf;
+
+	if (parser->len + 1 >= parser->cap)
+	{
+		new_buf = resize_buffer(parser);
+		if (!new_buf)
+			return ;
+		parser->buf = new_buf;
+	}
+	parser->buf[parser->len++] = *(*p)++;
+}
+
+static void	handle_quoted_content(const char **p, char quote, t_parser *parser)
+{
+	char	*new_buf;
+
+	while (**p && **p != quote)
+	{
+		if (parser->len + 1 >= parser->cap)
+		{
+			new_buf = resize_buffer(parser);
+			if (!new_buf)
+				return ;
+			parser->buf = new_buf;
+		}
+		parser->buf[parser->len++] = *(*p)++;
+	}
+	if (**p == quote)
+		(*p)++;
+}
+
 static char	*read_word(const char **p)
 {
-	size_t	cap;
-	size_t	len;
-	size_t	old_cap;
-	char	*buf;
-	char	quote;
+	t_parser	parser;
+	char		quote;
 
-	cap = 64;
-	len = 0;
-	buf = malloc(cap);
-	if (!buf)
+	parser.cap = 64;
+	parser.len = 0;
+	parser.buf = malloc(parser.cap);
+	if (!parser.buf)
 		return (NULL);
 	while (**p && !ft_isspace((unsigned char)**p))
 	{
 		if (**p == '\\' && *(*p + 1))
 		{
 			(*p)++;
-			if (len + 1 >= cap)
-			{
-				old_cap = cap;
-				cap *= 2;
-				buf = ft_realloc(buf, old_cap, cap);
-				if (!buf)
-					return (NULL);
-			}
-			buf[len++] = *(*p)++;
-			continue ;
+			handle_normal_char(p, &parser);
 		}
-		if (**p == '"' || **p == '\'')
+		else if (**p == '"' || **p == '\'')
 		{
 			quote = *(*p)++;
-			while (**p && **p != quote)
-			{
-				if (len + 1 >= cap)
-				{
-					old_cap = cap;
-					cap *= 2;
-					buf = ft_realloc(buf, old_cap, cap);
-					if (!buf)
-						return (NULL);
-				}
-				buf[len++] = *(*p)++;
-			}
-			if (**p == quote)
-				(*p)++;
+			handle_quoted_content(p, quote, &parser);
 		}
 		else
-		{
-			if (len + 1 >= cap)
-			{
-				old_cap = cap;
-				cap *= 2;
-				buf = ft_realloc(buf, old_cap, cap);
-				if (!buf)
-					return (NULL);
-			}
-			buf[len++] = *(*p)++;
-		}
+			handle_normal_char(p, &parser);
 	}
-	buf[len] = '\0';
-	return (buf);
+	parser.buf[parser.len] = '\0';
+	return (parser.buf);
 }
 
 char	**ft_split_quoted(const char *s)

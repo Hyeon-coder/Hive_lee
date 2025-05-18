@@ -12,39 +12,47 @@
 
 #include "../include/pipex.h"
 
+static void	ft_cnt_words_init(t_cnt_words *cnt_words)
+{
+	cnt_words->cnt = 0;
+	cnt_words->in_w = 0;
+	cnt_words->q = 0;
+}
+
+static void	ft_cnt_words_check(t_cnt_words *cnt_words, const char *s)
+{
+	if (!ft_isspace((unsigned char)*s) && !cnt_words->in_w)
+	{
+		cnt_words->in_w = 1;
+		cnt_words->cnt++;
+	}
+}
+
 size_t	ft_count_words_quoted(const char *s)
 {
-	size_t	count;
-	int		in_w;
-	char	q;
+	t_cnt_words	cnt_words;
 
-	count = 0;
-	in_w = 0;
-	q = 0;
+	ft_cnt_words_init(&cnt_words);
 	while (*s)
 	{
-		if (!ft_isspace((unsigned char)*s) && !in_w)
-		{
-			in_w = 1;
-			count++;
-		}
-		if (in_w)
+		ft_cnt_words_check(&cnt_words, s);
+		if (cnt_words.in_w)
 		{
 			if (*s == '\\' && s[1])
 				s += 2;
 			else if (*s == '"' || *s == '\'')
 			{
-				q = *s++;
-				while (*s && *s != q)
+				cnt_words.q = *s++;
+				while (*s && *s != cnt_words.q)
 					s++;
 			}
 			else if (ft_isspace((unsigned char)*s))
-				in_w = 0;
+				cnt_words.in_w = 0;
 			if (*s)
 				s++;
 		}
 		else
 			s++;
 	}
-	return (count);
+	return (cnt_words.cnt);
 }

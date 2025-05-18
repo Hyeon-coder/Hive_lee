@@ -24,6 +24,20 @@
 # include <string.h>       /* strerror */
 # include "../libft/libft.h"
 
+typedef struct s_cnt_wrods
+{
+	size_t	cnt;
+	int		in_w;
+	char	q;
+}	t_cnt_words;
+
+typedef struct s_parser
+{
+	char	*buf;
+	size_t	cap;
+	size_t	len;
+}	t_parser;
+
 typedef struct s_pipex
 {
 	int		fd[2];
