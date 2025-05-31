@@ -3,10 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   b_cd.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ljh3900 <ljh3900@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:39:22 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/05/28 14:39:24 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/05/29 23:11:48 by ljh3900          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../../includes/minishell.h"
+
+int	ft_cd(char **argv)
+{
+	(void)argv;
+	printf("cd\n");
+	return (0);
+}

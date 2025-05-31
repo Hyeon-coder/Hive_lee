@@ -3,10 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   b_pwd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ljh3900 <ljh3900@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:39:26 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/05/28 14:39:27 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/05/29 23:12:13 by ljh3900          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../../includes/minishell.h"
+
+int	ft_pwd(char **argv)
+{
+	(void)argv;
+	printf("pwd\n");
+	return (0);
+}

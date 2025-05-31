@@ -34,7 +34,7 @@ int main(void)
     char    **args;
 
     setup_signals();
-    args = NULL;
+    (void)args;
     while (1)
     {
         line = readline("minishell> ");
@@ -47,8 +47,9 @@ int main(void)
             free(line);
             break;
         }
-        if (ft_strnstr(line, "echo", 5))
-            ft_echo(line);
+        execute(line);
+        // if (ft_strnstr(line, "echo", 5))
+        //     ft_echo(line);
         // args = tokenize(line);      /* 사용자 구현 */
         // execute(args);              /* 사용자 구현 */
         // free_tokens(args);          /* 사용자 구현 */

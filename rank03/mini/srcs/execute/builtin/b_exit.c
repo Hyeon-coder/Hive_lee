@@ -3,10 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   b_exit.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ljh3900 <ljh3900@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:39:38 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/05/28 14:39:39 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/05/29 23:11:55 by ljh3900          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../../includes/minishell.h"
+
+int	ft_exit(char **argv)
+{
+	(void)argv;
+	printf("exit\n");
+	return (0);
+}
