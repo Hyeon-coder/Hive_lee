@@ -6,15 +6,16 @@
 /*   By: ljh3900 <ljh3900@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:39:31 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/05/29 23:12:15 by ljh3900          ###   ########.fr       */
+/*   Updated: 2025/06/01 21:28:27 by ljh3900          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-int	ft_unset(char **argv)
+int	ft_unset(char **argv, char ***env)
 {
 	(void)argv;
+	(void)env;
 	printf("unset\n");
 	return (0);
 }

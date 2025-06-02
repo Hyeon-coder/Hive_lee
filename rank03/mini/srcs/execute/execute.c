@@ -6,40 +6,18 @@
 /*   By: ljh3900 <ljh3900@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:29:35 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/05/29 23:11:33 by ljh3900          ###   ########.fr       */
+/*   Updated: 2025/06/02 00:00:53 by ljh3900          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// int	is_builtin(char *line)
-// {
-// 	int i;
+// DONE : echo, env, export, exit, pwd
+// TODO : cd, unset
 
-// 	i = 0;
-// 	while (line[i] != ' ')
-// 		i++;
-// 	if (ft_strncmp(line, "cd", i) == 0)
-// 		ft_cd(line);
-// 	if (ft_strncmp(line, "echo", i) == 0)
-// 		ft_echo(line);
-// 	if (ft_strncmp(line, "env", i) == 0)
-// 		ft_env(line);
-// 	if (ft_strncmp(line, "exit", i) == 0)
-// 		ft_exit(line);
-// 	if (ft_strncmp(line, "export", i) == 0)
-// 		ft_export(line);
-// 	if (ft_strncmp(line, "pwd", i) == 0)
-// 		ft_pwd(line);
-// 	if (ft_strncmp(line, "unset", i) == 0)
-// 		ft_unset(line);
-// 	return (0);
-// }
-
-void	execute(char *line)
+void	execute(char *line, char ***env)
 {
-	// is_builtin(line);
-	int 	i;
+	int		i;
 	char	**argv;
 
 	argv = ft_split(line, ' ');
@@ -51,14 +29,12 @@ void	execute(char *line)
 	if (ft_strncmp(line, "echo", i) == 0)
 		ft_echo(argv);
 	if (ft_strncmp(line, "env", i) == 0)
-		ft_env(argv);
-	if (ft_strncmp(line, "exit", i) == 0)
-		ft_exit(argv);
+		ft_env(argv, env);
 	if (ft_strncmp(line, "export", i) == 0)
-		ft_export(argv);
+		ft_export(argv, env);
 	if (ft_strncmp(line, "pwd", i) == 0)
 		ft_pwd(argv);
 	if (ft_strncmp(line, "unset", i) == 0)
-		ft_unset(argv);
-		
+		ft_unset(argv, env);
+	ft_free_2d_array(argv);
 }
