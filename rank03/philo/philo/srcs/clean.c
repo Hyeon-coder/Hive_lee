@@ -45,7 +45,8 @@ void	clean_table(t_table *t)
 	}
 	/* 전역 보호용 뮤텍스 파괴 */
 	pthread_mutex_destroy(&t->rules.mt_print);
-	pthread_mutex_destroy(&t->rules.mt_finish);
+        pthread_mutex_destroy(&t->rules.mt_finish);
+        pthread_mutex_destroy(&t->rules.mt_waiter);
 	/* 철학자 배열 해제 */
 	free(t->philos);
 }

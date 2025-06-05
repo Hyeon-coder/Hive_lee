@@ -24,7 +24,7 @@ static void	pickup_forks(t_philo *p)
 	pthread_mutex_t	*first;
 	pthread_mutex_t	*second;
 
-    pthread_mutex_lock(&p->rules->mt_waiter);
+    pthread_mutex_lock(&p->rules->mt_waiter);       /* limit to N-1 eaters */
 	if (p->id % 2 == 0)
 	{
 		first = p->fork_left;
@@ -43,18 +43,20 @@ static void	pickup_forks(t_philo *p)
         pthread_mutex_unlock(&p->rules->mt_waiter);
 		return ;
     }
-	pthread_mutex_lock(second);
-	safe_print(p, MSG_FORK);
+        pthread_mutex_lock(second);
+        safe_print(p, MSG_FORK);
+        /* both forks in hand -> release waiter lock */
+    pthread_mutex_unlock(&p->rules->mt_waiter);
 }
 
-/* 포크 두 개 내려놓기 (순서 무관) */
+/* 포크 두 개 내려놓기 (순서 무관)
+** waiter mutex is released immediately after picking up forks */
 static void	putdown_forks(t_philo *p)
 {
 	pthread_mutex_unlock(p->fork_left);
 	/* 양 손이 같은 mutex(=philo 1명)인 경우 중복 unlock 방지 */
 	if (p->fork_left != p->fork_right)
 		pthread_mutex_unlock(p->fork_right);
-    pthread_mutex_unlock(&p->rules->mt_waiter);
 }
 
 /* ───────────────────────── 공개 함수 구현 ──────────────────────────────── */
@@ -71,13 +73,15 @@ void	philo_eat(t_philo *p)
 	/* single philosopher: 두 번째 포크를 얻지 못해 먹을 수 없음 → 바로 반환 */
 	if (p->fork_left == p->fork_right)
 		return ;
-	pthread_mutex_lock(&rules->mt_finish);
-	p->last_meal = timestamp_ms();
-	pthread_mutex_unlock(&rules->mt_finish);
-	safe_print(p, MSG_EAT);
-	precise_sleep(rules->time_eat, rules);
-	p->meals_eaten++;
-	putdown_forks(p);
+        pthread_mutex_lock(&rules->mt_finish);
+        p->last_meal = timestamp_ms();
+        pthread_mutex_unlock(&rules->mt_finish);
+        safe_print(p, MSG_EAT);
+        precise_sleep(rules->time_eat, rules);
+        pthread_mutex_lock(&rules->mt_finish);
+        p->meals_eaten++;                   /* monitor reads this under mt_finish */
+        pthread_mutex_unlock(&rules->mt_finish);
+        putdown_forks(p);
 }
 
 /* 자기 */
