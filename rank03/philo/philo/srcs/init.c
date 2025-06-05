@@ -3,70 +3,102 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: ljh3900 <ljh3900@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/01 17:42:38 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:06:01 by JuHyeon          ###   ########.fr       */
+/*   Created: 2025/06/05 00:54:53 by ljh3900           #+#    #+#             */
+/*   Updated: 2025/06/05 02:44:30 by ljh3900          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "../include/philo.h"
 
-int	init_info(t_info *info, int ac, char **av)
-{
-	if (ac != 5 && ac != 6)
-		return (1);
-	info->num_philo = ft_atoi(av[1]);
-	info->ttd = ft_atoi(av[2]);
-	info->tte = ft_atoi(av[3]);
-	info->tts = ft_atoi(av[4]);
-	if (ac == 6)
-		info->must_eat_cnt = ft_atoi(av[5]);
-	else
-		info->must_eat_cnt = -1;
-	if (info->num_philo < 1 || info->ttd < 0 || info->tte < 0 || info->tts < 0)
-		return (1);
-	info->finished_philos = 0;
-	info->someone_died = 0;
-	info->start_time = get_time_ms();
-	info->forks = malloc(sizeof(pthread_mutex_t) * info->num_philo);
-	info->philos = malloc(sizeof(t_philo) * info->num_philo);
-	if (!info->forks || !info->philos)
-		return (1);
-	return (0);
-}
+/* ───────────────────────── 내부 헬퍼 ────────────────────────────────────── */
 
-int	init_mutex(t_info *info)
+/* 인자가 순수 숫자인지 검사 (0~9 외 문자 존재 시 0 반환) */
+static int	is_number(const char *s)
 {
 	int	i;
 
-	if (pthread_mutex_init(&info->print_mutex, NULL) != 0)
-		return (1);
-	if (pthread_mutex_init(&info->meal_mutex, NULL) != 0)
-		return (1);
+	if (!s || !*s)
+		return (0);
 	i = 0;
-	while (i < info->num_philo)
+	while (s[i])
 	{
-		if (pthread_mutex_init(&info->forks[i], NULL) != 0)
+		if (s[i] < '0' || s[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+/* 포크 배열 뮤텍스를 초기화하고, 실패 시 이미 만든 것 롤백 */
+static int	init_mutex_array(pthread_mutex_t *arr, int n)
+{
+	int	i;
+
+	i = 0;
+	while (i < n)
+	{
+		if (pthread_mutex_init(&arr[i], NULL))
+		{
+			while (--i >= 0)
+				pthread_mutex_destroy(&arr[i]);
 			return (1);
+		}
 		i++;
 	}
 	return (0);
 }
 
-int	init_philos(t_info *info)
-{
-	int	i;
+/* ───────────────────────── 인자 파싱 ───────────────────────────────────── */
 
+int	parse_args(int ac, char **av, t_rules *rules)
+{
+	if (ac != 5 && ac != 6)
+		return (1);
+	/* 모든 인자가 숫자인지 확인 */
+	for (int i = 1; i < ac; i++)
+		if (!is_number(av[i]))
+			return (1);
+	rules->nbr_philo = ft_atoi(av[1]);
+	rules->time_die = ft_atoi(av[2]);
+	rules->time_eat = ft_atoi(av[3]);
+	rules->time_sleep = ft_atoi(av[4]);
+	rules->must_eat = (ac == 6) ? ft_atoi(av[5]) : -1;
+	/* 값이 0 이하이면 오류 */
+	if (rules->nbr_philo <= 0 || rules->time_die <= 0 || rules->time_eat <= 0
+		|| rules->time_sleep <= 0 || (ac == 6 && rules->must_eat <= 0))
+		return (1);
+	rules->finished = 0;
+	return (0);
+}
+
+/* ───────────────────────── 테이블 초기화 ──────────────────────────────── */
+
+int	init_table(t_table *table)
+{
+	const int	n = table->rules.nbr_philo;
+	int			i;
+
+	table->forks = malloc(sizeof(pthread_mutex_t) * n);
+	table->philos = malloc(sizeof(t_philo) * n);
+	if (!table->forks || !table->philos)
+		return (1);
+	if (init_mutex_array(table->forks, n))
+		return (1);
+	if (pthread_mutex_init(&table->rules.mt_print, NULL)
+		|| pthread_mutex_init(&table->rules.mt_finish, NULL)
+		|| pthread_mutex_init(&table->rules.mt_waiter, NULL))
+		return (1);
 	i = 0;
-	while (i < info->num_philo)
+	while (i < n)
 	{
-		info->philos[i].id = i + 1;
-		info->philos[i].eat_cnt = 0;
-		info->philos[i].last_meal = get_time_ms();
-		info->philos[i].left_fork = &info->forks[i];
-		info->philos[i].right_fork = &info->forks[(i + 1) % info->num_philo];
-		info->philos[i].info = info;
+		table->philos[i].id = i + 1;
+		table->philos[i].meals_eaten = 0;
+		table->philos[i].last_meal = 0; /* start_ts 기록 후 갱신 */
+		table->philos[i].fork_left = &table->forks[i];
+		table->philos[i].fork_right = &table->forks[(i + 1) % n];
+		table->philos[i].rules = &table->rules;
 		i++;
 	}
 	return (0);

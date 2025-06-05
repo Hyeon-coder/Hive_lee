@@ -3,67 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: ljh3900 <ljh3900@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/01 17:42:38 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:06:01 by JuHyeon          ###   ########.fr       */
+/*   Created: 2025/06/05 00:52:53 by ljh3900           #+#    #+#             */
+/*   Updated: 2025/06/05 01:37:32 by ljh3900          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "../include/philo.h"
 
-static int	start_philo_threads(t_info *info)
+int	main(int ac, char **av)
 {
-	int	i;
-
-	i = 0;
-	while (i < info->num_philo)
-	{
-		if (pthread_create(&info->philos[i].thread, NULL,
-				philo_routine, &info->philos[i]) != 0)
-			return (1);
-		usleep(100);
-		i++;
-	}
-	return (0);
-}
-
-static int	start_monitor_thread(t_info *info, pthread_t *monitor)
-{
-	if (pthread_create(monitor, NULL, monitor_routine, info) != 0)
-		return (1);
-	return (0);
-}
-
-static void	wait_for_threads(t_info *info, pthread_t monitor)
-{
-	int	i;
-
-	pthread_join(monitor, NULL);
-	i = 0;
-	while (i < info->num_philo)
-	{
-		pthread_join(info->philos[i].thread, NULL);
-		i++;
-	}
-}
-
-int	main(int argc, char **argv)
-{
-	t_info		info;
+	t_table		table;
 	pthread_t	monitor;
+	int			i;
 
-	if (init_info(&info, argc, argv)
-		|| init_mutex(&info)
-		|| init_philos(&info)
-		|| start_philo_threads(&info)
-		|| start_monitor_thread(&info, &monitor))
+	/* ────── 1) 인자 파싱 ─────────────────────────────────────────── */
+	if (parse_args(ac, av, &table.rules))
+		return (error_exit("Error: bad arguments\n"));
+
+	/* ────── 2) 테이블 초기화 ─────────────────────────────────────── */
+	if (init_table(&table))
+		return (error_exit("Error: init failed\n"));
+
+	/* 시뮬레이션 시작 타임스탬프 저장 */
+	table.rules.start_ts = timestamp_ms();
+
+	/* ────── 3) 스레드 생성 ───────────────────────────────────────── */
+	i = 0;
+	while (i < table.rules.nbr_philo)
 	{
-		printf("Error: initialization or thread creation failed\n");
-		return (1);
+		if (pthread_create(&table.philos[i].thread_id, NULL,
+				philo_routine, &table.philos[i]))
+			return (error_exit("Error: pthread_create (philo)\n"));
+		i++;
 	}
-	wait_for_threads(&info, monitor);
-	destroy_mutex(&info);
-	free_all(&info);
+	if (pthread_create(&monitor, NULL, monitor_routine, &table))
+		return (error_exit("Error: pthread_create (monitor)\n"));
+
+	/* ────── 4) join & 종료 대기 ──────────────────────────────────── */
+	i = 0;
+	while (i < table.rules.nbr_philo)
+	{
+		pthread_join(table.philos[i].thread_id, NULL);
+		i++;
+	}
+	pthread_join(monitor, NULL);
+
+	/* ────── 5) 자원 해제 ─────────────────────────────────────────── */
+	clean_table(&table);
 	return (0);
 }

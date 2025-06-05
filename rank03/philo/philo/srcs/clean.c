@@ -3,33 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: ljh3900 <ljh3900@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/01 17:42:38 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:06:01 by JuHyeon          ###   ########.fr       */
+/*   Created: 2025/06/05 01:08:31 by ljh3900           #+#    #+#             */
+/*   Updated: 2025/06/05 01:08:54 by ljh3900          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "../include/philo.h"
 
-void	destroy_mutex(t_info *info)
+/* ───────────────────────── 에러 헬퍼 ────────────────────────────────────── */
+/*
+**  표준 에러로 메시지를 출력하고 1을 반환.
+**  (42 MiniLibX 프로젝트 스타일에 맞춘 simple helper)
+*/
+int	error_exit(const char *msg)
+{
+	if (msg)
+		fputs(msg, stderr);
+	return (1);
+}
+
+/* ───────────────────────── 자원 정리 ────────────────────────────────────── */
+
+void	clean_table(t_table *t)
 {
 	int	i;
 
-	pthread_mutex_destroy(&info->print_mutex);
-	pthread_mutex_destroy(&info->meal_mutex);
-	i = 0;
-	while (i < info->num_philo)
+	if (!t)
+		return ;
+	/* 포크 뮤텍스 파괴 */
+	if (t->forks)
 	{
-		pthread_mutex_destroy(&info->forks[i]);
-		i++;
+		i = 0;
+		while (i < t->rules.nbr_philo)
+		{
+			pthread_mutex_destroy(&t->forks[i]);
+			i++;
+		}
+		free(t->forks);
 	}
-}
-
-void	free_all(t_info *info)
-{
-	if (info->forks)
-		free(info->forks);
-	if (info->philos)
-		free(info->philos);
+	/* 전역 보호용 뮤텍스 파괴 */
+	pthread_mutex_destroy(&t->rules.mt_print);
+	pthread_mutex_destroy(&t->rules.mt_finish);
+	/* 철학자 배열 해제 */
+	free(t->philos);
 }

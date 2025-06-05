@@ -3,62 +3,86 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: ljh3900 <ljh3900@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/01 17:42:38 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:06:01 by JuHyeon          ###   ########.fr       */
+/*   Created: 2025/06/05 00:56:32 by ljh3900           #+#    #+#             */
+/*   Updated: 2025/06/05 02:14:06 by ljh3900          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
+#include "../include/philo.h"
 
-long long	get_time_ms(void)
+/* ───────────────────────── 타임스탬프 ───────────────────────────────────── */
+/*
+** gettimeofday() 로 현재 시각을 밀리초 단위 long long 값으로 반환
+*/
+long long	timestamp_ms(void)
 {
 	struct timeval	tv;
 
-	gettimeofday(&tv, NULL);
-	return ((long long)(tv.tv_sec) * 1000 + (tv.tv_usec) / 1000);
+	if (gettimeofday(&tv, NULL))
+		return (0);
+	return ((long long)tv.tv_sec * 1000LL + (long long)tv.tv_usec / 1000LL);
 }
 
-void	my_usleep(long long ms)
+/* ───────────────────────── 정밀 슬립 ────────────────────────────────────── */
+/*
+** usleep() 은 10ms 단위로 깰 수 있어 부정확하므로
+** 0.5ms 간격 폴링으로 목표 시간까지 대기
+*/
+void	precise_sleep(long long duration, t_rules *rules)
 {
 	long long	start;
 
-	start = get_time_ms();
-	while (get_time_ms() - start < ms)
-		usleep(500);
-}
-
-void	print_status(t_philo *philo, const char *msg)
-
-{
-	long long	timestamp;
-
-	pthread_mutex_lock(&philo->info->print_mutex);
-	if (!philo->info->someone_died
-		&& philo->info->finished_philos < philo->info->num_philo)
+	start = timestamp_ms();
+	while (!rules->finished)
 	{
-		timestamp = get_time_ms() - philo->info->start_time;
-		printf("%lld %d %s\n", timestamp, philo->id, msg);
+		if (timestamp_ms() - start >= duration)
+			break ;
+		usleep(100);
 	}
-	pthread_mutex_unlock(&philo->info->print_mutex);
 }
 
+/* ───────────────────────── atoi (overflow 체크) ────────────────────────── */
+/*
+**  - 허용 문자는 '0'~'9'만 (parse_args 에서 이미 숫자 여부 검증)
+**  - 32비트 int 범위를 넘기면 -1 반환해 오류 전파
+*/
 int	ft_atoi(const char *str)
 {
-	int	res;
-	int	sign;
+	long long	num;
 
-	res = 0;
-	sign = 1;
-	while (*str == ' ' || (9 <= *str && *str <= 13))
-		str++;
-	if (*str == '+' || *str == '-')
+	if (!str || !*str)
+		return (-1);
+	num = 0;
+	while (*str)
 	{
-		if (*str++ == '-')
-			sign = -1;
+		if (*str < '0' || *str > '9')
+			return (-1);
+		num = num * 10 + (*str - '0');
+		if (num > 2147483647)
+			return (-1);
+		str++;
 	}
-	while ('0' <= *str && *str <= '9')
-		res = res * 10 + (*str++ - '0');
-	return (res * sign);
+	return ((int)num);
+}
+
+/* ───────────────────────── 스레드 안전 출력 ─────────────────────────────── */
+/*
+**  - 로그 포맷: "<ms> <philo_id> <MSG>"
+**  - rules->finished 가 세트되면 추가 출력 차단
+*/
+void	safe_print(t_philo *philo, const char *msg)
+{
+	t_rules	*rules;
+	long long	now;
+
+	rules = philo->rules;
+	pthread_mutex_lock(&rules->mt_print);
+	if (!rules->finished || strcmp(msg, MSG_DIED) == 0)
+	{
+		now = timestamp_ms() - rules->start_ts;
+		printf("%lld %d %s\n", now, philo->id, msg);
+	}
+	pthread_mutex_unlock(&rules->mt_print);
 }

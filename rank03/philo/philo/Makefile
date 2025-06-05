@@ -3,34 +3,41 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+         #
+#    By: ljh3900 <ljh3900@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/05/13 00:00:00 by JuHyeon           #+#    #+#              #
-#    Updated: 2025/05/13 00:00:00 by JuHyeon          ###   ########.fr        #
+#    Created: 2025/06/05 00:45:57 by ljh3900           #+#    #+#              #
+#    Updated: 2025/06/05 00:46:21 by ljh3900          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= philo
+NAME        := philo
+SRCDIR      := srcs
+OBJDIR      := objs
+INCDIR      := include
+CC          := cc
+CFLAGS      := -Wall -Wextra -Werror -pthread -I$(INCDIR)
 
-CC		= cc
-CFLAGS	= -Wall -Wextra -Werror
+SRCS        := \
+    $(SRCDIR)/main.c \
+    $(SRCDIR)/init.c \
+    $(SRCDIR)/routine.c \
+    $(SRCDIR)/monitor.c \
+    $(SRCDIR)/utils.c \
+    $(SRCDIR)/clean.c
 
-SRCS	= srcs/main.c \
-		  srcs/utils.c \
-		  srcs/init.c \
-		  srcs/philo_routine.c \
-		  srcs/monitor.c \
-		  srcs/clean.c
-
-OBJS	= $(SRCS:.c=.o)
+OBJS        := $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -lpthread
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCDIR)/philo.h
+	@mkdir -p $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	rm -rf $(OBJDIR)
 
 fclean: clean
 	rm -f $(NAME)
