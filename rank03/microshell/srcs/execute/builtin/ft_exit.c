@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 22:44:27 by ljh3900           #+#    #+#             */
-/*   Updated: 2025/06/06 14:31:45 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/06/07 16:19:18 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	ft_str_isalpha(char *str)
 {
 	int	i;
 
+	if (*str == '\0' || str == NULL)
+		return (FALSE);
 	i = 0;
 	while (str[i])
 	{
@@ -26,10 +28,6 @@ int	ft_str_isalpha(char *str)
 	return (FALSE);
 }
 
-/*
-	too many argu => don't quit minishell
-	others => need quit
-*/
 int exit_error(char **argv)
 {
 	int cnt;
@@ -37,37 +35,36 @@ int exit_error(char **argv)
 	cnt = 0;
 	while (argv[cnt])
 		cnt++;
+	if (cnt == 1)
+		return (0);
 	if (2 < cnt)
 	{
-		ft_error("exit: too many arguments\n");
+		ft_putstr_fd("exit: too many arguments\n", 2);
 		return (1);
 	}
 	else if (ft_str_isalpha(argv[1]))
 	{
-		ft_error("exit: ");
-		ft_error(argv[1]);
-		ft_error("numeric argument required\n");
+		ft_putstr_fd("exit: ", 2);
+		ft_putstr_fd(argv[1], 2);
+		ft_putstr_fd("numeric argument required\n", 2);
 		return (2);
 	}
 	else
 	{
-		ft_error("exit: unknown error\n");
+		ft_putstr_fd("exit: unknown error\n", 2);
 		return (1);
 	}
 	return (0);
-		
 }
 
-int	ft_exit(char **argv)
+void	ft_exit(char **argv)
 {
 	int	exit_code;
 
 	exit_code = 0;
+	printf("exit\n");
 	exit_code = exit_error(argv);
-	// re-initialize use by exit_code
-	// and return that?
-	if (exit_code != 0)
-		return (exit_code);
-	printf("eeeeexit\n");
-	return (exit_code);
+	if (exit_code == 1)
+		return ;
+	exit(exit_code);
 }

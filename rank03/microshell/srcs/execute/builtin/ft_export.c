@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh3900 <ljh3900@student.42.fr>            +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:39:28 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/06/04 23:38:11 by ljh3900          ###   ########.fr       */
+/*   Updated: 2025/06/07 18:51:06 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ static int	ft_export_error(char **argv)
 	int		i;
 	int		j;
 	char	*s;
-
+	
 	i = 0;
 	while (argv[i])
 	{
@@ -177,7 +177,7 @@ static int	ft_export_error(char **argv)
 	return (0);
 }
 
-int	ft_export(char **argv, char ***env)
+int	ft_export(char **argv, t_env *env_list)
 {
 	int		env_len;
 	int		arg_len;
@@ -185,19 +185,21 @@ int	ft_export(char **argv, char ***env)
 
 	if (ft_export_error(argv))
 	{
-		fprintf(stderr, "export: invalid identifier\n");
+		ft_putstr_fd("export: '", 2);
+		ft_putstr_fd(argv[1], 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
 		return (1);
 	}
+	
 	env_len = ft_env_len(*env);
 	arg_len = ft_arg_len(argv);
 	tmp = malloc(sizeof(char *) * (env_len + arg_len + 1));
 	if (!tmp)
 	{
-		fprintf(stderr, "malloc failed\n");
+		ft_putstr_fd("malloc failed\n", 2);
 		return (-1);
 	}
 	input_tmp(*env, argv, tmp);
 	*env = tmp;
-	ft_free_2d_array(tmp);
 	return (0);
 }

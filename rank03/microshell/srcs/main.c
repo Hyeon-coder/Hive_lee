@@ -31,14 +31,15 @@ void setup_signals(void)
 int main(int argc, char **argv, char **envp)
 {
 	char	*line;
-	char	**env;
+	t_env	*env_list;
 	char	**args;
+
 
 	(void)argc;
 	(void)argv;
 	(void)args;
 	setup_signals();
-	env = envp;
+	env_list = env_init(envp);
 	while (1)
 	{
 		line = readline("minishell> ");
@@ -47,7 +48,7 @@ int main(int argc, char **argv, char **envp)
 		if (*line)
 			add_history(line);
 		// args = tokenize(line);
-		execute(line, &env);
+		execute(line, env_list);
 		// free_tokens(args);
 		free(line);
 	}

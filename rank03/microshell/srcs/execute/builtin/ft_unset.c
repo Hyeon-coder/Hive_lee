@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   b_unset.c                                          :+:      :+:    :+:   */
+/*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh3900 <ljh3900@student.42.fr>            +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:39:31 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/06/03 23:11:42 by ljh3900          ###   ########.fr       */
+/*   Updated: 2025/06/07 18:37:38 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-int	ft_unset(char **argv, char ***env)
+/*
+	
+*/
+
+int	ft_unset(char **argv, t_env *env_list)
 {
 	int		i;
 	int		j;
@@ -21,7 +25,9 @@ int	ft_unset(char **argv, char ***env)
 
 	if (!argv[1])
 		return (0);
-	envp = *env;
+	// envp = *env;
+	envp = NULL;
+	(void)env_list;
 	i = 1;
 	while (argv[i])
 	{

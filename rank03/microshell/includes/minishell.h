@@ -6,7 +6,7 @@
 /*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 23:18:18 by ljh3900           #+#    #+#             */
-/*   Updated: 2025/06/06 14:07:56 by juhyeonl         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:39:48 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <signal.h>
 # include <stdlib.h>
 # include <unistd.h>
+#include <string.h>
+#include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
@@ -53,10 +55,11 @@ typedef struct	t_token
 	int	int_val;
 }   t_token ;
 
-typedef struct	t_env
+typedef struct s_env
 {
-	char	*name;
-	char	*value;
+	char			*name;
+	char			*value;
+	struct s_env	*next;
 }	t_env;
 
 extern volatile sig_atomic_t g_signal;
@@ -66,19 +69,23 @@ void    free_tokens(t_token **args);
 
 void    setup_signals(void);
 
-void	execute(char *line, char ***env);
+void	execute(char *line, t_env *env_list);
 
 /* built-in command */
-int		ft_cd(char **argv, char ***env);
+int		ft_cd(char **argv, t_env *env_list);
 int		ft_echo(char **argv);
-int		ft_env(char **argv, char ***env);
-int		ft_export(char **argv, char ***env);
+int		ft_env(char **argv, t_env *env_list);
+int		ft_export(char **argv, t_env *env_list);
 int		ft_pwd(char **argv);
-int		ft_unset(char **argv, char ***env);
-int     ft_exit(char **argv);
+int		ft_unset(char **argv, t_env *env_list);
+void	ft_exit(char **argv);
 int		ft_str_isalpha(char *str);
 
 /* utils */
 void	ft_free_2d_array(char **arr);
+
+/* env_utils */
+void	env_clear(t_env **lst);
+t_env	*env_init(char **envp);
 
 #endif

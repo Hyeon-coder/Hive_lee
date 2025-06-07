@@ -6,7 +6,7 @@
 #    By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/29 15:00:00 by JuHyeon           #+#    #+#              #
-#    Updated: 2025/06/06 14:29:34 by juhyeonl         ###   ########.fr        #
+#    Updated: 2025/06/07 18:43:06 by juhyeonl         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ OBJDIR  = objs
 
 SRCS = srcs/main.c \
        srcs/utils.c \
+       srcs/env_utils.c \
        srcs/execute/builtin/ft_echo.c \
        srcs/execute/builtin/ft_cd.c \
        srcs/execute/builtin/ft_env.c \

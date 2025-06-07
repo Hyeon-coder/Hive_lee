@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ljh3900 <ljh3900@student.42.fr>            +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:39:26 by juhyeonl          #+#    #+#             */
-/*   Updated: 2025/06/04 22:49:57 by ljh3900          ###   ########.fr       */
+/*   Updated: 2025/06/07 16:22:27 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	ft_pwd_error(char **argv)
 {
 	if (argv[1])
 	{
-		fprintf(stderr, "pwd: too many arguments\n");
+		ft_putstr_fd("pwd: options are not supported\n", 2);
 		return (1);
 	}
 	return (0);
