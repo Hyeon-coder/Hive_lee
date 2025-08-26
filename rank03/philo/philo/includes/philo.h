@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/01 17:42:38 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:06:01 by JuHyeon          ###   ########.fr       */
+/*   Created: 2025/08/26 11:18:37 by JuHyeon           #+#    #+#             */
+/*   Updated: 2025/08/26 11:18:39 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ long long	get_time_ms(void);
 void		my_usleep(long long ms);
 void		print_status(t_philo *philo, const char *msg);
 int			ft_atoi(const char *str);
+int			simulation_finished(t_info *info); // 추가
 
 // init.c
 int			init_info(t_info *info, int argc, char **argv);

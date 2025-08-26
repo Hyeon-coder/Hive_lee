@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: JuHyeon <JuHyeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/01 17:42:38 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/02/28 15:06:01 by JuHyeon          ###   ########.fr       */
+/*   Created: 2025/08/26 11:19:36 by JuHyeon           #+#    #+#             */
+/*   Updated: 2025/08/26 11:30:50 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ long long	get_time_ms(void)
 	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
-	return ((long long)(tv.tv_sec) * 1000 + (tv.tv_usec) / 1000);
+	return ((long long)tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
 void	my_usleep(long long ms)
@@ -25,18 +25,35 @@ void	my_usleep(long long ms)
 	long long	start;
 
 	start = get_time_ms();
-	while (get_time_ms() - start < ms)
+	while ((get_time_ms() - start) < ms)
+	{
+		if (simulation_finished(NULL))
+			break ;
 		usleep(500);
+	}
+}
+
+int	simulation_finished(t_info *info)
+{
+	int	died;
+	int	finished;
+
+	if (!info)
+		return (0);
+	pthread_mutex_lock(&info->meal_mutex);
+	died = info->someone_died;
+	finished = (info->must_eat_cnt != -1
+			&& info->finished_philos >= info->num_philo);
+	pthread_mutex_unlock(&info->meal_mutex);
+	return (died || finished);
 }
 
 void	print_status(t_philo *philo, const char *msg)
-
 {
 	long long	timestamp;
 
 	pthread_mutex_lock(&philo->info->print_mutex);
-	if (!philo->info->someone_died
-		&& philo->info->finished_philos < philo->info->num_philo)
+	if (!simulation_finished(philo->info))
 	{
 		timestamp = get_time_ms() - philo->info->start_time;
 		printf("%lld %d %s\n", timestamp, philo->id, msg);
