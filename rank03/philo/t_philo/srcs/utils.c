@@ -6,7 +6,7 @@
 /*   By: JuHyeon <JuHyeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 11:19:36 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/08/26 23:36:44 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/08/27 00:14:42 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,6 @@ int	simulation_finished(t_info *info)
 	finished = (info->must_eat_cnt != -1 
 			&& atomic_load(&info->finished_philos) >= info->num_philo);
 	return (died || finished);
-}
-
-void	print_status(t_philo *philo, const char *msg)
-{
-	long long	timestamp;
-
-	pthread_mutex_lock(&philo->info->print_mutex);
-	if (!atomic_load(&philo->info->someone_died))
-	{
-		timestamp = get_time_ms() - philo->info->start_time;
-		printf("%lld %d %s\n", timestamp, philo->id, msg);
-	}
-	pthread_mutex_unlock(&philo->info->print_mutex);
 }
 
 int	ft_atoi(const char *str)

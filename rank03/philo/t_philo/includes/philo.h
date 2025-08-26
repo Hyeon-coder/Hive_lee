@@ -6,7 +6,7 @@
 /*   By: JuHyeon <JuHyeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 11:18:37 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/08/26 23:36:33 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/08/27 00:03:20 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_info
 long long	get_time_ms(void);
 void		my_usleep(long long ms, t_info *info);
 void		print_status(t_philo *philo, const char *msg);
+void		print_death(t_philo *philo);
 int			ft_atoi(const char *str);
 int			simulation_finished(t_info *info);
 

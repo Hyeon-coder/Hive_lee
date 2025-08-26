@@ -6,7 +6,7 @@
 #    By: JuHyeon <JuHyeon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/13 00:00:00 by JuHyeon           #+#    #+#              #
-#    Updated: 2025/08/26 23:36:23 by JuHyeon          ###   ########.fr        #
+#    Updated: 2025/08/27 00:17:20 by JuHyeon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ SRCS	= srcs/main.c \
 		  srcs/init.c \
 		  srcs/philo_routine.c \
 		  srcs/monitor.c \
-		  srcs/clean.c
+		  srcs/clean.c \
+		  srcs/print.c
 
 OBJS	= $(SRCS:.c=.o)
 

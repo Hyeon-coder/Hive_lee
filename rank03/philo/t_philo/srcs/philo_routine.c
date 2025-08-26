@@ -6,7 +6,7 @@
 /*   By: JuHyeon <JuHyeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 11:19:03 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/08/26 23:37:00 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/08/27 00:11:21 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	eat(t_philo *philo)
 	print_status(philo, "is eating");
 	my_usleep(info->tte, info);
 	current_eat_count = atomic_fetch_add(&philo->eat_cnt, 1) + 1;
-	if (info->must_eat_cnt != -1 && current_eat_count >= info->must_eat_cnt)
+	if (info->must_eat_cnt != -1 && current_eat_count == info->must_eat_cnt)
 	{
 		atomic_fetch_add(&info->finished_philos, 1);
 	}
