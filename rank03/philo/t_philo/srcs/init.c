@@ -6,7 +6,7 @@
 /*   By: JuHyeon <JuHyeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 17:42:38 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/08/26 23:24:21 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/08/26 23:36:53 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ int	init_info(t_info *info, int ac, char **av)
 		info->must_eat_cnt = -1;
 	if (info->num_philo < 1 || info->ttd < 0 || info->tte < 0 || info->tts < 0)
 		return (1);
+	if (info->must_eat_cnt == 0)
+		return (1);
 	atomic_init(&info->finished_philos, 0);
 	atomic_init(&info->someone_died, 0);
-	info->start_time = get_time_ms();
 	info->forks = malloc(sizeof(t_mutex) * info->num_philo);
 	info->philos = malloc(sizeof(t_philo) * info->num_philo);
 	if (!info->forks || !info->philos)
@@ -63,7 +64,7 @@ int	init_philos(t_info *info)
 	{
 		info->philos[i].id = i + 1;
 		atomic_init(&info->philos[i].eat_cnt, 0);
-		info->philos[i].last_meal = get_time_ms();
+		info->philos[i].last_meal = 0;
 		info->philos[i].left_fork = &info->forks[i];
 		info->philos[i].right_fork = &info->forks[(i + 1) % info->num_philo];
 		info->philos[i].info = info;

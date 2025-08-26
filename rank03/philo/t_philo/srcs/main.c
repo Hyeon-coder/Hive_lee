@@ -6,7 +6,7 @@
 /*   By: JuHyeon <JuHyeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 11:19:50 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/08/26 23:24:56 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/08/26 23:37:23 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,18 @@ static int	start_threads(t_info *info, pthread_t *monitor)
 {
 	int	i;
 
+	info->start_time = get_time_ms();
 	i = 0;
 	while (i < info->num_philo)
 	{
+		pthread_mutex_lock(&info->meal_mutex);
+		info->philos[i].last_meal = info->start_time;
+		pthread_mutex_unlock(&info->meal_mutex);
 		if (pthread_create(&info->philos[i].thread, NULL,
 				philo_routine, &info->philos[i]) != 0)
 			return (1);
 		i++;
 	}
-	info->start_time = get_time_ms();
-	pthread_mutex_lock(&info->meal_mutex);
-	i = 0;
-	while (i < info->num_philo)
-	{
-		info->philos[i].last_meal = info->start_time;
-		i++;
-	}
-	pthread_mutex_unlock(&info->meal_mutex);
 	if (pthread_create(monitor, NULL, monitor_routine, info) != 0)
 		return (1);
 	return (0);
