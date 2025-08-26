@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <juhyeonl@student.hive.fi>         +#+  +:+       +#+        */
+/*   By: JuHyeon <JuHyeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 11:18:37 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/08/26 11:18:39 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/08/26 11:42:38 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ long long	get_time_ms(void);
 void		my_usleep(long long ms);
 void		print_status(t_philo *philo, const char *msg);
 int			ft_atoi(const char *str);
-int			simulation_finished(t_info *info); // 추가
+int			simulation_finished(t_info *info);
 
 // init.c
 int			init_info(t_info *info, int argc, char **argv);

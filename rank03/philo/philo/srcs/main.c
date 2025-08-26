@@ -6,7 +6,7 @@
 /*   By: JuHyeon <JuHyeon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 11:19:50 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/08/26 11:23:58 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/08/26 11:38:56 by JuHyeon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int	run_simulation(t_info *info)
 	wait_for_threads(info, monitor);
 	return (0);
 }
-
+// 
 int	main(int argc, char **argv)
 {
 	t_info	info;
