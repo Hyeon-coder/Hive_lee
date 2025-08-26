@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: JuHyeon <JuHyeon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: juhyeonl <juhyeonl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 11:18:37 by JuHyeon           #+#    #+#             */
-/*   Updated: 2025/08/26 11:42:38 by JuHyeon          ###   ########.fr       */
+/*   Updated: 2025/08/26 14:17:31 by juhyeonl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 typedef struct s_info	t_info;
 typedef struct s_philo	t_philo;
+typedef pthread_mutex_t	t_mutex;
 
 typedef struct s_philo
 {
@@ -28,8 +29,8 @@ typedef struct s_philo
 	int				eat_cnt;
 	long long		last_meal;
 	pthread_t		thread;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
+	t_mutex			*left_fork;
+	t_mutex			*right_fork;
 	t_info			*info;
 }	t_philo;
 
@@ -43,9 +44,9 @@ typedef struct s_info
 	int				finished_philos;
 	int				someone_died;
 	long long		start_time;
-	pthread_mutex_t	print_mutex;
-	pthread_mutex_t	meal_mutex;
-	pthread_mutex_t	*forks;
+	t_mutex			print_mutex;
+	t_mutex			meal_mutex;
+	t_mutex			*forks;
 	t_philo			*philos;
 }	t_info;
 
