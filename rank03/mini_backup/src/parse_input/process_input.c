@@ -64,6 +64,7 @@ static void	parse_and_execute(t_ms *ms)
 		ft_putstr_fd(HEREDOC_LIM, STDERR_FILENO);
 		return ;
 	}
+	print_ms(ms);
 	run_executor(ms, -1);
 }
 

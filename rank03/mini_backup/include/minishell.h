@@ -291,4 +291,13 @@ void		set_signals(void);
 void		reset_signals(void);
 void		hold_signals(void);
 
+void print_token_chain_simple(t_token *tokens);
+void print_ms(t_ms *ms);
+void print_ast(t_ast *ast, int depth);
+void print_cmd(t_cmd *cmd, int cmd_index);
+void print_infile_array(t_infile **infiles);
+void print_word(t_word *word);
+void print_token(t_token *token, int index);
+void print_segment(t_segment *seg, int indent);
+
 #endif

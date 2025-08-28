@@ -52,7 +52,7 @@ SRC = \
 	$(SRC_DIR)$(BLT_DIR)echo.c $(SRC_DIR)$(BLT_DIR)export.c $(SRC_DIR)$(BLT_DIR)misc.c $(SRC_DIR)main.c \
 	$(SRC_DIR)$(PAR_DIR)redirects.c $(SRC_DIR)$(PAR_DIR)validate.c $(SRC_DIR)$(EXEC_DIR)update_env.c \
 	$(SRC_DIR)$(EXP_DIR)retoken.c $(SRC_DIR)$(PAR_DIR)redirects_utils.c $(SRC_DIR)$(PAR_DIR)parser_utils.c \
-	$(SRC_DIR)$(BLT_DIR)extras.c 
+	$(SRC_DIR)$(BLT_DIR)extras.c $(SRC_DIR)print_debug.c
 OBJ = $(SRC:$(SRC_DIR)%=$(OBJ_DIR)/%)
 OBJ := $(OBJ:.c=.o)
 
